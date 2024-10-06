@@ -1,0 +1,71 @@
+name: Build Apps
+
+on:
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+        GOOGLE_CLIENT_ID:
+          required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22.x'
+
+    - name: Cache npm dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-cache-
+
+    - name: Install Angular dependencies
+      run: npm ci --force
+      working-directory: ./src/WeatherMonitor/weathermonitor.client
+
+    - name: Restore Secrets
+      run: sed -i "s|<GOOGLE_CLIENT_ID>|${{ secrets.GOOGLE_CLIENT_ID }}|g" ./src/WeatherMonitor/weathermonitor.client/src/app/app.secrets.ts
+
+
+    - name: Build dotnet main app
+      run: dotnet build ./src/WeatherMonitor
+    
+    - name: Build dotnet core microservice
+      run: dotnet build ./src/WeatherMonitorCore
+
+    - name: Build frontend
+      run: npm run build
+      working-directory: ./src/WeatherMonitor/weathermonitor.client
+
+    - name: Angular Lint
+      run: npx ng lint
+      working-directory: ./src/WeatherMonitor/weathermonitor.client
+
+
+    - name: Test dotnet main app
+      run: dotnet test ./src/WeatherMonitor --no-build
+
+    - name: Test dotnet core microservice
+      run: dotnet test ./src/WeatherMonitorCore --no-build
+
+    - name: Angular Test
+      run: npx ng test --browsers ChromeHeadless --no-watch --no-progress
+      working-directory: ./src/WeatherMonitor/weathermonitor.client
