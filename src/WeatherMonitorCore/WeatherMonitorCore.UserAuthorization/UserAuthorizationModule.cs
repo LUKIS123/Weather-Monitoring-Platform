@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using WeatherMonitorCore.Infrastructure;
+using WeatherMonitorCore.SharedKernel.Infrastructure;
 using WeatherMonitorCore.UserAuthorization.Features;
 
 namespace WeatherMonitorCore.UserAuthorization;
@@ -11,11 +11,12 @@ public static class UserAuthorizationModule
     {
         if (infrastructureType == InfrastructureType.AspNetCore)
         {
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("UserLoggedInPolicy",
-                    policy => policy.Requirements.Add(new LoggedInRequirement(["UserId", "UserName"])));
-            });
+            services.AddAuthorizationBuilder()
+                .AddPolicy("UserLoggedInPolicy", policy =>
+                {
+                    policy.Requirements.Add(new LoggedInRequirement(["UserId", "UserName"]));
+                });
+
             services.AddScoped<IAuthorizationHandler, UserLoggedInRequirementHandler>();
         }
 

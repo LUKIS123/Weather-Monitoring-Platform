@@ -14,5 +14,4 @@
 		<ProjectReference Include="..\WeatherMonitorCore.SharedKernel\WeatherMonitorCore.SharedKernel.csproj" />
 	</ItemGroup>
 
-
 </Project>

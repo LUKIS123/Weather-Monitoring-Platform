@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using WeatherMonitorCore.Interfaces;
+using WeatherMonitorCore.SharedKernel.Infrastructure;
 
 namespace WeatherMonitorCore.Infrastructure;
 

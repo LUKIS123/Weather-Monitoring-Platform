@@ -1,5 +1,4 @@
-﻿namespace WeatherMonitorCore.Infrastructure;
-
+﻿namespace WeatherMonitorCore.SharedKernel.Infrastructure;
 public enum InfrastructureType
 {
     AspNetCore = 1,

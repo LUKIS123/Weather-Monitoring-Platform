@@ -4,9 +4,9 @@ namespace WeatherMonitorCore.UserAuthorization.Features;
 
 internal class LoggedInRequirement : IAuthorizationRequirement
 {
-    public List<string> RequiredClaimTypes { get; }
+    public IEnumerable<string> RequiredClaimTypes { get; }
 
-    public LoggedInRequirement(List<string> requiredClaimTypes)
+    public LoggedInRequirement(IEnumerable<string> requiredClaimTypes)
     {
         RequiredClaimTypes = requiredClaimTypes;
     }
