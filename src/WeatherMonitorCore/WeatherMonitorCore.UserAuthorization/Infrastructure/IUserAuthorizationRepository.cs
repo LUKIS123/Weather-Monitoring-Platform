@@ -2,7 +2,7 @@
 
 namespace WeatherMonitorCore.UserAuthorization.Infrastructure;
 
-public interface IUserAuthenticationRepository
+public interface IUserAuthorizationRepository
 {
-    Task<BasicUserAuthorizationDto> GetUserAuthorizationInfoAsync(string userId);
+    Task<BasicUserAuthorizationDto?> GetUserAuthorizationInfoAsync(string userId);
 }
