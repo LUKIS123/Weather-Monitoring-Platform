@@ -2,7 +2,12 @@ using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var sqlConnectionString = builder.Configuration.GetConnectionString("MS-SQL")
+                          ?? throw new ArgumentNullException("MS-SQL");
+
 // Add services to the container.
+builder.Services.AddHttpContextAccessor(); //  add instance of http context accessor
+builder.Services.AddMemoryCache(); // add instance of memory cache
 builder.Services.AddAuthentication()
     .AddBearerToken(IdentityConstants.BearerScheme);
 
