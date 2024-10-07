@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitorCore.Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitorCore.UserAuthentication", "WeatherMonitorCore.UserAuthentication\WeatherMonitorCore.UserAuthentication.csproj", "{3318EBBA-C255-4F74-AA75-C99781483DCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitorCore.UserAuthorization", "WeatherMonitorCore.UserAuthorization\WeatherMonitorCore.UserAuthorization.csproj", "{3C23C630-CC68-4327-8802-ED9A7EAB16C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitorCore.SharedKernel", "WeatherMonitorCore.SharedKernel\WeatherMonitorCore.SharedKernel.csproj", "{5CE5B95B-88E2-4E3F-A1FD-CDCF81B34AD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitorCore.SharedKernel", "WeatherMonitorCore.SharedKernel\WeatherMonitorCore.SharedKernel.csproj", "{5CE5B95B-88E2-4E3F-A1FD-CDCF81B34AD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitorCore.Contract", "WeatherMonitorCore.Contract\WeatherMonitorCore.Contract.csproj", "{6C73A24F-0676-4E90-9E86-FF466115BCD4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,14 +37,14 @@ Global
 		{3318EBBA-C255-4F74-AA75-C99781483DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3318EBBA-C255-4F74-AA75-C99781483DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3318EBBA-C255-4F74-AA75-C99781483DCE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3C23C630-CC68-4327-8802-ED9A7EAB16C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C23C630-CC68-4327-8802-ED9A7EAB16C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3C23C630-CC68-4327-8802-ED9A7EAB16C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C23C630-CC68-4327-8802-ED9A7EAB16C7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5CE5B95B-88E2-4E3F-A1FD-CDCF81B34AD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5CE5B95B-88E2-4E3F-A1FD-CDCF81B34AD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CE5B95B-88E2-4E3F-A1FD-CDCF81B34AD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CE5B95B-88E2-4E3F-A1FD-CDCF81B34AD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C73A24F-0676-4E90-9E86-FF466115BCD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C73A24F-0676-4E90-9E86-FF466115BCD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C73A24F-0676-4E90-9E86-FF466115BCD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C73A24F-0676-4E90-9E86-FF466115BCD4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

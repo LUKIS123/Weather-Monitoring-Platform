@@ -17,7 +17,8 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\WeatherMonitorCore.Interfaces\WeatherMonitorCore.Interfaces.csproj" />
-		<ProjectReference Include="..\WeatherMonitorCore.UserAuthorization\WeatherMonitorCore.UserAuthorization.csproj" />
+		<ProjectReference Include="..\WeatherMonitorCore.SharedKernel\WeatherMonitorCore.SharedKernel.csproj" />
+		<ProjectReference Include="..\WeatherMonitorCore.UserAuthentication\WeatherMonitorCore.UserAuthentication.csproj" />
 	</ItemGroup>
 
 </Project>

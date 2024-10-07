@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using WeatherMonitorCore.Infrastructure.Repositories;
 using WeatherMonitorCore.Interfaces;
 using WeatherMonitorCore.SharedKernel.Infrastructure;
-using WeatherMonitorCore.UserAuthorization.Infrastructure;
+using WeatherMonitorCore.UserAuthentication.Infrastructure.Repositories;
 
 namespace WeatherMonitorCore.Infrastructure;
 
@@ -17,7 +17,7 @@ public static class InfrastructureModule
                                   ?? throw new ArgumentNullException(nameof(configuration), DbConnection);
         services.AddTransient<IDbConnectionFactory>(_ => new SqlDbConnectionFactory(sqlConnectionString));
 
-        services.AddTransient<IUserAuthorizationRepository, SqlUserRepository>();
+        services.AddTransient<IUserSettingsRepository, SqlUserRepository>();
 
         services.AddTransient(_ => TimeProvider.System);
 

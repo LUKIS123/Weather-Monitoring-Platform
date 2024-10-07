@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using WeatherMonitorCore.SharedKernel.Models;
+using WeatherMonitorCore.Contract.Auth;
 
-namespace WeatherMonitorCore.UserAuthorization.Features;
-
+namespace WeatherMonitor.Server.UserAuthorization.Features;
 internal class UserIsAdminRequirement : IAuthorizationRequirement
 {
     public IEnumerable<Role> AdminRoleTypes { get; }

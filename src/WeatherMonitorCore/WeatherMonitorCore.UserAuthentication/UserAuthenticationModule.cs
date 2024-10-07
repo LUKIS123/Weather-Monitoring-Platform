@@ -20,31 +20,23 @@ public static class UserAuthenticationModule
         services.AddTransient<IExternalSignInService, ExternalSignInService>();
         services.AddTransient<IJwtAuthorizationService, JwtAuthorizationService>();
         services.AddTransient<IAuthenticationService, AuthenticationService>();
-        services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(encryptionKey)),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                };
 
-                x.Events = new JwtBearerEvents
-                {
-                    OnMessageReceived = context =>
-                    {
-                        context.Token = context.Request.Cookies["AuthToken"];
-                        return Task.CompletedTask;
-                    }
-                };
-            });
+        services.AddAuthentication(opt =>
+        {
+            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(cfg =>
+        {
+            cfg.RequireHttpsMetadata = false;
+            cfg.SaveToken = true;
+            cfg.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(encryptionKey)),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+            };
+        });
     }
 }

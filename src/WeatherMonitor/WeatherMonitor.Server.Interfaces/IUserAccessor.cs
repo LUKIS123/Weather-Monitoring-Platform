@@ -1,5 +1,4 @@
-﻿namespace WeatherMonitorCore.Interfaces;
-
+﻿namespace WeatherMonitor.Server.Interfaces;
 public interface IUserAccessor
 {
     string? UserId { get; }

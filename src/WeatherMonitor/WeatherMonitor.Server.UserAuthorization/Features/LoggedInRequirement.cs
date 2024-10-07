@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace WeatherMonitorCore.UserAuthorization.Features;
-
+namespace WeatherMonitor.Server.UserAuthorization.Features;
 internal class LoggedInRequirement : IAuthorizationRequirement
 {
     public IEnumerable<string> RequiredClaimTypes { get; }

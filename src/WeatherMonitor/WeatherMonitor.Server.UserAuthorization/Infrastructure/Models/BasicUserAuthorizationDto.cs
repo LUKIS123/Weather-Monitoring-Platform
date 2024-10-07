@@ -1,7 +1,6 @@
-﻿using WeatherMonitorCore.SharedKernel.Models;
+﻿using WeatherMonitorCore.Contract.Auth;
 
-namespace WeatherMonitorCore.UserAuthorization.Infrastructure.Models;
-
+namespace WeatherMonitor.Server.UserAuthorization.Infrastructure.Models;
 public class BasicUserAuthorizationDto
 {
     public required string Id { get; set; }

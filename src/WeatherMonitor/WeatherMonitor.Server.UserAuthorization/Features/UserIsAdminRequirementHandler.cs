@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
-using WeatherMonitorCore.UserAuthorization.Infrastructure;
 
-namespace WeatherMonitorCore.UserAuthorization.Features;
-
+namespace WeatherMonitor.Server.UserAuthorization.Features;
 internal class UserIsAdminRequirementHandler : AuthorizationHandler<UserIsAdminRequirement>
 {
     private readonly ILogger<UserIsAdminRequirement> _logger;

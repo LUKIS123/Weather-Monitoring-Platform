@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace WeatherMonitorCore.Interfaces;
+namespace WeatherMonitor.Server.Interfaces;
 
 public interface IDbConnectionFactory
 {
