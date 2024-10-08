@@ -2,16 +2,16 @@
 using WeatherMonitor.Server.UserAuthentication.Infrastructure.Models;
 
 namespace WeatherMonitor.Server.UserAuthentication.Features.Authentication;
-internal interface IAuthenticationService
+internal interface IAuthService
 {
     UserInfo Handle();
 }
 
-internal class AuthenticationService : IAuthenticationService
+internal class AuthService : IAuthService
 {
     private readonly IUserAccessor _userAccessor;
 
-    public AuthenticationService(IUserAccessor userAccessor)
+    public AuthService(IUserAccessor userAccessor)
     {
         _userAccessor = userAccessor;
     }

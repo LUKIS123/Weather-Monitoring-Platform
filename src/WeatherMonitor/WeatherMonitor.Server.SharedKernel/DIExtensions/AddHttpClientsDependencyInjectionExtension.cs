@@ -10,7 +10,7 @@ public static class AddHttpClientsDependencyInjectionExtension
 
     public static void AddHttpClientProviders(this IServiceCollection services, IConfiguration configuration)
     {
-        var agileServiceBaseUri = new Uri(configuration.GetSection(CoreMicroserviceConfigurationSection)[BaseUrl] ?? throw
+        var agileServiceBaseUri = new Uri(configuration[$"{CoreMicroserviceConfigurationSection}:{BaseUrl}"] ?? throw
             new ArgumentNullException(nameof(configuration), BaseUrl));
 
         services.AddHttpClient(

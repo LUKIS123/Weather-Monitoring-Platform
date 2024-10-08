@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using WeatherMonitor.Server.UserAuthentication.Features.Authentication;
 using WeatherMonitor.Server.UserAuthentication.Features.SignIn;
-using WeatherMonitor.Server.UserAuthentication.Infrastructure.Jwt;
 
 namespace WeatherMonitor.Server.UserAuthentication;
 public static class UserAuthenticationModule
@@ -17,8 +16,8 @@ public static class UserAuthenticationModule
         var encryptionKey = configuration[JwtKey] ?? throw new ArgumentNullException(nameof(configuration), JwtKey);
 
         services.AddTransient<IExternalSignInService, ExternalSignInService>();
-        services.AddTransient<IJwtAuthorizationService, JwtAuthorizationService>();
-        services.AddTransient<IAuthenticationService, AuthenticationService>();
+        services.AddTransient<IAuthService, AuthService>();
+
         services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

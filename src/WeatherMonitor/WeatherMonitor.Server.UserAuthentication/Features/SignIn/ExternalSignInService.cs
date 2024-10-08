@@ -28,7 +28,7 @@ internal class ExternalSignInService : IExternalSignInService
         }
 
         var (jwtToken, success, message) = await _httpClientWrapper.PostHttpRequest<AuthenticateRequest, string>(
-            "user/googleAuthenticate",
+            "api/user/googleAuthenticate",
             new AuthenticateRequest { IdToken = idToken });
 
         if (!success || jwtToken is null)

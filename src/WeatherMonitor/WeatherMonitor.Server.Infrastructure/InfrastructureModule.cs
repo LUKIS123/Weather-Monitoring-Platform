@@ -17,8 +17,9 @@ public static class InfrastructureModule
 
         services.AddTransient<IUserAuthorizationRepository, SqlUserRepository>();
 
-        services.AddTransient(_ => TimeProvider.System);
+        services.AddTransient<ICoreMicroserviceHttpClientWrapper, CoreMicroserviceHttpClientWrapper>();
 
+        services.AddTransient(_ => TimeProvider.System);
         services.AddTransient<IUserAccessor, JwtUserAccessor>();
 
         return services;

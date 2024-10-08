@@ -58,4 +58,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
+app.RegisterUserEndpoints();
+
 app.Run();

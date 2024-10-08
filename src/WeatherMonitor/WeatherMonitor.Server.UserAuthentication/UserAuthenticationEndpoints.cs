@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using WeatherMonitor.Server.UserAuthentication.Features.Authentication;
 using WeatherMonitor.Server.UserAuthentication.Features.SignIn;
@@ -11,7 +12,7 @@ public static class UserAuthenticationEndpoints
     {
         routes.MapPost(
             "/api/user/google-sign-in",
-            async (HttpContext context, IExternalSignInService externalSignInService) =>
+            async (HttpContext context, [FromServices] IExternalSignInService externalSignInService) =>
             {
                 var result = await externalSignInService.Handle(
                     context.Request.Headers.Authorization.ToString().Replace("Bearer ", ""));
@@ -37,7 +38,7 @@ public static class UserAuthenticationEndpoints
 
         routes.MapGet(
             "/api/user/user-info",
-            async (HttpContext context, IAuthenticationService service) =>
+            async (HttpContext context, [FromServices] IAuthenticationService service) =>
             {
                 var userInfo = service.Handle();
 

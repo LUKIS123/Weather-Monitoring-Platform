@@ -58,8 +58,10 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
+
+app.RegisterUserEndpoints();
+
 app.MapFallbackToFile("/index.html");
 
 app.Run();
