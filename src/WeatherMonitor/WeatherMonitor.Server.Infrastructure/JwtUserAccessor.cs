@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 using WeatherMonitor.Server.Interfaces;
 
 namespace WeatherMonitor.Server.Infrastructure;
@@ -9,6 +10,7 @@ internal class JwtUserAccessor : IUserAccessor
     private const string UserIdClaim = "UserId";
     private const string UserNameClaim = "UserName";
     private const string PhotoUrlClaim = "PhotoUrl";
+    private const string EmailClaim = ClaimTypes.Email;
 
     public JwtUserAccessor(IHttpContextAccessor httpContextAccessor)
     {
@@ -43,6 +45,17 @@ internal class JwtUserAccessor : IUserAccessor
         {
             var claims = _httpContextAccessor.HttpContext?.User.Claims;
             var claim = claims?.FirstOrDefault(x => x.Type == PhotoUrlClaim);
+
+            return claim?.Value;
+        }
+    }
+
+    public string? Email
+    {
+        get
+        {
+            var claims = _httpContextAccessor.HttpContext?.User.Claims;
+            var claim = claims?.FirstOrDefault(x => x.Type == EmailClaim);
 
             return claim?.Value;
         }

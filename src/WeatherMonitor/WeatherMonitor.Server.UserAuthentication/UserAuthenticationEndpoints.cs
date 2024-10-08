@@ -13,13 +13,12 @@ public static class UserAuthenticationEndpoints
             "/api/user/google-sign-in",
             async (HttpContext context, IExternalSignInService externalSignInService) =>
             {
-                var tokenResponse = await externalSignInService.Handle(
-                    context.Request.Headers.Authorization.ToString().Replace("Bearer ", "")
-                );
+                var result = await externalSignInService.Handle(
+                    context.Request.Headers.Authorization.ToString().Replace("Bearer ", ""));
 
-                if (!string.IsNullOrEmpty(tokenResponse.Token))
+                if (result is { IsSuccess: true, Value.Token: not null })
                 {
-                    context.Response.Cookies.Append("AuthToken", tokenResponse.Token, new CookieOptions
+                    context.Response.Cookies.Append("AuthToken", result.Value.Token, new CookieOptions
                     {
                         HttpOnly = true,
                         Secure = true,

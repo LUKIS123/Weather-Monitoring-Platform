@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WeatherMonitor.Server.Infrastructure.Repositories;
 using WeatherMonitor.Server.Interfaces;
+using WeatherMonitor.Server.UserAuthorization.Infrastructure;
 
 namespace WeatherMonitor.Server.Infrastructure;
 public static class InfrastructureModule

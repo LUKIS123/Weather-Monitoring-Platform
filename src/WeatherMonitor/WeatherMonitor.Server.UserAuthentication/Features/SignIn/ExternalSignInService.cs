@@ -1,54 +1,44 @@
-﻿using Google.Apis.Auth;
-using WeatherMonitor.Server.UserAuthentication.Infrastructure.Jwt;
+﻿using Microsoft.AspNetCore.Http;
+using WeatherMonitor.Server.Interfaces;
+using WeatherMonitor.Server.SharedKernel;
+using WeatherMonitor.Server.SharedKernel.Exceptions;
 using WeatherMonitor.Server.UserAuthentication.Infrastructure.Models;
+using WeatherMonitorCore.Contract.Auth;
 
 namespace WeatherMonitor.Server.UserAuthentication.Features.SignIn;
 internal interface IExternalSignInService
 {
-    Task<JwtTokenResponse> Handle(string token);
+    Task<Result<JwtTokenResponse>> Handle(string token);
 }
 
 internal class ExternalSignInService : IExternalSignInService
 {
-    private readonly IJwtAuthorizationService _jwtAuthorizationService;
+    private readonly ICoreMicroserviceHttpClientWrapper _httpClientWrapper;
 
-    public ExternalSignInService(IJwtAuthorizationService jwtAuthorizationService)
+    public ExternalSignInService(ICoreMicroserviceHttpClientWrapper httpClientWrapper)
     {
-        _jwtAuthorizationService = jwtAuthorizationService;
+        _httpClientWrapper = httpClientWrapper;
     }
 
-    public async Task<JwtTokenResponse> Handle(string idToken)
+    public async Task<Result<JwtTokenResponse>> Handle(string idToken)
     {
-        try
+        if (string.IsNullOrEmpty(idToken))
         {
-            if (string.IsNullOrEmpty(idToken))
-            {
-                return new JwtTokenResponse();
-            }
-
-            var validatedToken = await GoogleJsonWebSignature.ValidateAsync(idToken);
-
-            // todo:
-            // jesli valid to uderzamy do Core zapisujemy usera.
-            // ewentualnie walidacja dopiero w Core Microservice <- moze lepsze rozwiazanie
-            // napisac http clienta do Core i tam walidowac token, zwracac UserInfo
-
-            var jwtToken = _jwtAuthorizationService.GenerateJwtToken(
-                new UserInfo
-                {
-                    UserId = validatedToken.Subject,
-                    PhotoUrl = validatedToken.Picture,
-                    UserName = validatedToken.Name,
-                    Email = validatedToken.Email
-                });
-            return new JwtTokenResponse
-            {
-                Token = jwtToken
-            };
+            return new BadHttpRequestException("Did not receive token");
         }
-        catch
+
+        var (jwtToken, success, message) = await _httpClientWrapper.PostHttpRequest<AuthenticateRequest, string>(
+            "user/googleAuthenticate",
+            new AuthenticateRequest { IdToken = idToken });
+
+        if (!success || jwtToken is null)
         {
-            return new JwtTokenResponse();
+            return new MicroserviceApiException(message);
         }
+
+        return new JwtTokenResponse
+        {
+            Token = jwtToken
+        };
     }
 }

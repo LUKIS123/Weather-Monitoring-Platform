@@ -1,4 +1,5 @@
 ﻿using Google.Apis.Auth;
+using WeatherMonitorCore.Contract.Auth;
 using WeatherMonitorCore.UserAuthentication.Infrastructure.Jwt;
 using WeatherMonitorCore.UserAuthentication.Infrastructure.Models;
 
@@ -6,35 +7,36 @@ namespace WeatherMonitorCore.UserAuthentication.Features.SignIn;
 
 internal interface IExternalSignInService
 {
-    Task<JwtTokenResponse> Handle(string token);
+    Task<JwtTokenResponse> Handle(AuthenticateRequest authenticateRequest);
 }
 
-internal class ExternalSignInService : IExternalSignInService
+internal class GoogleSignInService : IExternalSignInService
 {
     private readonly IJwtAuthorizationService _jwtAuthorizationService;
 
-    public ExternalSignInService(IJwtAuthorizationService jwtAuthorizationService)
+    public GoogleSignInService(IJwtAuthorizationService jwtAuthorizationService)
     {
         _jwtAuthorizationService = jwtAuthorizationService;
     }
 
-    public async Task<JwtTokenResponse> Handle(string idToken)
+    public async Task<JwtTokenResponse> Handle(AuthenticateRequest authenticateRequest)
     {
         try
         {
-            if (string.IsNullOrEmpty(idToken))
+            if (string.IsNullOrEmpty(authenticateRequest.IdToken))
             {
                 return new JwtTokenResponse();
             }
 
-            var validatedToken = await GoogleJsonWebSignature.ValidateAsync(idToken);
+            var validatedToken = await GoogleJsonWebSignature.ValidateAsync(authenticateRequest.IdToken);
 
             var jwtToken = _jwtAuthorizationService.GenerateJwtToken(
-                new UserInfo()
+                new UserInfo
                 {
                     UserId = validatedToken.Subject,
                     PhotoUrl = validatedToken.Picture,
-                    UserName = validatedToken.Name
+                    UserName = validatedToken.Name,
+                    Email = validatedToken.Email
                 });
             return new JwtTokenResponse
             {

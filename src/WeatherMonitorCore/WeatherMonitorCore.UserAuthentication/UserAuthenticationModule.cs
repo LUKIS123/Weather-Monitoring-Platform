@@ -17,7 +17,7 @@ public static class UserAuthenticationModule
     {
         var encryptionKey = configuration[JwtKey] ?? throw new ArgumentNullException(nameof(configuration), JwtKey);
 
-        services.AddTransient<IExternalSignInService, ExternalSignInService>();
+        services.AddTransient<IExternalSignInService, GoogleSignInService>();
         services.AddTransient<IJwtAuthorizationService, JwtAuthorizationService>();
         services.AddTransient<IAuthenticationService, AuthenticationService>();
 

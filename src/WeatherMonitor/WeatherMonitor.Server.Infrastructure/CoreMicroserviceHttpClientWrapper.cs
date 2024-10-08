@@ -14,42 +14,41 @@ internal class CoreMicroserviceHttpClientWrapper : ICoreMicroserviceHttpClientWr
     }
 
     public async Task<(TResponse?, bool Success, string Message)> GetHttpRequest<TResponse>(
-        string token,
-        string url) =>
+        string url,
+        string? token = null) =>
         await SendRequest<TResponse>(
             token,
             httpClient => httpClient.GetAsync(url));
 
     public async Task<(TResponse?, bool Success, string Message)> PostHttpRequest<TRequest, TResponse>(
-        string token,
         string url,
-        TRequest payload) =>
+        TRequest payload,
+        string? token = null) =>
         await SendRequest<TResponse>(
             token,
             httpClient => httpClient.PostAsJsonAsync(url, payload));
 
     public async Task<(bool Success, string Message)> PostHttpRequest<TRequest>(
-        string userId,
-        string refreshToken,
         string url,
-        TRequest payload) =>
+        TRequest payload,
+        string? token = null) =>
         await SendRequest(
-            refreshToken,
+            token,
             httpClient => httpClient.PostAsJsonAsync(url, payload));
 
     public async Task<(TResponse?, bool Success, string Message)> PatchHttpRequest<TRequest, TResponse>(
-        string token,
         string url,
-        TRequest payload) =>
+        TRequest payload,
+        string? token = null) =>
         await SendRequest<TResponse>(
             token,
             httpClient => httpClient.PatchAsJsonAsync(url, payload));
 
     private async Task<(TResponse?, bool Success, string Message)> SendRequest<TResponse>(
-        string refreshToken,
+        string? token,
         Func<HttpClient, Task<HttpResponseMessage>> messageSender)
     {
-        var (httpResponse, success, message) = await MakeHttpRequest(refreshToken, messageSender);
+        var (httpResponse, success, message) = await MakeHttpRequest(token, messageSender);
         if (success && httpResponse is not null)
         {
             var content = await httpResponse.Content.ReadFromJsonAsync<TResponse>();
@@ -60,23 +59,25 @@ internal class CoreMicroserviceHttpClientWrapper : ICoreMicroserviceHttpClientWr
     }
 
     private async Task<(bool Success, string Message)> SendRequest(
-        string refreshToken,
+        string? token,
         Func<HttpClient, Task<HttpResponseMessage>> messageSender)
     {
-        var (_, success, message) = await MakeHttpRequest(refreshToken, messageSender);
+        var (_, success, message) = await MakeHttpRequest(token, messageSender);
         return (success, message);
     }
 
     private async Task<(HttpResponseMessage? httpResponse, bool Success, string Message)> MakeHttpRequest(
-        string token,
+        string? token,
         Func<HttpClient, Task<HttpResponseMessage>> messageSender)
     {
         using var httpClient = _httpClientFactory.CreateClient(Constants.CoreMicroserviceClient);
-        httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+        if (token is not null)
+        {
+            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+        }
 
         var httpResponse = await messageSender(httpClient);
         var (success, message) = await EnsureRequestSuccessful(httpResponse);
-
         return (httpResponse, success, message);
     }
 

@@ -23,7 +23,8 @@ internal class AuthenticationService : IAuthenticationService
         {
             UserId = _userAccessor.UserId ?? string.Empty,
             UserName = _userAccessor.UserName ?? string.Empty,
-            PhotoUrl = _userAccessor.PhotoUrl ?? string.Empty
+            PhotoUrl = _userAccessor.PhotoUrl ?? string.Empty,
+            Email = _userAccessor.Email ?? string.Empty,
         };
     }
 }

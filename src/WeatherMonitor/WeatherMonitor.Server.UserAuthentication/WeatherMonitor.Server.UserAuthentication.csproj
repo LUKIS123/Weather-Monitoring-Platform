@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\WeatherMonitorCore\WeatherMonitorCore.Contract\WeatherMonitorCore.Contract.csproj" />
     <ProjectReference Include="..\WeatherMonitor.Server.Interfaces\WeatherMonitor.Server.Interfaces.csproj" />
+    <ProjectReference Include="..\WeatherMonitor.Server.SharedKernel\WeatherMonitor.Server.SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>
