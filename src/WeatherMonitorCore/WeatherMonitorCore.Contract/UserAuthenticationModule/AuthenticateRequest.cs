@@ -1,4 +1,4 @@
-﻿namespace WeatherMonitorCore.Contract.Auth;
+﻿namespace WeatherMonitorCore.Contract.UserAuthenticationModule;
 
 public class AuthenticateRequest
 {

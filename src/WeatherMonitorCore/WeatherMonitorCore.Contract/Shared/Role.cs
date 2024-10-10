@@ -1,4 +1,4 @@
-﻿namespace WeatherMonitorCore.Contract.Auth;
+﻿namespace WeatherMonitorCore.Contract.Shared;
 public enum Role
 {
     User = 1,

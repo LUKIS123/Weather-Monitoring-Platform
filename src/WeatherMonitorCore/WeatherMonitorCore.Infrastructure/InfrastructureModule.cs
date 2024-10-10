@@ -20,7 +20,6 @@ public static class InfrastructureModule
         services.AddTransient<IUserSettingsRepository, SqlUserRepository>();
 
         services.AddTransient(_ => TimeProvider.System);
-
         if (infrastructureType == InfrastructureType.AspNetCore)
         {
             services.AddTransient<IUserAccessor, JwtUserAccessor>();

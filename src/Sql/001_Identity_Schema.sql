@@ -43,7 +43,7 @@ CREATE TABLE [identity].[Users]
 (
     Id NVARCHAR(255) PRIMARY KEY,
     Role INT NOT NULL,
-    MqttClientId UNIQUEIDENTIFIER NOT NULL,
+    MqttClientId UNIQUEIDENTIFIER,
     FOREIGN KEY (MqttClientId) REFERENCES [identity].[MqttClients](Id)
     ON DELETE CASCADE,
 );

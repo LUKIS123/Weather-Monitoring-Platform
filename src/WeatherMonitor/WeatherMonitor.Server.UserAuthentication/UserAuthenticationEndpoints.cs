@@ -38,7 +38,7 @@ public static class UserAuthenticationEndpoints
 
         routes.MapGet(
             "/api/user/user-info",
-            async (HttpContext context, [FromServices] IAuthenticationService service) =>
+            async (HttpContext context, [FromServices] IAuthService service) =>
             {
                 var userInfo = service.Handle();
 

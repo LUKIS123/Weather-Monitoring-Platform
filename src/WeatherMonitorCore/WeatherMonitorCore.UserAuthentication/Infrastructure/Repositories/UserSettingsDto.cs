@@ -1,4 +1,4 @@
-﻿using WeatherMonitorCore.Contract.Auth;
+﻿using WeatherMonitorCore.Contract.Shared;
 
 namespace WeatherMonitorCore.UserAuthentication.Infrastructure.Repositories;
 public record UserSettingsDto(

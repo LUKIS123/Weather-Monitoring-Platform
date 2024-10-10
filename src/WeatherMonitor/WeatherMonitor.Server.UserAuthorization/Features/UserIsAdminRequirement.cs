@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using WeatherMonitorCore.Contract.Auth;
+using WeatherMonitorCore.Contract.Shared;
 
 namespace WeatherMonitor.Server.UserAuthorization.Features;
 internal class UserIsAdminRequirement : IAuthorizationRequirement

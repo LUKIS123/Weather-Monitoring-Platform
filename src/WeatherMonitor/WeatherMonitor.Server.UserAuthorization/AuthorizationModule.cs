@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using WeatherMonitor.Server.UserAuthorization.Features;
-using WeatherMonitorCore.Contract.Auth;
+using WeatherMonitorCore.Contract.Shared;
 
 namespace WeatherMonitor.Server.UserAuthorization;
 

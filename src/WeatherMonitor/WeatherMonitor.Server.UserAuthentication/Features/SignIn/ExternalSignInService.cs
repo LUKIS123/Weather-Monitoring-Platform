@@ -3,7 +3,7 @@ using WeatherMonitor.Server.Interfaces;
 using WeatherMonitor.Server.SharedKernel;
 using WeatherMonitor.Server.SharedKernel.Exceptions;
 using WeatherMonitor.Server.UserAuthentication.Infrastructure.Models;
-using WeatherMonitorCore.Contract.Auth;
+using WeatherMonitorCore.Contract.UserAuthenticationModule;
 
 namespace WeatherMonitor.Server.UserAuthentication.Features.SignIn;
 internal interface IExternalSignInService

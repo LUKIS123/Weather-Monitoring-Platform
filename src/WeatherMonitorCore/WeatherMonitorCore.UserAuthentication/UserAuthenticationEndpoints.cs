@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using WeatherMonitorCore.Contract.Auth;
+using WeatherMonitorCore.Contract.UserAuthenticationModule;
 using WeatherMonitorCore.UserAuthentication.Features.SignIn;
 
 namespace WeatherMonitorCore.UserAuthentication;

@@ -1,4 +1,4 @@
-﻿using WeatherMonitorCore.Contract.Auth;
+﻿using WeatherMonitorCore.Contract.Shared;
 
 namespace WeatherMonitor.Server.UserAuthorization.Infrastructure.Models;
 public class BasicUserAuthorizationDto
