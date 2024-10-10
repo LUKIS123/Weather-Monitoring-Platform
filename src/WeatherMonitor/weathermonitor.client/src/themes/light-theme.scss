@@ -1,0 +1,84 @@
+@use "@angular/material" as mat;
+@include mat.core();
+
+$dark-primary-text: rgba(black, 0.87);
+$light-primary-text: white;
+
+$orange-palette: (
+  50: #ffeee5,
+  100: #ffddcc,
+  200: #ffbc99,
+  300: #ff9d66,
+  400: #ff8033,
+  500: #ff6400,
+  600: #cc5300,
+  700: #994100,
+  800: #662d00,
+  900: #331700,
+  A100: #ffddcc,
+  A200: #ffbc99,
+  A400: #ff8033,
+  A700: #994100,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $dark-primary-text,
+    600: $dark-primary-text,
+    700: $dark-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $dark-primary-text,
+    A400: $dark-primary-text,
+    A700: black,
+  ),
+);
+
+$blue-palette: (
+  50: #bae6ff,
+  100: #a1dcff,
+  200: #6ec7ff,
+  300: #3bb0ff,
+  400: #0898ff,
+  500: #0078d4,
+  600: #0061b0,
+  700: #004b8d,
+  800: #003669,
+  900: #002345,
+  A100: #a1dcff,
+  A200: #6ec7ff,
+  A400: #0898ff,
+  A700: #004b8d,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $light-primary-text,
+    A400: $light-primary-text,
+    A700: $light-primary-text,
+  ),
+);
+
+$my-primary: mat.define-palette($blue-palette);
+$my-accent: mat.define-palette($orange-palette);
+
+$light-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $my-primary,
+      accent: $my-accent,
+    ),
+    density: 0,
+  )
+);

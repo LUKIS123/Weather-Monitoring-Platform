@@ -1,0 +1,20 @@
+@use "@angular/material" as mat;
+@use "themes/light-theme.scss" as lightTheme;
+@use "themes/dark-theme.scss" as darkTheme;
+@include mat.core();
+
+$typography: mat.define-typography-config(
+  $font-family: "Roboto, Helvetica Neue, sans-serif",
+  $subtitle-1: mat.define-typography-level(1.25rem, 1.75rem, 400),
+  $subtitle-2: mat.define-typography-level(1rem, 1.5rem, 700),
+  $body-1: mat.define-typography-level(0.88rem, 1.5rem, 400),
+  $body-2: mat.define-typography-level(1rem, 1rem, 400),
+  $caption: mat.define-typography-level(0.75rem, 1rem, 400),
+);
+
+@include mat.all-component-typographies($typography);
+@include mat.all-component-themes(lightTheme.$light-theme);
+
+.dark-theme {
+  @include mat.all-component-colors(darkTheme.$dark-theme);
+}

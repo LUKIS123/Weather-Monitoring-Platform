@@ -1,0 +1,122 @@
+/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base {
+  ul,
+  ol {
+    list-style: revert;
+    padding: revert;
+    margin: revert;
+  }
+}
+
+body,
+html {
+  height: 100vh;
+}
+
+.dark-theme .stubborn-text {
+  color: white;
+}
+
+.dark-theme .stubborn-icon {
+  filter: invert(1);
+}
+
+.dark-theme .stubborn-icon-inverted {
+  filter: invert(0) !important;
+}
+
+.dark-theme .side {
+  background-color: #303030;
+}
+
+.dark-theme .cdk-drag-preview {
+  color: white !important;
+}
+
+.dark-theme .text-primary {
+  color: white;
+}
+
+.text-primary {
+  color: black;
+}
+
+.img-loading {
+  border-radius: 10px;
+  background-color: rgb(224, 224, 224);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+  transform: scale(1);
+  animation: pulse 2s infinite;
+}
+
+.popup {
+  height: 80dvh;
+  width: 80dvw;
+}
+
+.popup .mat-dialog-container {
+  max-width: none;
+}
+
+@media (max-width: 767px) {
+  .popup {
+    height: 100dvh;
+    width: 100dvw;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    border-radius: 2px;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    border-radius: 10px;
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    border-radius: 2px;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+//scrollbar
+* {
+  /* Scrollbar settings for Firefox */
+  scrollbar-width: thin; /* Makes the scrollbar thinner */
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent; /* Styles the scrollbar thumb and track */
+}
+
+ng-scrollbar {
+  --scrollbar-thickness: 8 !important;
+  --scrollbar-border-radius: 8px !important;
+
+  @media (max-width: 600px) {
+    --scrollbar-thickness: 5 !important;
+    --scrollbar-border-radius: 8px !important;
+  }
+}
+
+.link {
+  color: #2563eb;
+}
+
+.dark-theme .link {
+  color: #3b82f6;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
