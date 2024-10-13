@@ -1,1 +1,7 @@
-<p>theme-switch works!</p>
+<mat-slide-toggle
+  color="primary"
+  (change)="changeTheme()"
+  [checked]="darkTheme()"
+>
+  <span class="text-lg">{{ "Navigation.DarkTheme" | translate }}</span>
+</mat-slide-toggle>

@@ -3,6 +3,7 @@ using System.Security.Claims;
 using WeatherMonitor.Server.Interfaces;
 
 namespace WeatherMonitor.Server.Infrastructure;
+
 internal class JwtUserAccessor : IUserAccessor
 {
     private readonly IHttpContextAccessor _httpContextAccessor;

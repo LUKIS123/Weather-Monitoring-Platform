@@ -3,11 +3,11 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { AuthorizationService } from './features/authorization/services/authorization-service';
 import { MenuComponent } from './features/menu/menu.component';
 import { MaterialModule } from './shared/material.module';
-import { LoginComponent } from './shared/login/login.component';
+import { LoginComponent } from './shared/components/login/login.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ThemeSwitchComponent } from './features/menu/components/theme-switch/theme-switch.component';
-import { LogoComponent } from './shared/logo/logo.component';
 import { SampleComponent } from './sample/app.component';
+import { LogoComponent } from './shared/components/logo/logo.component';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +27,7 @@ import { SampleComponent } from './sample/app.component';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'WeatherMonitor';
+  title = 'Weather Monitor';
 
   private authService = inject(AuthorizationService);
   isAuthenticated = this.authService.isAuthorized;

@@ -20,7 +20,11 @@ public static class UserAuthenticationEndpoints
 
                 if (!string.IsNullOrEmpty(tokenResponse.Token))
                 {
-                    await context.Response.WriteAsync(tokenResponse.Token);
+                    await context.Response.WriteAsJsonAsync(
+                        new AuthenticationResponse
+                        {
+                            Token = tokenResponse.Token
+                        });
                 }
                 else
                 {

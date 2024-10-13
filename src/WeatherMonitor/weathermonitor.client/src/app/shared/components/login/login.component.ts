@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { AuthorizationService } from '../../features/authorization/services/authorization-service';
+import { AuthorizationService } from '../../../features/authorization/services/authorization-service';
 import { CommonModule } from '@angular/common';
 import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
-import { MaterialModule } from '../material.module';
+import { MaterialModule } from '../../material.module';
 import { ImageLoaderDirective } from '../../directives/image-loader-directive';
 
 @Component({

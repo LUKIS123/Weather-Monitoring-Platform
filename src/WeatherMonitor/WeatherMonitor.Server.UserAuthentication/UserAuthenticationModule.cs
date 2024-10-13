@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -7,6 +8,7 @@ using WeatherMonitor.Server.UserAuthentication.Features.Authentication;
 using WeatherMonitor.Server.UserAuthentication.Features.SignIn;
 
 namespace WeatherMonitor.Server.UserAuthentication;
+
 public static class UserAuthenticationModule
 {
     private const string JwtKey = "Jwt:Key";
@@ -21,7 +23,7 @@ public static class UserAuthenticationModule
         services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddJwtBearer(x =>
             {

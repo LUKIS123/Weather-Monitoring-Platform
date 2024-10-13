@@ -27,18 +27,18 @@ internal class ExternalSignInService : IExternalSignInService
             return new BadHttpRequestException("Did not receive token");
         }
 
-        var (jwtToken, success, message) = await _httpClientWrapper.PostHttpRequest<AuthenticateRequest, string>(
+        var (response, success, message) = await _httpClientWrapper.PostHttpRequest<AuthenticateRequest, AuthenticationResponse>(
             "api/user/googleAuthenticate",
             new AuthenticateRequest { IdToken = idToken });
 
-        if (!success || jwtToken is null)
+        if (!success || string.IsNullOrEmpty(response?.Token))
         {
             return new MicroserviceApiException(message);
         }
 
         return new JwtTokenResponse
         {
-            Token = jwtToken
+            Token = response.Token
         };
     }
 }
