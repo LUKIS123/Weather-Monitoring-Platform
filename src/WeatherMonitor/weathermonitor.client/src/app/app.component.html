@@ -1,24 +1,54 @@
-﻿<h1 id="tableLabel">Weather forecast</h1>
-
-<p>This component demonstrates fetching data from the server.</p>
-
-<p *ngIf="!forecasts"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
-
-<table *ngIf="forecasts">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let forecast of forecasts">
-            <td>{{ forecast.date }}</td>
-            <td>{{ forecast.temperatureC }}</td>
-            <td>{{ forecast.temperatureF }}</td>
-            <td>{{ forecast.summary }}</td>
-        </tr>
-    </tbody>
-</table>
+<mat-sidenav-container class="h-full">
+  <mat-toolbar
+    class="self-center flex flex-grow-0 justify-items-center content-center space-x-2 h-16 fixed"
+  >
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <app-logo routerLink="Home" class="cursor-pointer"></app-logo>
+    <span
+      routerLink="Home"
+      class="text-2xl cursor-pointer hidden sm:block"
+    >
+      {{ title }}
+    </span>
+    <span class="flex-grow flex-shrink basis-auto"></span>
+    <app-login></app-login>
+  </mat-toolbar>
+  <mat-sidenav #sidenav>
+    <div class="flex flex-col p-4 h-full">
+      <div class="flex space-x-2 mb-2">
+        <app-logo></app-logo>
+        <div class="text-2xl flex justify-center items-center">{{ title }}</div>
+      </div>
+      <!-- @if(isAuthenticated()){
+            <div mat-ripple routerLink="Home" class="cursor-pointer flex items-center space-x-1 py-4 px-2"
+                (click)="sidenav.toggle()">
+                <mat-icon>home</mat-icon>
+                <p class="text-lg">{{"Navigation.Home" | translate}}</p>
+            </div>
+            }
+            @if(isAuthenticated()){
+            <div mat-ripple routerLink="Projects" class="cursor-pointer flex items-center space-x-1 py-4 px-2"
+                (click)="sidenav.toggle()">
+                <mat-icon>assignments</mat-icon>
+                <p class="text-lg">{{"Navigation.Projects" | translate}}</p>
+            </div>
+            } -->
+      <span class="flex flex-1"></span>
+      <div
+        mat-ripple
+        class="cursor-pointer flex items-center space-x-1 py-4 px-2"
+      >
+        <app-theme-switch></app-theme-switch>
+      </div>
+    </div>
+  </mat-sidenav>
+  <div class="main">
+    <ng-scrollbar>
+      <div class="content shadow-md">
+        <router-outlet></router-outlet>
+      </div>
+    </ng-scrollbar>
+  </div>
+</mat-sidenav-container>

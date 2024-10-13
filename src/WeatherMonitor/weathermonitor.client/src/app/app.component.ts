@@ -1,37 +1,34 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-
-interface WeatherForecast {
-  date: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
-}
+import { Component, inject } from '@angular/core';
+import { RouterModule, RouterOutlet } from '@angular/router';
+import { AuthorizationService } from './features/authorization/services/authorization-service';
+import { MenuComponent } from './features/menu/menu.component';
+import { MaterialModule } from './shared/material.module';
+import { LoginComponent } from './shared/components/login/login.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { ThemeSwitchComponent } from './features/menu/components/theme-switch/theme-switch.component';
+import { SampleComponent } from './sample/app.component';
+import { LogoComponent } from './shared/components/logo/logo.component';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [
+    RouterOutlet,
+    RouterModule,
+    MenuComponent,
+    MaterialModule,
+    LogoComponent,
+    LoginComponent,
+    TranslateModule,
+    ThemeSwitchComponent,
+    SampleComponent,
+  ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.scss',
 })
-export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
+export class AppComponent {
+  title = 'Weather Monitor';
 
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {
-    this.getForecasts();
-  }
-
-  getForecasts() {
-    this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
-      (result) => {
-        this.forecasts = result;
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-  }
-
-  title = 'weathermonitor.client';
+  private authService = inject(AuthorizationService);
+  isAuthenticated = this.authService.isAuthorized;
 }
