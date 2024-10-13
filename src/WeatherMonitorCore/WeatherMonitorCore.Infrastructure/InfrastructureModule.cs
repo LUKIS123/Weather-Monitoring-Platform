@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using WeatherMonitorCore.Infrastructure.Repositories;
 using WeatherMonitorCore.Interfaces;
 using WeatherMonitorCore.SharedKernel.Infrastructure;
+using WeatherMonitorCore.SharedKernel.Infrastructure.Repositories;
 using WeatherMonitorCore.UserAuthentication.Infrastructure.Repositories;
 
 namespace WeatherMonitorCore.Infrastructure;
@@ -18,6 +19,7 @@ public static class InfrastructureModule
         services.AddTransient<IDbConnectionFactory>(_ => new SqlDbConnectionFactory(sqlConnectionString));
 
         services.AddTransient<IUserSettingsRepository, SqlUserRepository>();
+        services.AddTransient<IUserAuthorizationRepository, SqlUserRepository>();
 
         services.AddTransient(_ => TimeProvider.System);
         if (infrastructureType == InfrastructureType.AspNetCore)

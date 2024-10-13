@@ -33,7 +33,8 @@ namespace WeatherMonitorCore.UserAuthentication.Infrastructure.Jwt
                     new Claim("UserId", userInfo.UserId),
                     new Claim("UserName", userInfo.UserName),
                     new Claim("PhotoUrl", userInfo.PhotoUrl),
-                    new Claim(ClaimTypes.Email, userInfo.Email)
+                    new Claim(ClaimTypes.Email, userInfo.Email),
+                    new Claim(ClaimTypes.Role, ((int)userInfo.Role).ToString())
                 ]),
                 Expires = DateTime.UtcNow.AddDays(3),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)), SecurityAlgorithms.HmacSha256Signature)

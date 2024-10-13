@@ -2,7 +2,13 @@
   "Shared.WeatherStation": "Stacja pogodowa",
   "Shared.Temperature": "Temperatura",
   "UserAccount.Logout": "Wyloguj",
-  "UserAccount.Settings": "Ustawienia",
+  "UserAccount.Settings": "Profil",
+  "UserAccount.Informations": "Informacje:",
+  "UserAccount.Role": "Rola użytkownika: ",
+  "UserAccount.User": "Standardowy użytkownik",
+  "UserAccount.Admin": "Administrator",
+  "UserAccount.Unknown": "Nieznany",
+  "UserAccount.Error": "Wystąpił błąd podczas pobierania danych użytkownika",
   "Navigation.Home": "Strona główna",
   "Navigation.DarkTheme": "Ciemny motyw"
 }

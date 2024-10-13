@@ -40,7 +40,8 @@ internal class GoogleSignInService : IExternalSignInService
                     UserId = userSettings.UserId,
                     PhotoUrl = validatedToken.Picture,
                     UserName = validatedToken.Name,
-                    Email = validatedToken.Email
+                    Email = validatedToken.Email,
+                    Role = userSettings.Role
                 });
             return new JwtTokenResponse
             {
