@@ -1,4 +1,5 @@
 <div class="flex flex-col items-center">
+  @if(!isLoading()){
   <div class="flex justify-center items-center flex-col px-8 py-4 space-y-3">
     <img
       class="rounded-full max-h-20 max-w-20 cursor-pointer"
@@ -31,4 +32,9 @@
       </mat-card-content>
     </mat-card>
   </div>
+  } @else if (isLoading()) {
+  <p class="w-full h-screen flex flex-row justify-center items-center">
+    <mat-spinner></mat-spinner>
+  </p>
+  }
 </div>

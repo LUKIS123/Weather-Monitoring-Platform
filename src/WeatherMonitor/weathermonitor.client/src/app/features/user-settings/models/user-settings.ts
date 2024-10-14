@@ -1,4 +1,4 @@
-import { UserRole } from './user-role';
+import { UserRole } from '../../../shared/models/user-role';
 
 export interface UserSettings {
   userName: string;

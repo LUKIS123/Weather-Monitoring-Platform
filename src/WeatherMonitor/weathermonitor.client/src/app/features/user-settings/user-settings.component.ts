@@ -7,7 +7,7 @@ import { ToastService } from '../../shared/services/toast.service';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../shared/material.module';
 import { ImageLoaderDirective } from '../../shared/directives/image-loader-directive';
-import { UserRole } from './models/user-role';
+import { UserRole } from '../../shared/models/user-role';
 
 @Component({
   selector: 'app-user-settings',
@@ -52,15 +52,17 @@ export class UserSettingsComponent implements OnInit {
   }
 
   private getStatusLabel(status: UserRole | null): string {
+    if (status == null) {
+      return this.translateService.instant('UserAccount.Unknown');
+    }
+
     switch (status) {
-      case null:
-        return this.translateService.instant('UserAccount.Nieznany');
       case UserRole.User:
         return this.translateService.instant('UserAccount.User');
       case UserRole.Admin:
         return this.translateService.instant('UserAccount.Admin');
       default:
-        return this.translateService.instant('UserAccount.Nieznany');
+        return this.translateService.instant('UserAccount.Unknown');
     }
   }
 }
