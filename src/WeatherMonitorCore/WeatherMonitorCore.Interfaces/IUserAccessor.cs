@@ -1,4 +1,6 @@
-﻿namespace WeatherMonitorCore.Interfaces;
+﻿using WeatherMonitorCore.Contract.Shared;
+
+namespace WeatherMonitorCore.Interfaces;
 
 public interface IUserAccessor
 {
@@ -6,4 +8,5 @@ public interface IUserAccessor
     string? UserName { get; }
     string? PhotoUrl { get; }
     string? Email { get; }
+    Role Role { get; }
 }

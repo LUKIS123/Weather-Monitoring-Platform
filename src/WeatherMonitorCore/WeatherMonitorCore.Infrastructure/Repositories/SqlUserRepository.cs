@@ -1,11 +1,13 @@
 ﻿using Dapper;
 using WeatherMonitorCore.Contract.Shared;
 using WeatherMonitorCore.Interfaces;
+using WeatherMonitorCore.SharedKernel.Infrastructure.Models;
+using WeatherMonitorCore.SharedKernel.Infrastructure.Repositories;
 using WeatherMonitorCore.UserAuthentication.Infrastructure.Repositories;
 
 namespace WeatherMonitorCore.Infrastructure.Repositories;
 
-internal class SqlUserRepository : IUserSettingsRepository
+internal class SqlUserRepository : IUserSettingsRepository, IUserAuthorizationRepository
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
 
@@ -72,5 +74,19 @@ UPDATE [identity].[Users]
 SET Role = @role
 WHERE Id = @userId;
 ", new { role, userId });
+    }
+
+    public async Task<BasicUserAuthorizationDto?> GetUserAuthorizationInfoAsync(string userId)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+        var result = await connection.QueryFirstOrDefaultAsync<BasicUserAuthorizationDto>(@$"
+SELECT TOP 1
+    Id AS {nameof(BasicUserAuthorizationDto.Id)},
+    Role AS {nameof(BasicUserAuthorizationDto.Role)}
+FROM [identity].[Users]
+WHERE Id = @userId
+", new { userId });
+
+        return result;
     }
 }

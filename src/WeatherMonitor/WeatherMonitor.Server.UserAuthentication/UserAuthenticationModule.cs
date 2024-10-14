@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WeatherMonitor.Server.UserAuthentication.Features.Authentication;
 using WeatherMonitor.Server.UserAuthentication.Features.SignIn;
+using WeatherMonitor.Server.UserAuthentication.Features.UserSettings;
 
 namespace WeatherMonitor.Server.UserAuthentication;
 
@@ -19,6 +20,7 @@ public static class UserAuthenticationModule
 
         services.AddTransient<IExternalSignInService, ExternalSignInService>();
         services.AddTransient<IAuthService, AuthService>();
+        services.AddTransient<IGetUserSettingsService, GetUserSettingsService>();
 
         services.AddAuthentication(x =>
             {

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { UserData } from '../models/user-data';
 import { Router } from '@angular/router';
+import { UserRole } from '../../../shared/models/user-role';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,8 @@ export class AuthorizationService {
     userId: null,
     userName: null,
     userPhotoUrl: null,
+    email: null,
+    role: UserRole.Unknown,
   });
   public userData = this.#userData.asReadonly();
   public isAuthorized = computed(() => this.#userData().isAuthorized);
@@ -36,6 +39,8 @@ export class AuthorizationService {
               userId: user.id,
               userName: user.name,
               userPhotoUrl: user.photoUrl,
+              email: user.email,
+              role: UserRole.User,
             });
             this.router.navigate(['/Home']);
           },
@@ -45,6 +50,8 @@ export class AuthorizationService {
               userId: null,
               userName: null,
               userPhotoUrl: null,
+              email: null,
+              role: UserRole.Unknown,
             });
           },
         });
@@ -59,6 +66,8 @@ export class AuthorizationService {
           userId: null,
           userName: null,
           userPhotoUrl: null,
+          email: null,
+          role: UserRole.Unknown,
         });
         this.router.navigate(['/']);
       },

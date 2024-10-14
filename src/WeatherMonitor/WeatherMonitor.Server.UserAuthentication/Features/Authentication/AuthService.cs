@@ -24,6 +24,7 @@ internal class AuthService : IAuthService
             UserName = _userAccessor.UserName ?? string.Empty,
             PhotoUrl = _userAccessor.PhotoUrl ?? string.Empty,
             Email = _userAccessor.Email ?? string.Empty,
+            Role = _userAccessor.Role
         };
     }
 }

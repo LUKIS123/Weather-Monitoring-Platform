@@ -2,6 +2,7 @@ using WeatherMonitorCore.Infrastructure;
 using WeatherMonitorCore.Middleware;
 using WeatherMonitorCore.SharedKernel;
 using WeatherMonitorCore.UserAuthentication;
+using WeatherMonitorCore.UserAuthorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Services.AddMemoryCache(); // add instance of memory cache
 builder.Services.AddSharedKernelModule();
 builder.Services.AddInfrastructureModule(builder.Configuration);
 builder.Services.AddUserModule(builder.Configuration);
+builder.Services.AddUserAuthorizationModule();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

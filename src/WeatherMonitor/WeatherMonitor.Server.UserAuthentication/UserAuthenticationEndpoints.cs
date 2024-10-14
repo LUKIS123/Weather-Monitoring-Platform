@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using WeatherMonitor.Server.SharedKernel.HttpContextExtensions;
 using WeatherMonitor.Server.UserAuthentication.Features.Authentication;
 using WeatherMonitor.Server.UserAuthentication.Features.SignIn;
+using WeatherMonitor.Server.UserAuthentication.Features.UserSettings;
 
 namespace WeatherMonitor.Server.UserAuthentication;
 public static class UserAuthenticationEndpoints
@@ -47,8 +49,18 @@ public static class UserAuthenticationEndpoints
                     isAuthorized = !string.IsNullOrEmpty(userInfo.UserId),
                     userId = userInfo.UserId,
                     userName = userInfo.UserName,
-                    userPhotoUrl = userInfo.PhotoUrl
+                    userPhotoUrl = userInfo.PhotoUrl,
+                    email = userInfo.Email,
+                    role = userInfo.Role
                 });
+            });
+
+        routes.MapGet(
+            "/api/user/user-settings",
+            async (HttpContext context, [FromServices] IGetUserSettingsService service) =>
+            {
+                var result = await service.Handle();
+                await context.HandleResult(result);
             });
 
         routes.MapPost(

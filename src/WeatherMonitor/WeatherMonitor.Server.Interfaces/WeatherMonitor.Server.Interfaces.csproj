@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\WeatherMonitorCore\WeatherMonitorCore.Contract\WeatherMonitorCore.Contract.csproj" />
+  </ItemGroup>
+
 </Project>
