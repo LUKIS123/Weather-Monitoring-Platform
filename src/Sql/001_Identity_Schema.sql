@@ -52,6 +52,8 @@ CREATE TABLE [identity].[Devices]
 (
     Id INT IDENTITY(1, 1) PRIMARY KEY,
     GoogleMapsPlusCode NVARCHAR(50) NOT NULL DEFAULT '4356+M6 Wrocław',
+    DeviceExtraInfo NVARCHAR(255),
+    IsActive BIT NOT NULL DEFAULT 0,
     MqttClientId UNIQUEIDENTIFIER NOT NULL,
     FOREIGN KEY (MqttClientId) REFERENCES [identity].[MqttClients](Id)
     ON DELETE CASCADE,

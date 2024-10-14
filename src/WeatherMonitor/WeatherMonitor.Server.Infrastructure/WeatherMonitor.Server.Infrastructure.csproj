@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WeatherMonitor.Server.DeviceManagement\WeatherMonitor.Server.DeviceManagement.csproj" />
     <ProjectReference Include="..\WeatherMonitor.Server.Interfaces\WeatherMonitor.Server.Interfaces.csproj" />
     <ProjectReference Include="..\WeatherMonitor.Server.SharedKernel\WeatherMonitor.Server.SharedKernel.csproj" />
     <ProjectReference Include="..\WeatherMonitor.Server.UserAuthorization\WeatherMonitor.Server.UserAuthorization.csproj" />
