@@ -3,5 +3,5 @@
 namespace WeatherMonitorCore.DeviceManagement.Infrastructure;
 public interface IDeviceManagementRepository
 {
-    public Task<RegisteredDeviceDto> RegisterDeviceAsync(CreateDeviceDto createDevice);
+    public Task<CreatedDeviceDto> RegisterDeviceAsync(RegisterDeviceDto createDevice);
 }

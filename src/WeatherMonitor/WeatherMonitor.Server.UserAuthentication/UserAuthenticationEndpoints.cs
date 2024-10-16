@@ -32,11 +32,13 @@ public static class UserAuthenticationEndpoints
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 }
-            });
+                context.Response.Headers.Append("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+            }).AllowAnonymous();
 
         routes.MapPost(
             "/api/user/logout",
-            (HttpContext context) => { context.Response.Cookies.Delete("AuthToken"); });
+            (HttpContext context) => { context.Response.Cookies.Delete("AuthToken"); })
+            .RequireAuthorization();
 
         routes.MapGet(
             "/api/user/user-info",
@@ -53,7 +55,7 @@ public static class UserAuthenticationEndpoints
                     email = userInfo.Email,
                     role = userInfo.Role
                 });
-            });
+            }).AllowAnonymous();
 
         routes.MapGet(
             "/api/user/user-settings",
@@ -61,7 +63,7 @@ public static class UserAuthenticationEndpoints
             {
                 var result = await service.Handle();
                 await context.HandleResult(result);
-            });
+            }).RequireAuthorization();
 
         routes.MapPost(
             "api/user/set-dark-theme",
@@ -74,7 +76,7 @@ public static class UserAuthenticationEndpoints
                     Secure = true,
                     SameSite = SameSiteMode.Strict
                 });
-            });
+            }).AllowAnonymous();
 
         routes.MapGet(
             "api/user/dark-theme-status",
@@ -82,6 +84,6 @@ public static class UserAuthenticationEndpoints
             {
                 var darkTheme = context.Request.Cookies["DarkTheme"];
                 await context.Response.WriteAsJsonAsync(darkTheme == "True");
-            });
+            }).AllowAnonymous();
     }
 }

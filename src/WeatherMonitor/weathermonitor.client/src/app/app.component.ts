@@ -31,4 +31,5 @@ export class AppComponent {
 
   private authService = inject(AuthorizationService);
   isAuthenticated = this.authService.isAuthorized;
+  isAdminRole = this.authService.isAdminRole;
 }

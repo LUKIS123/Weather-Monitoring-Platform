@@ -1,0 +1,90 @@
+<div class="flex items-center justify-center h-full">
+  <mat-card class="h-full w-full">
+    <mat-card-header>
+      <mat-card-title class="stubborn-text">{{
+        "DeviceManagement.Register.Title" | translate
+      }}</mat-card-title>
+      <span class="absolute right-0 top-0">
+        <button mat-icon-button mat-dialog-close>
+          <mat-icon class="stubborn-icon">close</mat-icon>
+        </button>
+      </span>
+      <mat-card-subtitle
+        >{{ "DeviceManagement.Register.Subtitle" | translate }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <ng-scrollbar>
+      <mat-card-content
+        class="stubborn-text"
+        style="padding: 2rem 1rem 2rem 1rem"
+      >
+        <div
+          [formGroup]="formGroup"
+          class="flex flex-col w-full mx-auto max-w-screen-sm md:max-w-screen-xl"
+        >
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>{{
+              "DeviceManagement.Register.Username" | translate
+            }}</mat-label>
+            <input
+              formControlName="deviceUsername"
+              matInput
+              type="text"
+              required
+            />
+            <mat-error>{{
+              "DeviceManagement.Register.Username.Required" | translate
+            }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>{{
+              "DeviceManagement.Register.GoogleMapsPlusCode" | translate
+            }}</mat-label>
+            <input formControlName="googleMapsPlusCode" matInput type="text" />
+            <mat-error>{{
+              "DeviceManagement.Register.TextLimit" | translate
+            }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>{{
+              "DeviceManagement.Register.DeviceExtraInfo" | translate
+            }}</mat-label>
+            <textarea
+              formControlName="deviceExtraInfo"
+              matInput
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="2"
+              cdkAutosizeMaxRows="6"
+              type="text"
+            ></textarea>
+            <mat-error>{{
+              "DeviceManagement.Register.TextLimit" | translate
+            }}</mat-error>
+          </mat-form-field>
+
+          <div class="flex flex-row justify-between gap-2">
+            <button
+              mat-stroked-button
+              color="primary"
+              type="button"
+              (click)="cancelForm()"
+            >
+              {{ "DeviceManagement.Register.Return" | translate }}
+            </button>
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="submit()"
+              [disabled]="!isFormValid"
+            >
+              {{ "DeviceManagement.Register.Confirm" | translate }}
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </ng-scrollbar>
+  </mat-card>
+</div>

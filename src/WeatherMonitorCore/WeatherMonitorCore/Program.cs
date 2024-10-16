@@ -50,9 +50,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<ErrorHandlingMiddleware>();
-app.UseMiddleware<RequestTimeMiddleware>();
-
 app.UseCors("WeatherMonitorClient");
 
 app.UseHttpsRedirection();
@@ -61,6 +58,9 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseMiddleware<RequestTimeMiddleware>();
 
 app.RegisterUserEndpoints();
 app.RegisterDeviceManagementEndpoints();

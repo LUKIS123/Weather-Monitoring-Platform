@@ -2,6 +2,7 @@
 internal readonly record struct GetDeviceResponse(
     string GoogleMapsPlusCode,
     bool IsActive,
+    string? DeviceExtraInfo,
     string MqttUsername,
-    string MqttClientId
+    string MqttBrokerClientId
 );

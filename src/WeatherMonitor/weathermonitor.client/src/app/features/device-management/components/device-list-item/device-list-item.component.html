@@ -1,0 +1,82 @@
+<div
+  class="pb-2 px-2 outline outline-zinc-300 outline-1 shadow-lg my-1 relative"
+>
+  <span class="absolute top-0 right-0">
+    @if(deviceInfo().mqttBrokerClientId !== null){
+    <button
+      mat-icon-button
+      (click)="openDetails()"
+      [matTooltip]="'UserStories.Edit.Title' | translate"
+    >
+      <mat-icon>edit_note</mat-icon>
+    </button>
+    }
+  </span>
+  <div class="mat-headline-6">
+    {{ deviceInfo().mqttUsername }}
+  </div>
+
+  <div>
+    <div
+      class="grid grid-cols-2 md:grid-cols-4 justify-around mb-4 items-center"
+    >
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <span class="text-xs text-gray-400">
+            {{ "UserStories.CreatedBy" | translate }}:
+          </span>
+          <br />
+          <span> {{ deviceInfo().mqttBrokerClientId }}</span>
+        </p>
+      </div>
+
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <span class="text-xs text-gray-400">
+            {{ "UserStories.AssignedTo" | translate }}:
+          </span>
+          <br />
+          <span>
+            {{
+              deviceInfo().isActive
+                ? "UserStories.Active"
+                : "UserStories.Inactive"
+            }}
+          </span>
+        </p>
+      </div>
+
+      <p class="mat-body-1">
+        {{ "UserStories.Points" | translate }}:
+        <span class="font-bold">
+          {{ deviceInfo().googleMapsPlusCode }}
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <mat-expansion-panel
+    (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false"
+    #storyTasks
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ "UserStories.Tasks" | translate }}
+        @if (!panelOpenState) {<mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="expand_more"
+        ></mat-icon
+        >}@else{
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="expand_less"
+        ></mat-icon>
+        }
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <p>{{ deviceInfo().deviceExtraInfo }}.</p>
+  </mat-expansion-panel>
+</div>

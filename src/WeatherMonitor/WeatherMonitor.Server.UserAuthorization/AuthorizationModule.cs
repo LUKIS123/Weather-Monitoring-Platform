@@ -15,11 +15,13 @@ public static class AuthorizationModule
         services.AddAuthorizationBuilder()
             .AddPolicy("UserLoggedInPolicy", policy =>
             {
-                policy.Requirements.Add(new LoggedInRequirement([UserIdClaimType, UserNameClaimType]));
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new LoggedInRequirement([UserIdClaimType, UserNameClaimType]));
             })
             .AddPolicy("IsAdminPolicy", policy =>
             {
-                policy.Requirements.Add(new UserIsAdminRequirement([Role.Admin], UserIdClaimType));
+                policy.RequireAuthenticatedUser();
+                policy.AddRequirements(new UserIsAdminRequirement([Role.Admin], UserIdClaimType));
             });
 
         services.AddScoped<IAuthorizationHandler, UserLoggedInRequirementHandler>();

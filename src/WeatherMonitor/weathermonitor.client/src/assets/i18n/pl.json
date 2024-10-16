@@ -10,5 +10,22 @@
   "UserAccount.Unknown": "Nieznany",
   "UserAccount.Error": "Wystąpił błąd podczas pobierania danych użytkownika",
   "Navigation.Home": "Strona główna",
-  "Navigation.DarkTheme": "Ciemny motyw"
+  "Navigation.DarkTheme": "Ciemny motyw",
+  "Navigation.AdminDeviceManagement": "Zarządzanie urządzeniami",
+  "DeviceManagement.Title": "Zarządzanie urządzeniami",
+  "DeviceManagement.List.Error": "Wystąpił błąd podczas pobierania listy urządzeń",
+  "DeviceManagement.List.NoDevices": "Brak urządzeń do wyświetlenia",
+  "DeviceManagement.Register": "Zarejestruj nowe urządzenie",
+  "DeviceManagement.Register.Title": "Rejestracja nowego urządzenia",
+  "DeviceManagement.Register.Subtitle": "Wprowadź dane urządzenia",
+  "DeviceManagement.Register.Button": "Dodaj urządzenie",
+  "DeviceManagement.Register.Return": "Powrót",
+  "DeviceManagement.Register.Confirm": "Potwierdź",
+  "DeviceManagement.Register.Success": "Urządzenie zostało dodane",
+  "DeviceManagement.Register.Error": "Wystąpił błąd podczas dodawania urządzenia",
+  "DeviceManagement.Register.Username": "Nazwa urzadzenia",
+  "DeviceManagement.Register.Username.Required": "Nazwa urządzenia jest wymagana",
+  "DeviceManagement.Register.GoogleMapsPlusCode": "Kod Google Maps Plus",
+  "DeviceManagement.Register.DeviceExtraInfo": "Dodatkowe informacje",
+  "DeviceManagement.Register.TextLimit": "Osiągnięto limit znaków"
 }

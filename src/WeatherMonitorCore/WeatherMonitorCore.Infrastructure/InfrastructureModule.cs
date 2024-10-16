@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WeatherMonitorCore.DeviceManagement.Infrastructure;
 using WeatherMonitorCore.Infrastructure.Repositories;
 using WeatherMonitorCore.Interfaces;
 using WeatherMonitorCore.SharedKernel.Infrastructure;
@@ -20,6 +21,7 @@ public static class InfrastructureModule
 
         services.AddTransient<IUserSettingsRepository, SqlUserRepository>();
         services.AddTransient<IUserAuthorizationRepository, SqlUserRepository>();
+        services.AddTransient<IDeviceManagementRepository, DevicesRepository>();
 
         services.AddTransient(_ => TimeProvider.System);
         if (infrastructureType == InfrastructureType.AspNetCore)

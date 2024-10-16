@@ -6,6 +6,7 @@ public class PageResult<T>
     public int ItemsFrom { get; set; }
     public int ItemsTo { get; set; }
     public int TotalItemsCount { get; set; }
+    public int PageSize { get; set; }
 
     public PageResult(IEnumerable<T> items, int totalItemsCount, int pageSize, int pageNumber)
     {
@@ -14,5 +15,6 @@ public class PageResult<T>
         ItemsFrom = pageSize * (pageNumber - 1) + 1;
         ItemsTo = ItemsFrom + pageSize - 1;
         TotalPages = (int)Math.Ceiling(totalItemsCount / (double)pageSize);
+        PageSize = pageSize;
     }
 }

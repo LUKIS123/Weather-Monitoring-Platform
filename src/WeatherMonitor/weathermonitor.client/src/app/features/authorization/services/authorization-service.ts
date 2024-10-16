@@ -20,6 +20,7 @@ export class AuthorizationService {
   public userData = this.#userData.asReadonly();
   public isAuthorized = computed(() => this.#userData().isAuthorized);
   public userId = computed(() => this.#userData().userId);
+  public isAdminRole = computed(() => this.#userData().role === UserRole.Admin);
 
   private googleAuthService = inject(SocialAuthService);
   private httpClient = inject(HttpClient);
@@ -42,6 +43,7 @@ export class AuthorizationService {
               email: user.email,
               role: UserRole.User,
             });
+            this.getServerAuthorizationStatus();
             this.router.navigate(['/Home']);
           },
           error: () => {
