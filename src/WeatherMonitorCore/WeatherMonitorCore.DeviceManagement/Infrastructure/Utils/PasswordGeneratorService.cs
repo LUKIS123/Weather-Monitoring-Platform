@@ -18,7 +18,6 @@ internal class PasswordGeneratorService : IPasswordGeneratorService
             .IncludeLowercase()
             .IncludeUppercase()
             .IncludeNumeric()
-            .IncludeSpecial()
             .LengthRequired(PasswordLength);
     }
 

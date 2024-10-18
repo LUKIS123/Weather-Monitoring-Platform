@@ -12,7 +12,7 @@ export class DeviceRegistrationService {
 
   public registerNewDevice(
     mqttUsername: string,
-    googleMapsPlusCode: string,
+    googleMapsPlusCode: string | null,
     deviceExtraInfo: string | null
   ): Observable<CreateDeviceResponse> {
     return this.httpClient.post<CreateDeviceResponse>(this.baseApiUrl, {

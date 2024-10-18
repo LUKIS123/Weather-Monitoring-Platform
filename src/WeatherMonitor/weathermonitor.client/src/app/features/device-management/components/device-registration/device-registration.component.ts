@@ -45,7 +45,6 @@ export class DeviceRegistrationComponent {
       Validators.maxLength(100),
     ]),
     googleMapsPlusCode: new FormControl<string | null>(null, [
-      Validators.required,
       Validators.maxLength(50),
     ]),
     deviceExtraInfo: new FormControl<string | null>(null, [

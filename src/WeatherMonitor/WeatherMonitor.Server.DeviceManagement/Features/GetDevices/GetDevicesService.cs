@@ -11,7 +11,7 @@ internal interface IGetDevicesService
 internal class GetDevicesService : IGetDevicesService
 {
     private readonly IDeviceManagementRepository _repository;
-    private const int PageSize = 30;
+    private const int PageSize = 10;
 
     public GetDevicesService(IDeviceManagementRepository repository)
     {

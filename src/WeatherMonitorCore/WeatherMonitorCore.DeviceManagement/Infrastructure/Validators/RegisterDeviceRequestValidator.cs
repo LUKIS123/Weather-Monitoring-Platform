@@ -8,9 +8,14 @@ internal class RegisterDeviceRequestValidator : AbstractValidator<RegisterDevice
     public RegisterDeviceRequestValidator()
     {
         RuleFor(x => x.GoogleMapsPlusCode)
-            .NotEmpty()
-            .Must(BeAValidPlusCode)
-            .WithMessage("Plus Code is invalid.");
+            .Custom((value, context) =>
+            {
+                if (string.IsNullOrEmpty(value)) return;
+                if (!BeAValidPlusCode(value))
+                {
+                    context.AddFailure("Plus Code is invalid");
+                }
+            });
 
         RuleFor(x => x.DeviceExtraInfo)
             .Custom((value, context) =>

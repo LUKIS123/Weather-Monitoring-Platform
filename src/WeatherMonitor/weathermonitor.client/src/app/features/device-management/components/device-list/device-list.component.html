@@ -2,7 +2,7 @@
   @if (isLoading()) {
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   }
-  <mat-accordion>
+  <mat-accordion class="pb-14">
     @for (deviceInfo of devicesPageResult().items; track $index) {
     <app-device-list-item [deviceInfo]="deviceInfo" />
     } @if(devicesPageResult().items.length === 0) {

@@ -24,8 +24,20 @@
   "DeviceManagement.Register.Success": "Urządzenie zostało dodane",
   "DeviceManagement.Register.Error": "Wystąpił błąd podczas dodawania urządzenia",
   "DeviceManagement.Register.Username": "Nazwa urzadzenia",
-  "DeviceManagement.Register.Username.Required": "Nazwa urządzenia jest wymagana",
+  "DeviceManagement.Register.Username.Required": "Nazwa urządzenia musi zawierać między 3 a 100 znaków",
   "DeviceManagement.Register.GoogleMapsPlusCode": "Kod Google Maps Plus",
   "DeviceManagement.Register.DeviceExtraInfo": "Dodatkowe informacje",
-  "DeviceManagement.Register.TextLimit": "Osiągnięto limit znaków"
+  "DeviceManagement.Register.TextLimit": "Osiągnięto limit znaków",
+  "DeviceManagement.Credentials.Data": "Dane uwierzytelniające urządzenia",
+  "DeviceManagement.Credentials.Title": "Zarejestrowano urządzenie",
+  "DeviceManagement.Credentials.Common": "Informacje ogólne",
+  "DeviceManagement.Credentials.Active": "Aktywne",
+  "DeviceManagement.Credentials.InActive": "Nieaktywne",
+  "DeviceManagement.Credentials.Id": "Identyfikator urządzenia",
+  "DeviceManagement.Credentials.GooglePlusCode": "Kod Google Maps Plus",
+  "DeviceManagement.Credentials.IsActiveStatus": "Status aktywności",
+  "DeviceManagement.Credentials.Username": "Nazwa klienta urządzenia",
+  "DeviceManagement.Credentials.Password": "Hasło klienta urządzenia",
+  "DeviceManagement.Credentials.ClientId": "Identyfikator klienta",
+  "DeviceManagement.Credentials.Topic": "Nazwa kanału"
 }

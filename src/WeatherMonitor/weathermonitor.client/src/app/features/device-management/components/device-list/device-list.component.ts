@@ -66,7 +66,7 @@ export class DeviceListComponent implements OnInit {
 
   private loadDevices(pageNumber: number): void {
     this.devicesListDataService
-      .getDevices(pageNumber)
+      .getDevices(pageNumber + 1)
       .pipe(finalize(() => this.#isLoading.set(false)))
       .subscribe({
         next: (devices) => {

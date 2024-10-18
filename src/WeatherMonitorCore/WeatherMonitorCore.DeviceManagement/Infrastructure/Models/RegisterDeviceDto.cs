@@ -23,7 +23,7 @@ public readonly record struct CreateMqttTopicDto(
     );
 
 public readonly record struct CreateDeviceDto(
-    string GoogleMapsPlusCode,
+    string? GoogleMapsPlusCode,
     string? DeviceExtraInfo,
     bool IsActivate
     );
