@@ -44,7 +44,7 @@ export class DeviceListComponent implements OnInit {
   public devicesPageResult = this.#devicesPageResult.asReadonly();
   #isLoading = signal<boolean>(true);
   public readonly isLoading = this.#isLoading.asReadonly();
-  #currentPage = signal<number>(1);
+  #currentPage = signal<number>(0);
   public readonly currentPage = this.#currentPage.asReadonly();
 
   ngOnInit(): void {
@@ -55,7 +55,7 @@ export class DeviceListComponent implements OnInit {
   pageEvent!: PageEvent;
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
-    this.#currentPage.set(e.pageIndex + 1);
+    this.#currentPage.set(e.pageIndex);
     this.loadDevices(this.#currentPage());
   }
 

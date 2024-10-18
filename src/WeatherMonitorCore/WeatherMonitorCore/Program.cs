@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using WeatherMonitorCore.DeviceManagement;
 using WeatherMonitorCore.Infrastructure;
 using WeatherMonitorCore.Middleware;
@@ -39,6 +40,9 @@ builder.Services.AddCors(opt =>
         .SetIsOriginAllowed(_ => true)
         .AllowCredentials());
 });
+
+builder.Services.AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters();
 
 var app = builder.Build();
 

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Routing;
 using WeatherMonitor.Server.DeviceManagement.Features.GetDevices;
 using WeatherMonitor.Server.DeviceManagement.Features.RegisterDevice;
 using WeatherMonitor.Server.SharedKernel.HttpContextExtensions;
+using WeatherMonitorCore.Contract.DeviceManagementModule;
 
 namespace WeatherMonitor.Server.DeviceManagement;
 public static class DeviceManagementEndpoints
@@ -20,12 +21,13 @@ public static class DeviceManagementEndpoints
                 await context.HandleResult(result);
             }).RequireAuthorization("IsAdminPolicy");
 
-        routes.MapGet(
+        routes.MapPost(
             "/api/deviceManagement/register",
             async (HttpContext context, [FromServices] IRegisterDeviceService registerDeviceService,
-                [FromBody] RegisterDeviceResponse registerDeviceResponse) =>
+                [FromBody] RegisterDeviceRequest deviceRequest) =>
             {
-
+                var result = await registerDeviceService.Handle(deviceRequest);
+                await context.HandleResult(result);
             }).RequireAuthorization("IsAdminPolicy");
     }
 }

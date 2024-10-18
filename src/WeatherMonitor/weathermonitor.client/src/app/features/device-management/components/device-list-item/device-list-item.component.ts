@@ -21,7 +21,7 @@ export class DeviceListItemComponent {
   public openDetails(): void {
     this.#dialog.open(DeviceDetailsComponent, {
       data: {
-        getDeviceResponse: this.deviceInfo,
+        getDeviceResponse: this.deviceInfo(),
       },
       panelClass: 'popup',
       maxWidth: '100dvw',

@@ -1,4 +1,4 @@
-﻿namespace WeatherMonitorCore.Contract.DeviceManagementModule;
+﻿namespace WeatherMonitorCore.Contract.Shared;
 public enum ActionType
 {
     NoAccess = 0,

@@ -2,7 +2,6 @@
 using WeatherMonitorCore.DeviceManagement.Infrastructure;
 using WeatherMonitorCore.DeviceManagement.Infrastructure.Models;
 using WeatherMonitorCore.Interfaces;
-using WeatherMonitorCore.SharedKernel.Infrastructure.Models;
 
 namespace WeatherMonitorCore.Infrastructure.Repositories;
 internal class DevicesRepository : IDeviceManagementRepository
@@ -14,10 +13,10 @@ internal class DevicesRepository : IDeviceManagementRepository
         _dbConnectionFactory = dbConnectionFactory;
     }
 
-    public async Task<CreatedDeviceDto> RegisterDeviceAsync(RegisterDeviceDto createDevice)
+    public async Task<int> RegisterDeviceAsync(RegisterDeviceDto createDevice)
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
-        var result = await connection.QueryFirstOrDefaultAsync<BasicUserAuthorizationDto>(@$"
+        var createdId = await connection.ExecuteScalarAsync<int>(@"
 INSERT INTO [identity].[MqttClients]
 (
     Id,
@@ -28,11 +27,11 @@ INSERT INTO [identity].[MqttClients]
     )
 VALUES
     (
-    '',
-    '',
-    '',
-    '',
-    0
+    @mqttClientId,
+    @username,
+    @password,
+    @clientId,
+    @isSuperUser
 );
 
 INSERT INTO [identity].[MqttTopics]
@@ -42,8 +41,8 @@ INSERT INTO [identity].[MqttTopics]
     )
 VALUES
     (
-    '',
-    ''
+    @mqttTopicId,
+    @topic
 );
 
 INSERT INTO [identity].[MqttClientsAllowedTopics]
@@ -54,9 +53,9 @@ INSERT INTO [identity].[MqttClientsAllowedTopics]
     )
 VALUES
     (
-    '',
-    '',
-    ''
+    @allowedTopicId,
+    @mqttClientId,
+    @mqttTopicId
 );
 
 INSERT INTO [identity].[MqttClientsTopicsPermissions]
@@ -66,24 +65,42 @@ INSERT INTO [identity].[MqttClientsTopicsPermissions]
     )
 VALUES
     (
-    '',
-    2
+    @allowedTopicId,
+    @actionType
 );
 
 INSERT INTO [identity].[Devices]
     (
-    Id,
     GoogleMapsPlusCode,
+    DeviceExtraInfo,
+    IsActive,
     MqttClientId
     )
+OUTPUT
+    INSERTED.Id
 VALUES
     (
-    '',
-    '',
-    ''
+    @googleMapsPlusCode,
+    @deviceExtraInfo,
+    @isActivate,
+    @mqttClientId
 );
-", new { userId });
+", new
+        {
+            mqttClientId = createDevice.MqttClient.Id,
+            username = createDevice.MqttClient.Username,
+            password = createDevice.MqttClient.Password,
+            clientId = createDevice.MqttClient.ClientId,
+            isSuperUser = createDevice.MqttClient.IsSuperUser,
+            mqttTopicId = createDevice.MqttTopic.Id,
+            topic = createDevice.MqttTopic.Topic,
+            allowedTopicId = createDevice.MqttTopic.AllowedTopicId,
+            actionType = createDevice.MqttTopic.Permission,
+            googleMapsPlusCode = createDevice.CreateDevice.GoogleMapsPlusCode,
+            deviceExtraInfo = createDevice.CreateDevice.DeviceExtraInfo,
+            isActivate = createDevice.CreateDevice.IsActivate
+        });
 
-        return null;
+        return createdId;
     }
 }

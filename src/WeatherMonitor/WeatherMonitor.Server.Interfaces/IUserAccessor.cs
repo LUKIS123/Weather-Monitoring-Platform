@@ -8,4 +8,5 @@ public interface IUserAccessor
     string? PhotoUrl { get; }
     string? Email { get; }
     Role Role { get; }
+    string? Token { get; }
 }

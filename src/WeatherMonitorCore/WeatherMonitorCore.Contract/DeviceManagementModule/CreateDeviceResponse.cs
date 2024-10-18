@@ -1,5 +1,6 @@
-﻿namespace WeatherMonitor.Server.DeviceManagement.Features.RegisterDevice;
-internal readonly record struct RegisterDeviceResponse(
+﻿namespace WeatherMonitorCore.Contract.DeviceManagementModule;
+
+public readonly record struct CreateDeviceResponse(
     int Id,
     string GoogleMapsPlusCode,
     string? DeviceExtraInfo,

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { CreateDeviceResponse } from '../models/create-device-response';
 
 @Injectable({
   providedIn: 'root',
@@ -10,12 +11,12 @@ export class DeviceRegistrationService {
   private readonly baseApiUrl = '/api/deviceManagement/register';
 
   public registerNewDevice(
-    deviceUsername: string,
+    mqttUsername: string,
     googleMapsPlusCode: string,
-    deviceExtraInfo: string
-  ): Observable<void> {
-    return this.httpClient.post<void>(this.baseApiUrl, {
-      deviceUsername,
+    deviceExtraInfo: string | null
+  ): Observable<CreateDeviceResponse> {
+    return this.httpClient.post<CreateDeviceResponse>(this.baseApiUrl, {
+      mqttUsername,
       googleMapsPlusCode,
       deviceExtraInfo,
     });

@@ -14,6 +14,7 @@ internal class JwtUserAccessor : IUserAccessor
     private const string PhotoUrlClaim = "PhotoUrl";
     private const string EmailClaim = ClaimTypes.Email;
     private const string RoleClaim = ClaimTypes.Role;
+    private const string TokenCookie = "AuthToken";
 
     public JwtUserAccessor(IHttpContextAccessor httpContextAccessor)
     {
@@ -79,4 +80,6 @@ internal class JwtUserAccessor : IUserAccessor
             return Role.None;
         }
     }
+
+    public string? Token => _httpContextAccessor.HttpContext?.Request.Cookies[TokenCookie];
 }

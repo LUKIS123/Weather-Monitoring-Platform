@@ -14,8 +14,9 @@ export class DevicesListDataService {
   public getDevices(
     pageNumber: number
   ): Observable<PageResult<GetDeviceResponse>> {
+    const page = pageNumber == 0 ? 1 : pageNumber;
     return this.httpClient.get<PageResult<GetDeviceResponse>>(
-      `${this.baseApiUrl}?pageNumber=${pageNumber}`
+      `${this.baseApiUrl}?pageNumber=${page}`
     );
   }
 }

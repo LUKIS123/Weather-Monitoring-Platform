@@ -32,7 +32,11 @@ public static class UserAuthenticationEndpoints
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 }
+                context.Response.Headers.Append("Cross-Origin-Embedder-Policy", "unsafe-none");
                 context.Response.Headers.Append("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+                context.Response.Headers.Append(
+                    "Content-Security-Policy",
+                    "default-src 'self'; script-src 'self' https://accounts.google.com https://apis.google.com; connect-src 'self' https://accounts.google.com");
             }).AllowAnonymous();
 
         routes.MapPost(
