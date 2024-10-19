@@ -36,6 +36,13 @@ internal class CoreMicroserviceHttpClientWrapper : ICoreMicroserviceHttpClientWr
             token,
             httpClient => httpClient.PostAsJsonAsync(url, payload));
 
+    public async Task<(bool Success, string Message)> DeleteHttpRequest(
+        string url,
+        string? token = null) =>
+        await SendRequest(
+            token,
+            httpClient => httpClient.DeleteAsync(url));
+
     public async Task<(TResponse?, bool Success, string Message)> PatchHttpRequest<TRequest, TResponse>(
         string url,
         TRequest payload,

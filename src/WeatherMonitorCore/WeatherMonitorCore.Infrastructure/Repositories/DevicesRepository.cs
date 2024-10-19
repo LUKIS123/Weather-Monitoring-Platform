@@ -123,28 +123,34 @@ WHERE D.Id = @deviceId
 
         return credentials;
     }
+
+    public async Task RemoveDeviceAsync(int deviceId)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+        await connection.ExecuteAsync(@"
+DECLARE @TargetMqttId UNIQUEIDENTIFIER;
+SET @TargetMqttId = 
+    (SELECT MqttClientId
+    FROM [WeatherMonitor].[identity].[Devices]
+    WHERE Id=@deviceId);
+
+DELETE
+FROM [WeatherMonitor].[identity].[Devices]
+WHERE Id=@deviceId;
+
+DECLARE @TargetTopicId UNIQUEIDENTIFIER;
+SET @TargetTopicId = 
+    (SELECT TopicId
+    FROM [WeatherMonitor].[identity].[MqttClientsAllowedTopics]
+    WHERE ClientId=@TargetMqttId);
+
+DELETE
+FROM [WeatherMonitor].[identity].[MqttClients]
+WHERE Id=@TargetMqttId;
+
+DELETE
+FROM [WeatherMonitor].[identity].[MqttTopics]
+WHERE Id=@TargetTopicId;
+", new { deviceId });
+    }
 }
-
-
-
-// DECLARE @TargetMqttId UNIQUEIDENTIFIER;
-// SET @TargetMqttId = (SELECT MqttClientId
-// FROM [WeatherMonitor].[identity].[Devices]
-// WHERE Id=4);
-// 
-// DELETE
-// FROM [WeatherMonitor].[identity].[Devices]
-// WHERE Id=4;
-// 
-// DECLARE @TargetTopicId UNIQUEIDENTIFIER;
-// SET @TargetTopicId = (SELECT TopicId
-// FROM [WeatherMonitor].[identity].[MqttClientsAllowedTopics]
-// WHERE ClientId='');
-// 
-// DELETE
-// FROM [WeatherMonitor].[identity].[MqttClients]
-// WHERE Id=@TargetMqttId;
-// 
-// DELETE
-// FROM [WeatherMonitor].[identity].[MqttTopics]
-// WHERE Id=@TargetTopicId;

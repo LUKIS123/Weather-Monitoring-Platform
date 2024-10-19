@@ -1,0 +1,60 @@
+<div class="flex items-center justify-center h-full">
+  <mat-card class="h-full w-full">
+    <mat-card-header>
+      <mat-card-title class="stubborn-text">{{
+        "DeviceManagement.Details.DeleteTitle" | translate
+      }}</mat-card-title>
+      <span class="absolute right-0 top-0">
+        <button mat-icon-button mat-dialog-close>
+          <mat-icon class="stubborn-icon">close</mat-icon>
+        </button>
+      </span>
+    </mat-card-header>
+    <ng-scrollbar>
+      <mat-card-content
+        class="stubborn-text"
+        style="padding: 2rem 1rem 2rem 1rem"
+      >
+        <p class="mat-headline-5 text-center">
+          {{ "DeviceManagement.Details.DeleteDialog" | translate }}
+        </p>
+        <br />
+        <p class="mat-headline-6 text-center">
+          {{ "Shared.Device" | translate }}:
+          <span class="font-bold">{{ details()?.mqttUsername }}</span>
+        </p>
+        <br />
+
+        <div
+          class="flex flex-col w-full mx-auto max-w-screen-sm md:max-w-screen-xl"
+        >
+          <div class="flex flex-row justify-between gap-2">
+            <button
+              mat-stroked-button
+              color="primary"
+              type="button"
+              (click)="cancelRemove()"
+            >
+              {{ "DeviceManagement.Register.Return" | translate }}
+            </button>
+            <button
+              mat-raised-button
+              color="warn"
+              type="button"
+              (click)="removeDevice()"
+              [disabled]="disable()"
+            >
+              {{ "DeviceManagement.Register.Confirm" | translate }}
+            </button>
+          </div>
+        </div>
+
+        @if (isLoading()) {
+        <p class="w-full flex flex-row justify-center items-center">
+          <mat-spinner></mat-spinner>
+        </p>
+        }
+      </mat-card-content>
+    </ng-scrollbar>
+  </mat-card>
+</div>

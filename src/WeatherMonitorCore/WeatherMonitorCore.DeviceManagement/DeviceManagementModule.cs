@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using WeatherMonitorCore.Contract.DeviceManagementModule;
 using WeatherMonitorCore.DeviceManagement.Features.GetDeviceMqttCredentials;
 using WeatherMonitorCore.DeviceManagement.Features.RegisterDevice;
+using WeatherMonitorCore.DeviceManagement.Features.RemoveDevice;
 using WeatherMonitorCore.DeviceManagement.Infrastructure.Utils;
 using WeatherMonitorCore.DeviceManagement.Infrastructure.Validators;
 
@@ -14,6 +15,7 @@ public static class DeviceManagementModule
     {
         services.AddTransient<IRegisterDeviceService, RegisterDeviceService>();
         services.AddTransient<IGetMqttCredentialsService, GetMqttCredentialsService>();
+        services.AddTransient<IRemoveDeviceService, RemoveDeviceService>();
 
         services.AddTransient<IPasswordGeneratorService, PasswordGeneratorService>();
         services.AddTransient<IDeviceCredentialsGenerator, DeviceCredentialsGenerator>();

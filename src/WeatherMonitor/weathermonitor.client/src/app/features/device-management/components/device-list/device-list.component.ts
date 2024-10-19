@@ -79,4 +79,10 @@ export class DeviceListComponent implements OnInit {
         },
       });
   }
+
+  handleChange($event: boolean) {
+    if ($event === true) {
+      this.refresh();
+    }
+  }
 }

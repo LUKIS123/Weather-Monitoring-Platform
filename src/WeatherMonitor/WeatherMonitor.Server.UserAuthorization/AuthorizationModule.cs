@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 using WeatherMonitor.Server.UserAuthorization.Features;
 using WeatherMonitorCore.Contract.Shared;
 
@@ -9,6 +10,7 @@ public static class AuthorizationModule
 {
     private const string UserIdClaimType = "UserId";
     private const string UserNameClaimType = "UserName";
+    private const string RoleClaimType = ClaimTypes.Role;
 
     public static IServiceCollection AddUserAuthorizationModule(this IServiceCollection services)
     {
@@ -21,7 +23,7 @@ public static class AuthorizationModule
             .AddPolicy("IsAdminPolicy", policy =>
             {
                 policy.RequireAuthenticatedUser();
-                policy.AddRequirements(new UserIsAdminRequirement([Role.Admin], UserIdClaimType));
+                policy.AddRequirements(new UserIsAdminRequirement([Role.Admin], UserIdClaimType, RoleClaimType));
             });
 
         services.AddScoped<IAuthorizationHandler, UserLoggedInRequirementHandler>();

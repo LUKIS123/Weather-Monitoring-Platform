@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Routing;
 using WeatherMonitorCore.Contract.DeviceManagementModule;
 using WeatherMonitorCore.DeviceManagement.Features.GetDeviceMqttCredentials;
 using WeatherMonitorCore.DeviceManagement.Features.RegisterDevice;
+using WeatherMonitorCore.DeviceManagement.Features.RemoveDevice;
 using WeatherMonitorCore.SharedKernel;
 
 namespace WeatherMonitorCore.DeviceManagement;
@@ -27,6 +28,15 @@ public static class DeviceManagementEndpoints
                 [FromQuery] int deviceId) =>
             {
                 var result = await mqttCredentialsService.Handle(deviceId);
+                await context.HandleResult(result);
+            }).RequireAuthorization("IsAdminPolicy");
+
+        routes.MapDelete(
+            "/api/deviceManagement/remove",
+            async (HttpContext context, [FromServices] IRemoveDeviceService removeDeviceService,
+                [FromQuery] int deviceId) =>
+            {
+                var result = await removeDeviceService.Handle(deviceId);
                 await context.HandleResult(result);
             }).RequireAuthorization("IsAdminPolicy");
     }

@@ -8,10 +8,19 @@
       (click)="openDetails()"
       [matTooltip]="'DeviceManagement.Details.Title' | translate"
     >
-      <mat-icon>edit_note</mat-icon>
+      <mat-icon>settings</mat-icon>
+    </button>
+
+    <button
+      mat-icon-button
+      (click)="OpenDelete()"
+      [matTooltip]="'DeviceManagement.Details.Delete' | translate"
+    >
+      <mat-icon>delete_forever</mat-icon>
     </button>
     }
   </span>
+
   <div>
     <span class="font-bold">{{
       "DeviceManagement.DeviceName" | translate

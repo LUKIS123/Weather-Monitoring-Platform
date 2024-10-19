@@ -4,7 +4,10 @@
   }
   <mat-accordion class="pb-14">
     @for (deviceInfo of devicesPageResult().items; track $index) {
-    <app-device-list-item [deviceInfo]="deviceInfo" />
+    <app-device-list-item
+      [deviceInfo]="deviceInfo"
+      (itemDelete)="handleChange($event)"
+    />
     } @if(devicesPageResult().items.length === 0) {
     <div class="flex justify-center items-center w-full h-[25vh]">
       <p class="text-gray-500">

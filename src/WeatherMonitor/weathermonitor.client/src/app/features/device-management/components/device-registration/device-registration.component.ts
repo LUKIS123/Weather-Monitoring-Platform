@@ -78,7 +78,7 @@ export class DeviceRegistrationComponent {
               registered: this.#registrationSuccess(),
               createdResponse: this.#createResponse(),
             } as DeviceRegistrationResult);
-          }, 2500);
+          }, 2000);
         },
         error: () => {
           this.#registrationSuccess.set(false);

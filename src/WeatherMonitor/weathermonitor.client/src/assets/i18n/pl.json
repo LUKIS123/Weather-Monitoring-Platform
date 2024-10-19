@@ -1,6 +1,9 @@
 {
   "Shared.WeatherStation": "Stacja pogodowa",
   "Shared.Temperature": "Temperatura",
+  "Shared.Humidity": "Wilgotność",
+  "Shared.Pressure": "Ciśnienie",
+  "Shared.Device": "Urządzenie",
   "UserAccount.Logout": "Wyloguj",
   "UserAccount.Settings": "Profil",
   "UserAccount.Informations": "Informacje:",
@@ -48,5 +51,10 @@
   "DeviceManagement.Credentials.ClientId": "Identyfikator klienta",
   "DeviceManagement.Credentials.Topic": "Nazwa kanału",
   "DeviceManagement.Details.Title": "Szczegóły urządzenia",
-  "DeviceManagement.Details.Error": "Wystąpił błąd podczas pobierania szczegółów urządzenia"
+  "DeviceManagement.Details.Error": "Wystąpił błąd podczas pobierania szczegółów urządzenia",
+  "DeviceManagement.Details.Delete": "Usuń urządzenie",
+  "DeviceManagement.Details.DeleteTitle": "Usuwanie urządzenia",
+  "DeviceManagement.Details.DeleteDialog": "Czy na pewno chcesz usunąć to urządzenie?",
+  "DeviceManagement.Details.Remove.Success": "Urządzenie zostało usunięte",
+  "DeviceManagement.Details.Remove.Error": "Wystąpił błąd podczas usuwania urządzenia"
 }
