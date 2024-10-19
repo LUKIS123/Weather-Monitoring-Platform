@@ -1,43 +1,54 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
-using WeatherMonitor.Server.SharedKernel.Repositories;
+using WeatherMonitorCore.Contract.Shared;
 
 namespace WeatherMonitor.Server.UserAuthorization.Features;
 internal class UserIsAdminRequirementHandler : AuthorizationHandler<UserIsAdminRequirement>
 {
     private readonly ILogger<UserIsAdminRequirement> _logger;
-    private readonly IUserAuthorizationRepository _userAuthorizationRepository;
 
-    public UserIsAdminRequirementHandler(ILogger<UserIsAdminRequirement> logger, IUserAuthorizationRepository userAuthorizationRepository)
+    public UserIsAdminRequirementHandler(ILogger<UserIsAdminRequirement> logger)
     {
         _logger = logger;
-        _userAuthorizationRepository = userAuthorizationRepository;
     }
 
-    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, UserIsAdminRequirement requirement)
+    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, UserIsAdminRequirement requirement)
     {
         var userIdClaim = context.User.Claims.FirstOrDefault(x => x.Type == requirement.UserIdClaimTypeName);
-
         if (string.IsNullOrEmpty(userIdClaim?.Value))
         {
             context.Fail();
-            return;
+            return Task.CompletedTask;
         }
 
-        var authorizationInfo = await _userAuthorizationRepository.GetUserAuthorizationInfoAsync(userIdClaim.Value);
-        if (authorizationInfo is null)
+        var roleClaim = context.User.Claims.FirstOrDefault(x => x.Type == requirement.RoleClaimTypeName);
+        if (string.IsNullOrEmpty(roleClaim?.Value))
         {
             context.Fail();
-            return;
+            return Task.CompletedTask;
         }
 
-        if (!requirement.AdminRoleTypes.Any(role => role == authorizationInfo.Role))
+        if (!int.TryParse(roleClaim.Value, out var roleTypeValue))
         {
             context.Fail();
-            return;
+            return Task.CompletedTask;
+        }
+
+        if (!Enum.IsDefined(typeof(Role), roleTypeValue))
+        {
+            context.Fail();
+            return Task.CompletedTask;
+        }
+
+        var roleEnumResult = (Role)roleTypeValue;
+        if (!requirement.AdminRoleTypes.Any(role => role == roleEnumResult))
+        {
+            context.Fail();
+            return Task.CompletedTask;
         }
 
         _logger.LogInformation("User: {UserId} with admin privileges invoking action", userIdClaim);
         context.Succeed(requirement);
+        return Task.CompletedTask;
     }
 }

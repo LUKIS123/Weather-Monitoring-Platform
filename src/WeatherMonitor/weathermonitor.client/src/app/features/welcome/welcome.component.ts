@@ -8,11 +8,13 @@ import { LoginComponent } from '../../shared/components/login/login.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SampleComponent } from '../../sample/app.component';
 import { ThemeSwitchComponent } from '../menu/components/theme-switch/theme-switch.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-welcome',
   standalone: true,
   imports: [
+    CommonModule,
     RouterOutlet,
     RouterModule,
     MenuComponent,

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WeatherMonitor.Server.DeviceManagement.Infrastructure;
 using WeatherMonitor.Server.Infrastructure.Repositories;
 using WeatherMonitor.Server.Interfaces;
 using WeatherMonitor.Server.SharedKernel.Repositories;
@@ -15,8 +16,11 @@ public static class InfrastructureModule
                                   ?? throw new ArgumentNullException(nameof(configuration), DbConnection);
         services.AddTransient<IDbConnectionFactory>(_ => new SqlDbConnectionFactory(sqlConnectionString));
 
+        // Repositories
         services.AddTransient<IUserAuthorizationRepository, SqlUserRepository>();
+        services.AddTransient<IDeviceManagementRepository, DevicesRepository>();
 
+        // Microservice Http Client
         services.AddTransient<ICoreMicroserviceHttpClientWrapper, CoreMicroserviceHttpClientWrapper>();
 
         services.AddTransient(_ => TimeProvider.System);

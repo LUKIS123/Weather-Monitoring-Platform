@@ -14,11 +14,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\WeatherMonitorCore.DeviceManagement\WeatherMonitorCore.DeviceManagement.csproj" />
 		<ProjectReference Include="..\WeatherMonitorCore.Infrastructure\WeatherMonitorCore.Infrastructure.csproj" />
 		<ProjectReference Include="..\WeatherMonitorCore.UserAuthentication\WeatherMonitorCore.UserAuthentication.csproj" />
 		<ProjectReference Include="..\WeatherMonitorCore.UserAuthorization\WeatherMonitorCore.UserAuthorization.csproj" />

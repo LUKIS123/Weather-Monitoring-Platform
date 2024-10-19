@@ -7,11 +7,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\WeatherMonitorCore.Contract\WeatherMonitorCore.Contract.csproj" />
+		<ProjectReference Include="..\WeatherMonitorCore.Contract\WeatherMonitorCore.Contract.csproj" />
 	</ItemGroup>
 
 </Project>

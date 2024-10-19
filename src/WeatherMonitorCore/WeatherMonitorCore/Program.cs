@@ -1,3 +1,5 @@
+using FluentValidation.AspNetCore;
+using WeatherMonitorCore.DeviceManagement;
 using WeatherMonitorCore.Infrastructure;
 using WeatherMonitorCore.Middleware;
 using WeatherMonitorCore.SharedKernel;
@@ -16,6 +18,7 @@ builder.Services.AddSharedKernelModule();
 builder.Services.AddInfrastructureModule(builder.Configuration);
 builder.Services.AddUserModule(builder.Configuration);
 builder.Services.AddUserAuthorizationModule();
+builder.Services.AddDeviceManagementModule();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -38,6 +41,9 @@ builder.Services.AddCors(opt =>
         .AllowCredentials());
 });
 
+builder.Services.AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters();
+
 var app = builder.Build();
 
 
@@ -48,9 +54,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<ErrorHandlingMiddleware>();
-app.UseMiddleware<RequestTimeMiddleware>();
-
 app.UseCors("WeatherMonitorClient");
 
 app.UseHttpsRedirection();
@@ -60,6 +63,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseMiddleware<RequestTimeMiddleware>();
+
 app.RegisterUserEndpoints();
+app.RegisterDeviceManagementEndpoints();
 
 app.Run();

@@ -1,0 +1,19 @@
+<div class="flex flex-col items-center justify-center px-2">
+  <div class="mat-headline-5 text-center">
+    {{ "DeviceManagement.Title" | translate }}:
+  </div>
+</div>
+<div class="flex flex-col items-center justify-between pb-4">
+  <div class="self-end px-2">
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="openDeviceRegistration()"
+      [matTooltip]="'DeviceManagement.Register' | translate"
+    >
+      <mat-icon>add_circle</mat-icon>
+      <span>{{ "DeviceManagement.Register.Button" | translate }}</span>
+    </button>
+  </div>
+</div>
+<app-device-list />

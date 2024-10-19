@@ -1,0 +1,33 @@
+<div class="w-full flex flex-col overflow-auto px-2 space-y-2 mb-1">
+  @if (isLoading()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+  <mat-accordion class="pb-14">
+    @for (deviceInfo of devicesPageResult().items; track $index) {
+    <app-device-list-item
+      [deviceInfo]="deviceInfo"
+      (itemDelete)="handleChange($event)"
+    />
+    } @if(devicesPageResult().items.length === 0) {
+    <div class="flex justify-center items-center w-full h-[25vh]">
+      <p class="text-gray-500">
+        {{ "DeviceManagement.List.NoDevices" | translate }}
+      </p>
+    </div>
+    }
+  </mat-accordion>
+  <mat-paginator
+    #paginator
+    class="fixed bottom-0 left-0 w-full"
+    (page)="handlePageEvent($event)"
+    [length]="devicesPageResult().totalItemsCount"
+    [pageSize]="devicesPageResult().pageSize"
+    [disabled]="false"
+    [showFirstLastButtons]="false"
+    [pageSizeOptions]="[]"
+    [hidePageSize]="true"
+    [pageIndex]="currentPage()"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</div>

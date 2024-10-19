@@ -1,0 +1,112 @@
+<div
+  class="pb-2 px-2 outline outline-zinc-300 outline-1 shadow-lg my-1 relative"
+>
+  <span class="absolute top-0 right-0">
+    @if(deviceInfo().mqttUsername !== null && deviceInfo().mqttUsername !== ''){
+    <button
+      mat-icon-button
+      (click)="openDetails()"
+      [matTooltip]="'DeviceManagement.Details.Title' | translate"
+    >
+      <mat-icon>settings</mat-icon>
+    </button>
+
+    <button
+      mat-icon-button
+      (click)="OpenDelete()"
+      [matTooltip]="'DeviceManagement.Details.Delete' | translate"
+    >
+      <mat-icon>delete_forever</mat-icon>
+    </button>
+    }
+  </span>
+
+  <div>
+    <span class="font-bold">{{
+      "DeviceManagement.DeviceName" | translate
+    }}</span>
+    <span class="mat-headline-6 font-bold">{{
+      deviceInfo().mqttUsername.toUpperCase()
+    }}</span>
+  </div>
+
+  <div>
+    <div
+      class="grid grid-cols-2 md:grid-cols-3 justify-around mb-4 items-center space-x-2"
+    >
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <span class="text-xs text-gray-400">
+            {{ "DeviceManagement.DeviceClientId" | translate }}:
+          </span>
+          <br />
+          <span> {{ deviceInfo().mqttBrokerClientId }}</span>
+        </p>
+      </div>
+
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <span class="text-xs text-gray-400">
+            {{ "DeviceManagement.IsActiveStatus" | translate }}:
+          </span>
+          <br />
+          <span>
+            {{
+              deviceInfo().isActive
+                ? ("DeviceManagement.Credentials.Active" | translate)
+                : ("DeviceManagement.Credentials.InActive" | translate)
+            }}
+          </span>
+        </p>
+      </div>
+
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <span class="text-xs text-gray-400">
+            {{ "DeviceManagement.GoogleMapsCode" | translate }}:
+          </span>
+          <br />
+          @if(deviceInfo().googleMapsPlusCode !== null &&
+          deviceInfo().googleMapsPlusCode !== ''){
+          <span class="font-bold">
+            {{ deviceInfo().googleMapsPlusCode }}
+          </span>
+          }@else {
+          <span>
+            {{ "DeviceManagement.NoGoogleMapsCode" | translate }}
+          </span>
+          }
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <mat-expansion-panel
+    (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false"
+    #storyTasks
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ "DeviceManagement.Description" | translate }}
+        @if (!panelOpenState) {<mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="expand_more"
+        ></mat-icon
+        >}@else{
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="expand_less"
+        ></mat-icon>
+        }
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    @if(deviceInfo().deviceExtraInfo !== null){
+    <p>{{ deviceInfo().deviceExtraInfo }}</p>
+    }@else {
+    <p>{{ "DeviceManagement.NoDescription" | translate }}</p>
+    }
+  </mat-expansion-panel>
+</div>

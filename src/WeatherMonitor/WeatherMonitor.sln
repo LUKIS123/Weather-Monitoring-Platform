@@ -7,17 +7,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitor.Server", "We
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "weathermonitor.client", "weathermonitor.client\weathermonitor.client.esproj", "{52F2306B-CD66-4DC2-AD84-C73348DD2167}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitor.Server.UserAuthentication", "WeatherMonitor.Server.UserAuthentication\WeatherMonitor.Server.UserAuthentication.csproj", "{262F372A-733B-4BED-AA48-854EC20F74D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitor.Server.UserAuthentication", "WeatherMonitor.Server.UserAuthentication\WeatherMonitor.Server.UserAuthentication.csproj", "{262F372A-733B-4BED-AA48-854EC20F74D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitor.Server.UserAuthorization", "WeatherMonitor.Server.UserAuthorization\WeatherMonitor.Server.UserAuthorization.csproj", "{B522A0F8-2F56-4C95-A56C-5ADA1CA4C7F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitor.Server.UserAuthorization", "WeatherMonitor.Server.UserAuthorization\WeatherMonitor.Server.UserAuthorization.csproj", "{B522A0F8-2F56-4C95-A56C-5ADA1CA4C7F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitor.Server.Infrastructure", "WeatherMonitor.Server.Infrastructure\WeatherMonitor.Server.Infrastructure.csproj", "{E07D7630-D7AF-46A1-9816-8141C1CF23B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitor.Server.Infrastructure", "WeatherMonitor.Server.Infrastructure\WeatherMonitor.Server.Infrastructure.csproj", "{E07D7630-D7AF-46A1-9816-8141C1CF23B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitor.Server.SharedKernel", "WeatherMonitor.Server.SharedKernel\WeatherMonitor.Server.SharedKernel.csproj", "{D2910CA3-CA4B-4F30-81E8-D9AADA0DF855}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitor.Server.SharedKernel", "WeatherMonitor.Server.SharedKernel\WeatherMonitor.Server.SharedKernel.csproj", "{D2910CA3-CA4B-4F30-81E8-D9AADA0DF855}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitor.Server.Interfaces", "WeatherMonitor.Server.Interfaces\WeatherMonitor.Server.Interfaces.csproj", "{334F1F7E-6404-4B57-B7AF-F7A6F5EDDC4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitor.Server.Interfaces", "WeatherMonitor.Server.Interfaces\WeatherMonitor.Server.Interfaces.csproj", "{334F1F7E-6404-4B57-B7AF-F7A6F5EDDC4F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitorCore.Contract", "..\WeatherMonitorCore\WeatherMonitorCore.Contract\WeatherMonitorCore.Contract.csproj", "{C7718636-1BB3-4004-A01A-4A0EF04F10FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitor.Server.DeviceManagement", "WeatherMonitor.Server.DeviceManagement\WeatherMonitor.Server.DeviceManagement.csproj", "{D8EC1408-30FF-4ED1-B36E-5856BECC3F23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{C7718636-1BB3-4004-A01A-4A0EF04F10FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7718636-1BB3-4004-A01A-4A0EF04F10FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7718636-1BB3-4004-A01A-4A0EF04F10FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8EC1408-30FF-4ED1-B36E-5856BECC3F23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8EC1408-30FF-4ED1-B36E-5856BECC3F23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8EC1408-30FF-4ED1-B36E-5856BECC3F23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8EC1408-30FF-4ED1-B36E-5856BECC3F23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

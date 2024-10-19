@@ -14,6 +14,7 @@ public static class AuthorizationModule
         services.AddAuthorizationBuilder()
             .AddPolicy("IsAdminPolicy", policy =>
             {
+                policy.RequireAuthenticatedUser();
                 policy.Requirements.Add(new UserIsAdminRequirement([Role.Admin], UserIdClaimType));
             });
 

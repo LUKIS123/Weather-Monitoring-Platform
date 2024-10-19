@@ -8,5 +8,7 @@ public interface ICoreMicroserviceHttpClientWrapper
 
     Task<(bool Success, string Message)> PostHttpRequest<TRequest>(string url, TRequest payload, string? token = null);
 
+    Task<(bool Success, string Message)> DeleteHttpRequest(string url, string? token = null);
+
     Task<(TResponse?, bool Success, string Message)> PatchHttpRequest<TRequest, TResponse>(string url, TRequest payload, string? token = null);
 }
