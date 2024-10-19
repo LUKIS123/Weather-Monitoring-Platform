@@ -2,7 +2,7 @@
 
 public readonly record struct GetDeviceInfoDto(
     int Id,
-    string GoogleMapsPlusCode,
+    string? GoogleMapsPlusCode,
     bool IsActive,
     string? DeviceExtraInfo,
     Guid MqttClientId,

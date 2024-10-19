@@ -1,5 +1,6 @@
 export interface GetDeviceResponse {
-  googleMapsPlusCode: string;
+  id: number;
+  googleMapsPlusCode: string | null;
   isActive: boolean;
   deviceExtraInfo: string | null;
   mqttUsername: string;

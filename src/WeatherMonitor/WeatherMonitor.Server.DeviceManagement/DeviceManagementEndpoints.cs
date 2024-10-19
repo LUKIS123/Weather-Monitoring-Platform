@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using WeatherMonitor.Server.DeviceManagement.Features.GetCredentials;
 using WeatherMonitor.Server.DeviceManagement.Features.GetDevices;
 using WeatherMonitor.Server.DeviceManagement.Features.RegisterDevice;
 using WeatherMonitor.Server.SharedKernel.HttpContextExtensions;
@@ -27,6 +28,15 @@ public static class DeviceManagementEndpoints
                 [FromBody] RegisterDeviceRequest deviceRequest) =>
             {
                 var result = await registerDeviceService.Handle(deviceRequest);
+                await context.HandleResult(result);
+            }).RequireAuthorization("IsAdminPolicy");
+
+        routes.MapGet(
+            "/api/deviceManagement/credentials",
+            async (HttpContext context, [FromServices] IGetMqttCredentialsService credentialsService,
+                [FromQuery] int deviceId) =>
+            {
+                var result = await credentialsService.Handle(deviceId);
                 await context.HandleResult(result);
             }).RequireAuthorization("IsAdminPolicy");
     }

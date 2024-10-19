@@ -103,4 +103,24 @@ VALUES
 
         return createdId;
     }
+
+    public async Task<MqttCredentialsDto> GetDeviceByIdAsync(int deviceId)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+        var credentials = await connection.QueryFirstOrDefaultAsync<MqttCredentialsDto>(@$"
+SELECT TOP 1
+    D.Id AS {nameof(MqttCredentialsDto.Id)},
+    MC.Username AS {nameof(MqttCredentialsDto.Username)},
+    MC.Password AS {nameof(MqttCredentialsDto.Password)},
+    MC.ClientId AS {nameof(MqttCredentialsDto.ClientId)},
+    T.Topic AS {nameof(MqttCredentialsDto.Topic)}
+FROM [identity].[Devices] D
+    INNER JOIN [identity].[MqttClients] MC ON D.MqttClientId = MC.Id
+    INNER JOIN [identity].[MqttClientsAllowedTopics] MAT ON MC.Id = MAT.ClientId
+    INNER JOIN [identity].[MqttTopics] T ON MAT.TopicId = T.Id
+WHERE D.Id = @deviceId
+", new { });
+
+        return credentials;
+    }
 }

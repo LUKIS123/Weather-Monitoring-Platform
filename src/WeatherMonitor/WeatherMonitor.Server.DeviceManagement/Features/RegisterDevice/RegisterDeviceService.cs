@@ -43,7 +43,6 @@ internal class RegisterDeviceService : IRegisterDeviceService
             response.Username,
             response.Password,
             response.ClientId,
-            response.Topic
-            );
+            response.Topic);
     }
 }

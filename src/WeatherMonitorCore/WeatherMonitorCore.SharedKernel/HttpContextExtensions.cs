@@ -17,6 +17,7 @@ public static class HttpContextExtensions
             BadHttpRequestException => StatusCodes.Status400BadRequest,
             MicroserviceApiException => StatusCodes.Status400BadRequest,
             UnauthorizedException => StatusCodes.Status401Unauthorized,
+            NotFoundException => StatusCodes.Status404NotFound,
             _ => StatusCodes.Status500InternalServerError
         };
 

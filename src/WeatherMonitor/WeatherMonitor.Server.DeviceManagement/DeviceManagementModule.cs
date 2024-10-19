@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using WeatherMonitor.Server.DeviceManagement.Features.GetCredentials;
 using WeatherMonitor.Server.DeviceManagement.Features.GetDevices;
 using WeatherMonitor.Server.DeviceManagement.Features.RegisterDevice;
 
@@ -10,6 +11,7 @@ public static class DeviceManagementModule
     {
         serviceCollection.AddTransient<IGetDevicesService, GetDevicesService>();
         serviceCollection.AddTransient<IRegisterDeviceService, RegisterDeviceService>();
+        serviceCollection.AddTransient<IGetMqttCredentialsService, GetMqttCredentialsService>();
 
         return serviceCollection;
     }

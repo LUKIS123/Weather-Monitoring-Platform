@@ -1,6 +1,7 @@
 ﻿namespace WeatherMonitor.Server.DeviceManagement.Features.GetDevices;
 internal readonly record struct GetDeviceResponse(
-    string GoogleMapsPlusCode,
+    int Id,
+    string? GoogleMapsPlusCode,
     bool IsActive,
     string? DeviceExtraInfo,
     string MqttUsername,

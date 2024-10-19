@@ -22,6 +22,7 @@ internal class GetDevicesService : IGetDevicesService
     {
         var (deviceInfos, itemCount) = await _repository.GetDevicesAsync(PageSize, pageNumber);
         var devices = deviceInfos.Select(d => new GetDeviceResponse(
+            d.Id,
             d.GoogleMapsPlusCode,
             d.IsActive,
             d.DeviceExtraInfo,
