@@ -16,6 +16,13 @@
   "DeviceManagement.List.Error": "Wystąpił błąd podczas pobierania listy urządzeń",
   "DeviceManagement.List.NoDevices": "Brak urządzeń do wyświetlenia",
   "DeviceManagement.Register": "Zarejestruj nowe urządzenie",
+  "DeviceManagement.DeviceName": "Urządzenie: ",
+  "DeviceManagement.Description": "Opis urządzenia",
+  "DeviceManagement.NoDescription": "Brak opisu",
+  "DeviceManagement.DeviceClientId": "Identyfikator klienta urządzenia",
+  "DeviceManagement.GoogleMapsCode": "Kod lokalizacji Google Maps",
+  "DeviceManagement.NoGoogleMapsCode": "Brak kodu Google Maps",
+  "DeviceManagement.IsActiveStatus": "Status aktywności",
   "DeviceManagement.Register.Title": "Rejestracja nowego urządzenia",
   "DeviceManagement.Register.Subtitle": "Wprowadź dane urządzenia",
   "DeviceManagement.Register.Button": "Dodaj urządzenie",
@@ -39,5 +46,7 @@
   "DeviceManagement.Credentials.Username": "Nazwa klienta urządzenia",
   "DeviceManagement.Credentials.Password": "Hasło klienta urządzenia",
   "DeviceManagement.Credentials.ClientId": "Identyfikator klienta",
-  "DeviceManagement.Credentials.Topic": "Nazwa kanału"
+  "DeviceManagement.Credentials.Topic": "Nazwa kanału",
+  "DeviceManagement.Details.Title": "Szczegóły urządzenia",
+  "DeviceManagement.Details.Error": "Wystąpił błąd podczas pobierania szczegółów urządzenia"
 }

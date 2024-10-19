@@ -119,8 +119,32 @@ FROM [identity].[Devices] D
     INNER JOIN [identity].[MqttClientsAllowedTopics] MAT ON MC.Id = MAT.ClientId
     INNER JOIN [identity].[MqttTopics] T ON MAT.TopicId = T.Id
 WHERE D.Id = @deviceId
-", new { });
+", new { deviceId });
 
         return credentials;
     }
 }
+
+
+
+// DECLARE @TargetMqttId UNIQUEIDENTIFIER;
+// SET @TargetMqttId = (SELECT MqttClientId
+// FROM [WeatherMonitor].[identity].[Devices]
+// WHERE Id=4);
+// 
+// DELETE
+// FROM [WeatherMonitor].[identity].[Devices]
+// WHERE Id=4;
+// 
+// DECLARE @TargetTopicId UNIQUEIDENTIFIER;
+// SET @TargetTopicId = (SELECT TopicId
+// FROM [WeatherMonitor].[identity].[MqttClientsAllowedTopics]
+// WHERE ClientId='');
+// 
+// DELETE
+// FROM [WeatherMonitor].[identity].[MqttClients]
+// WHERE Id=@TargetMqttId;
+// 
+// DELETE
+// FROM [WeatherMonitor].[identity].[MqttTopics]
+// WHERE Id=@TargetTopicId;

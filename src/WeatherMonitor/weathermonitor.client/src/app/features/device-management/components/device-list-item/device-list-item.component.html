@@ -2,28 +2,33 @@
   class="pb-2 px-2 outline outline-zinc-300 outline-1 shadow-lg my-1 relative"
 >
   <span class="absolute top-0 right-0">
-    @if(deviceInfo().mqttBrokerClientId !== null){
+    @if(deviceInfo().mqttUsername !== null && deviceInfo().mqttUsername !== ''){
     <button
       mat-icon-button
       (click)="openDetails()"
-      [matTooltip]="'UserStories.Edit.Title' | translate"
+      [matTooltip]="'DeviceManagement.Details.Title' | translate"
     >
       <mat-icon>edit_note</mat-icon>
     </button>
     }
   </span>
-  <div class="mat-headline-6">
-    {{ deviceInfo().mqttUsername }}
+  <div>
+    <span class="font-bold">{{
+      "DeviceManagement.DeviceName" | translate
+    }}</span>
+    <span class="mat-headline-6 font-bold">{{
+      deviceInfo().mqttUsername.toUpperCase()
+    }}</span>
   </div>
 
   <div>
     <div
-      class="grid grid-cols-2 md:grid-cols-4 justify-around mb-4 items-center"
+      class="grid grid-cols-2 md:grid-cols-3 justify-around mb-4 items-center space-x-2"
     >
       <div class="flex flex-row items-center">
         <p class="mat-body-1">
           <span class="text-xs text-gray-400">
-            {{ "UserStories.CreatedBy" | translate }}:
+            {{ "DeviceManagement.DeviceClientId" | translate }}:
           </span>
           <br />
           <span> {{ deviceInfo().mqttBrokerClientId }}</span>
@@ -33,25 +38,37 @@
       <div class="flex flex-row items-center">
         <p class="mat-body-1">
           <span class="text-xs text-gray-400">
-            {{ "UserStories.AssignedTo" | translate }}:
+            {{ "DeviceManagement.IsActiveStatus" | translate }}:
           </span>
           <br />
           <span>
             {{
               deviceInfo().isActive
-                ? "UserStories.Active"
-                : "UserStories.Inactive"
+                ? ("DeviceManagement.Credentials.Active" | translate)
+                : ("DeviceManagement.Credentials.InActive" | translate)
             }}
           </span>
         </p>
       </div>
 
-      <p class="mat-body-1">
-        {{ "UserStories.Points" | translate }}:
-        <span class="font-bold">
-          {{ deviceInfo().googleMapsPlusCode }}
-        </span>
-      </p>
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <span class="text-xs text-gray-400">
+            {{ "DeviceManagement.GoogleMapsCode" | translate }}:
+          </span>
+          <br />
+          @if(deviceInfo().googleMapsPlusCode !== null &&
+          deviceInfo().googleMapsPlusCode !== ''){
+          <span class="font-bold">
+            {{ deviceInfo().googleMapsPlusCode }}
+          </span>
+          }@else {
+          <span>
+            {{ "DeviceManagement.NoGoogleMapsCode" | translate }}
+          </span>
+          }
+        </p>
+      </div>
     </div>
   </div>
 
@@ -62,7 +79,7 @@
   >
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{ "UserStories.Tasks" | translate }}
+        {{ "DeviceManagement.Description" | translate }}
         @if (!panelOpenState) {<mat-icon
           aria-hidden="false"
           aria-label="Example home icon"
@@ -77,6 +94,10 @@
         }
       </mat-panel-title>
     </mat-expansion-panel-header>
+    @if(deviceInfo().deviceExtraInfo !== null){
     <p>{{ deviceInfo().deviceExtraInfo }}</p>
+    }@else {
+    <p>{{ "DeviceManagement.NoDescription" | translate }}</p>
+    }
   </mat-expansion-panel>
 </div>

@@ -25,7 +25,8 @@ internal class GetMqttCredentialsService : IGetMqttCredentialsService
 
         if (string.IsNullOrEmpty(device.ClientId)
             || string.IsNullOrEmpty(device.Username)
-            || string.IsNullOrEmpty(device.Password))
+            || string.IsNullOrEmpty(device.Password)
+            || string.IsNullOrEmpty(device.Topic))
         {
             return new NotFoundException($"Device with id:{deviceId} not found");
         }

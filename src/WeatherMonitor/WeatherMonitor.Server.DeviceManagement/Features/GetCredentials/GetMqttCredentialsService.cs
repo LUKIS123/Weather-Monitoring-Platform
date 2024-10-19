@@ -26,7 +26,7 @@ internal class GetMqttCredentialsService : IGetMqttCredentialsService
         var token = _userAccessor.Token;
 
         var (response, success, message) = await _httpClientWrapper.GetHttpRequest<DeviceMqttCredentialsResponse>(
-            "api/deviceManagement/credentials",
+            $"api/deviceManagement/credentials?deviceId={deviceId}",
             token);
 
         if (!success)
