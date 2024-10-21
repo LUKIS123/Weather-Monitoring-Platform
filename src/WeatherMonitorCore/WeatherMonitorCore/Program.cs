@@ -2,6 +2,7 @@ using FluentValidation.AspNetCore;
 using WeatherMonitorCore.DeviceManagement;
 using WeatherMonitorCore.Infrastructure;
 using WeatherMonitorCore.Middleware;
+using WeatherMonitorCore.MqttAuth;
 using WeatherMonitorCore.SharedKernel;
 using WeatherMonitorCore.UserAuthentication;
 using WeatherMonitorCore.UserAuthorization;
@@ -19,6 +20,7 @@ builder.Services.AddInfrastructureModule(builder.Configuration);
 builder.Services.AddUserModule(builder.Configuration);
 builder.Services.AddUserAuthorizationModule();
 builder.Services.AddDeviceManagementModule();
+builder.Services.AddMqttBrokerAuthModule();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -68,5 +70,6 @@ app.UseMiddleware<RequestTimeMiddleware>();
 
 app.RegisterUserEndpoints();
 app.RegisterDeviceManagementEndpoints();
+app.RegisterMqttBrokerAuthEndpoints();
 
 app.Run();
