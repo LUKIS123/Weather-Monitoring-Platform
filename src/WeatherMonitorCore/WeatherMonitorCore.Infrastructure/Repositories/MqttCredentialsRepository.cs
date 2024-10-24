@@ -3,9 +3,11 @@ using WeatherMonitorCore.Contract.Shared;
 using WeatherMonitorCore.Interfaces;
 using WeatherMonitorCore.MqttAuth.Infrastructure;
 using WeatherMonitorCore.MqttAuth.Infrastructure.Models;
+using WeatherMonitorCore.MqttDataSubscriberService.Interfaces.Models;
+using WeatherMonitorCore.MqttDataSubscriberService.Interfaces.Repositories;
 
 namespace WeatherMonitorCore.Infrastructure.Repositories;
-internal class MqttCredentialsRepository : IMqttClientAuthenticationRepository
+internal class MqttCredentialsRepository : IMqttClientAuthenticationRepository, IMqttClientsRepository
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
 
@@ -72,5 +74,58 @@ WHERE Username=@username
 ", new { username });
 
         return result;
+    }
+
+    public async Task CreateSuperUserAsync(CreateSuperUserDto superUser)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+        await connection.ExecuteAsync(@"
+INSERT INTO [identity].[MqttClients]
+(
+    Id,
+    Username,
+    Password,
+    ClientId,
+    IsSuperUser
+    )
+VALUES
+    (
+    @mqttClientId,
+    @username,
+    @password,
+    @clientId,
+    @isSuperUser
+)
+", new
+        {
+            mqttClientId = superUser.Id,
+            username = superUser.Username,
+            password = superUser.Password,
+            clientId = superUser.ClientId,
+            isSuperUser = superUser.IsSuperUser,
+        });
+    }
+
+    public async Task RemoveSuperUserAsync(Guid id)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+        await connection.ExecuteAsync(@"
+DELETE FROM [identity].[MqttClients]
+WHERE Id=@id
+", new { id });
+    }
+
+    public async Task<List<MqttSubscriptionsInfo>> GetDevicesTopicsAsync()
+    {
+        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+        var subscriptionsInfos = await connection.QueryAsync<MqttSubscriptionsInfo>($@"
+SELECT
+    T.Topic AS {nameof(MqttSubscriptionsInfo.Topic)}
+FROM [identity].[Devices] D
+    INNER JOIN [identity].[MqttClients] MC ON D.MqttClientId = MC.Id
+    INNER JOIN [identity].[MqttClientsAllowedTopics] MAT ON MC.Id = MAT.ClientId
+    INNER JOIN [identity].[MqttTopics] T ON MAT.TopicId = T.Id
+");
+        return subscriptionsInfos.ToList();
     }
 }

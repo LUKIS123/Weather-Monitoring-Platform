@@ -11,10 +11,11 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />
     <PackageReference Include="MQTTnet" Version="4.3.7.1207" />
+    <PackageReference Include="PasswordGenerator" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\WeatherMonitorCore.Infrastructure\WeatherMonitorCore.Infrastructure.csproj" />
-    <ProjectReference Include="..\WeatherMonitorCore.MqttDataSubscriberService.Infrastructure\WeatherMonitorCore.MqttDataSubscriberService.Infrastructure.csproj" />
+    <ProjectReference Include="..\WeatherMonitorCore.MqttDataSubscriberService.Interfaces\WeatherMonitorCore.MqttDataSubscriberService.Interfaces.csproj" />
   </ItemGroup>
 </Project>

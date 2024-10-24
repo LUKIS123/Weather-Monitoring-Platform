@@ -1,11 +1,11 @@
 namespace WeatherMonitorCore.MqttDataSubscriberService;
 
-public class Worker : BackgroundService
+public class MqttSubscriptionsHandlingWorker : BackgroundService
 {
-    private readonly ILogger<Worker> _logger;
+    private readonly ILogger<MqttSubscriptionsHandlingWorker> _logger;
     private readonly IMqttDataService _mqttDataService;
 
-    public Worker(ILogger<Worker> logger, IMqttDataService mqttDataService)
+    public MqttSubscriptionsHandlingWorker(ILogger<MqttSubscriptionsHandlingWorker> logger, IMqttDataService mqttDataService)
     {
         _logger = logger;
         _mqttDataService = mqttDataService;

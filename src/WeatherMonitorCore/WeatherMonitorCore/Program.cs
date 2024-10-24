@@ -3,6 +3,7 @@ using WeatherMonitorCore.DeviceManagement;
 using WeatherMonitorCore.Infrastructure;
 using WeatherMonitorCore.Middleware;
 using WeatherMonitorCore.MqttAuth;
+using WeatherMonitorCore.MqttDataSubscriberService.Extensions;
 using WeatherMonitorCore.SharedKernel;
 using WeatherMonitorCore.UserAuthentication;
 using WeatherMonitorCore.UserAuthorization;
@@ -22,6 +23,8 @@ builder.Services.AddUserAuthorizationModule();
 builder.Services.AddDeviceManagementModule();
 builder.Services.AddMqttBrokerAuthModule();
 
+// Add Background Services
+builder.Services.AddMqttSubscriberServiceWorkerModule();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

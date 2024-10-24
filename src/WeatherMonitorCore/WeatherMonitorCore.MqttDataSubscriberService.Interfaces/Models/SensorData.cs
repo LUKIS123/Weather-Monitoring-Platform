@@ -1,4 +1,4 @@
-﻿namespace WeatherMonitorCore.MqttDataSubscriberService.Infrastructure.Models;
+﻿namespace WeatherMonitorCore.MqttDataSubscriberService.Interfaces.Models;
 
 public readonly record struct SensorData
 {

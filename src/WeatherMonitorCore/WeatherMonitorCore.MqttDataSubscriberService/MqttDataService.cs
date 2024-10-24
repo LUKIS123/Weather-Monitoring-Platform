@@ -1,7 +1,10 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
 using System.Text;
-using WeatherMonitorCore.MqttDataSubscriberService.Infrastructure;
+using WeatherMonitorCore.MqttDataSubscriberService.Interfaces;
+using WeatherMonitorCore.MqttDataSubscriberService.Interfaces.Models;
+using WeatherMonitorCore.MqttDataSubscriberService.Interfaces.Repositories;
+using WeatherMonitorCore.MqttDataSubscriberService.Utils;
 
 namespace WeatherMonitorCore.MqttDataSubscriberService;
 
@@ -13,34 +16,46 @@ public interface IMqttDataService : IDisposable
 internal class MqttDataService : IMqttDataService
 {
     private readonly TimeSpan _period = TimeSpan.FromSeconds(5);
+    private readonly IMqttClientsRepository _mqttClientsRepository;
+
     private readonly IEnumerable<IMqttEventHandler> _mqttEventHandlers;// TODO handlery i bedziemy dodawac je on message received
     private readonly MqttFactory _mqttFactory;
     private readonly IMqttClient _mqttClient;
-    private readonly MqttClientOptions _mqttClientOptions;
-    private readonly HashSet<string> _topicsSet = [];// TODO: wyniesc metody z subskrybcjami do innej paczki
+    private MqttClientOptions _mqttClientOptions;
+    private readonly HashSet<string> _topicsSet = ["weather/627882BB-35F2-4D56-95A5-78E37C0DA3FC", "weather/EDA796F1-9ECD-4874-BF7E-AA1CE8392FFD"];// TODO: wyniesc metody z subskrybcjami do innej paczki, moze do subscriberservice.interfaces a impl w infrze
     private readonly object _lock = new();
-    private MqttClientSubscribeOptions _subscribeOptions;
 
-
-    public MqttDataService(IEnumerable<IMqttEventHandler> mqttEventHandlers)
+    public MqttDataService(
+        // IEnumerable<IMqttEventHandler> mqttEventHandlers
+        IMqttClientsRepository mqttClientsRepository
+        )
     {
-        _mqttEventHandlers = mqttEventHandlers;
+        _mqttClientsRepository = mqttClientsRepository;
+
+        // _mqttEventHandlers = mqttEventHandlers;
 
         _mqttFactory = new MqttFactory();
         _mqttClient = _mqttFactory.CreateMqttClient();
+
+    }
+
+    public async Task HandleMqttSubscriptions(CancellationToken stoppingToken)
+    {
+        var gen = new ServiceWorkerMqttClientGenerator();
+        var cl = gen.GenerateSuperUserCredentials();
+        await _mqttClientsRepository.CreateSuperUserAsync(new CreateSuperUserDto(cl.Id, cl.Username, cl.Password, cl.ClientId, cl.IsSuperUser));
+
         _mqttClientOptions = new MqttClientOptionsBuilder()
-            .WithTcpServer("broker.hivemq.com")
-            .WithClientId("")
-            .WithCredentials("", "")
+            .WithTcpServer("localhost")
+            .WithClientId(cl.ClientId)
+            .WithCredentials(cl.Username, cl.Password)
             // .WithTlsOptions(new MqttClientTlsOptions()
             // {
             //     UseTls = true
             // })
             .Build();
-    }
 
-    public async Task HandleMqttSubscriptions(CancellationToken stoppingToken)
-    {
+
         using var timer = new PeriodicTimer(_period);
 
         _mqttClient.ApplicationMessageReceivedAsync += e =>
@@ -102,8 +117,7 @@ internal class MqttDataService : IMqttDataService
             }
         }
 
-        _subscribeOptions = subscribeOptionsBuilder.Build();
-        await _mqttClient.SubscribeAsync(_subscribeOptions, stoppingToken);
+        await _mqttClient.SubscribeAsync(subscribeOptionsBuilder.Build(), stoppingToken);
     }
 
     public void Dispose()
@@ -111,3 +125,9 @@ internal class MqttDataService : IMqttDataService
         _mqttClient.Dispose();
     }
 }
+
+
+// 1 utworzc super usera i wpisac credentialsy (zaciag z bazy)
+// 2 przetestowac cz dziala na example userze
+// 3 refactor. zrobic z tego serwis, dodac eventy, dodac obsluge eventow
+// interface moga byc w blizniaczej paczce interfaces ale implementacja w infrastrukturze
