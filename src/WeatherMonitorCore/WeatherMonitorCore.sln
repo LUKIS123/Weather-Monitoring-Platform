@@ -21,7 +21,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitorCore.DeviceMa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitorCore.MqttAuth", "WeatherMonitorCore.MqttAuth\WeatherMonitorCore.MqttAuth.csproj", "{E185830B-9B2C-4887-BD9C-F8779EB1DAE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitorCore.Shared.MqttClient", "WeatherMonitorCore.Shared.MqttClient\WeatherMonitorCore.Shared.MqttClient.csproj", "{071E4FBE-7358-4B9F-985E-E6C1C03CCFA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitorCore.Shared.MqttClient", "WeatherMonitorCore.Shared.MqttClient\WeatherMonitorCore.Shared.MqttClient.csproj", "{071E4FBE-7358-4B9F-985E-E6C1C03CCFA8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HostedServices", "HostedServices", "{9657A7F1-538B-463F-996F-101612C6CD91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitorCore.MqttDataSubscriberService", "WeatherMonitorCore.MqttDataSubscriberService\WeatherMonitorCore.MqttDataSubscriberService.csproj", "{B821B79C-AC84-4ACB-8067-3A621107FA64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitorCore.MqttDataSubscriberService.Infrastructure", "WeatherMonitorCore.MqttDataSubscriberService.Infrastructure\WeatherMonitorCore.MqttDataSubscriberService.Infrastructure.csproj", "{17582C56-3C64-4FA6-A38C-84A56147126E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,9 +75,21 @@ Global
 		{071E4FBE-7358-4B9F-985E-E6C1C03CCFA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{071E4FBE-7358-4B9F-985E-E6C1C03CCFA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{071E4FBE-7358-4B9F-985E-E6C1C03CCFA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B821B79C-AC84-4ACB-8067-3A621107FA64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B821B79C-AC84-4ACB-8067-3A621107FA64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B821B79C-AC84-4ACB-8067-3A621107FA64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B821B79C-AC84-4ACB-8067-3A621107FA64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17582C56-3C64-4FA6-A38C-84A56147126E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17582C56-3C64-4FA6-A38C-84A56147126E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17582C56-3C64-4FA6-A38C-84A56147126E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17582C56-3C64-4FA6-A38C-84A56147126E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B821B79C-AC84-4ACB-8067-3A621107FA64} = {9657A7F1-538B-463F-996F-101612C6CD91}
+		{17582C56-3C64-4FA6-A38C-84A56147126E} = {9657A7F1-538B-463F-996F-101612C6CD91}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FC54F9A4-DCCB-43B6-BECB-625068151DF2}
