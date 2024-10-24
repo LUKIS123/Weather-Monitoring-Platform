@@ -25,7 +25,7 @@ public static class InfrastructureModule
         services.AddTransient<IUserAuthorizationRepository, SqlUserRepository>();
         services.AddTransient<IDeviceManagementRepository, DevicesRepository>();
         services.AddTransient<IMqttClientAuthenticationRepository, MqttCredentialsRepository>();
-        services.AddTransient<IMqttClientsRepository, MqttCredentialsRepository>();
+        services.AddTransient<IAppMqttClientsRepository, MqttCredentialsRepository>();
 
         services.AddTransient(_ => TimeProvider.System);
         if (infrastructureType == InfrastructureType.AspNetCore)

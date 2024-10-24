@@ -1,4 +1,5 @@
 ﻿using PasswordGenerator;
+using WeatherMonitorCore.MqttDataSubscriberService.Configuration;
 
 namespace WeatherMonitorCore.MqttDataSubscriberService.Utils;
 

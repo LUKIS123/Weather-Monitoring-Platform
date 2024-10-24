@@ -16,7 +16,7 @@ public interface IMqttDataService : IDisposable
 internal class MqttDataService : IMqttDataService
 {
     private readonly TimeSpan _period = TimeSpan.FromSeconds(5);
-    private readonly IMqttClientsRepository _mqttClientsRepository;
+    private readonly IAppMqttClientsRepository _mqttClientsRepository;
 
     private readonly IEnumerable<IMqttEventHandler> _mqttEventHandlers;// TODO handlery i bedziemy dodawac je on message received
     private readonly MqttFactory _mqttFactory;
@@ -27,7 +27,7 @@ internal class MqttDataService : IMqttDataService
 
     public MqttDataService(
         // IEnumerable<IMqttEventHandler> mqttEventHandlers
-        IMqttClientsRepository mqttClientsRepository
+        IAppMqttClientsRepository mqttClientsRepository
         )
     {
         _mqttClientsRepository = mqttClientsRepository;
@@ -43,15 +43,19 @@ internal class MqttDataService : IMqttDataService
     {
         var gen = new ServiceWorkerMqttClientGenerator();
         var cl = gen.GenerateSuperUserCredentials();
-        await _mqttClientsRepository.CreateSuperUserAsync(new CreateSuperUserDto(cl.Id, cl.Username, cl.Password, cl.ClientId, cl.IsSuperUser));
+        await _mqttClientsRepository.CreateSuperUserAsync(new CreateWorkerUserDto(cl.Id, cl.Username, cl.Password, cl.ClientId, cl.IsSuperUser));
 
         _mqttClientOptions = new MqttClientOptionsBuilder()
-            .WithTcpServer("localhost")
+            .WithTcpServer("localhost", 1883)
             .WithClientId(cl.ClientId)
             .WithCredentials(cl.Username, cl.Password)
-            // .WithTlsOptions(new MqttClientTlsOptions()
+            // .WithTlsOptions(new MqttClientTlsOptions
             // {
-            //     UseTls = true
+            //     UseTls = true,
+            //     CertificateValidationHandler = context => true,
+            //     AllowUntrustedCertificates = true,
+            //     IgnoreCertificateChainErrors = true,
+            //     IgnoreCertificateRevocationErrors = true
             // })
             .Build();
 

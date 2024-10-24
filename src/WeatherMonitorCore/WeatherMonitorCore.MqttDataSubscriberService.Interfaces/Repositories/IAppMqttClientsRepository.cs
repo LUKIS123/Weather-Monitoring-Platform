@@ -1,9 +1,9 @@
 ﻿using WeatherMonitorCore.MqttDataSubscriberService.Interfaces.Models;
 
 namespace WeatherMonitorCore.MqttDataSubscriberService.Interfaces.Repositories;
-public interface IMqttClientsRepository
+public interface IAppMqttClientsRepository
 {
-    Task CreateSuperUserAsync(CreateSuperUserDto superUser);
-    Task RemoveSuperUserAsync(Guid id);
+    Task CreateSuperUserAsync(CreateWorkerUserDto superUser);
+    Task RemoveWorkerUserAsync(Guid id);
     Task<List<MqttSubscriptionsInfo>> GetDevicesTopicsAsync();
 }

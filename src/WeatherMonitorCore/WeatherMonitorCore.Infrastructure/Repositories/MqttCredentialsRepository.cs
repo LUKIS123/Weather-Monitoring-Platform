@@ -7,7 +7,7 @@ using WeatherMonitorCore.MqttDataSubscriberService.Interfaces.Models;
 using WeatherMonitorCore.MqttDataSubscriberService.Interfaces.Repositories;
 
 namespace WeatherMonitorCore.Infrastructure.Repositories;
-internal class MqttCredentialsRepository : IMqttClientAuthenticationRepository, IMqttClientsRepository
+internal class MqttCredentialsRepository : IMqttClientAuthenticationRepository, IAppMqttClientsRepository
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
 
@@ -76,7 +76,7 @@ WHERE Username=@username
         return result;
     }
 
-    public async Task CreateSuperUserAsync(CreateSuperUserDto superUser)
+    public async Task CreateSuperUserAsync(CreateWorkerUserDto superUser)
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
         await connection.ExecuteAsync(@"
@@ -106,7 +106,7 @@ VALUES
         });
     }
 
-    public async Task RemoveSuperUserAsync(Guid id)
+    public async Task RemoveWorkerUserAsync(Guid id)
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
         await connection.ExecuteAsync(@"
