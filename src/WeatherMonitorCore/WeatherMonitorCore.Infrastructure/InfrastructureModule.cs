@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using WeatherMonitorCore.DeviceManagement.Infrastructure;
 using WeatherMonitorCore.Infrastructure.MqttEventHandlers;
 using WeatherMonitorCore.Infrastructure.Repositories;
+using WeatherMonitorCore.Infrastructure.Utility;
 using WeatherMonitorCore.Interfaces;
 using WeatherMonitorCore.MqttAuth.Infrastructure;
 using WeatherMonitorCore.MqttDataSubscriberService.Interfaces;
@@ -30,6 +31,7 @@ public static class InfrastructureModule
         services.AddTransient<IAppMqttClientsRepository, MqttCredentialsRepository>();
         services.AddTransient<ISensorDataRepository, SensorDataRepository>();
 
+        services.AddTransient<IDeviceMqttMessageParser, DeviceMqttMessageParser>();
         services.AddTransient(_ => TimeProvider.System);
         if (infrastructureType == InfrastructureType.AspNetCore)
         {

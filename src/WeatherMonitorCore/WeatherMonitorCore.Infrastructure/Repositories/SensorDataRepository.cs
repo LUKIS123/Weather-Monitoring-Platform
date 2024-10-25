@@ -27,7 +27,7 @@ SET @TargetDeviceId =
         INNER JOIN [identity].[MqttTopics] T ON MAT.TopicId = T.Id
     WHERE T.Topic=@topic);
 
-INSERT INTO HourlyWeatherSummary
+INSERT INTO [weatherData].[SensorsMeasurements]
     (
     MeasuredAt,
     Humidity,
@@ -62,26 +62,3 @@ VALUES
         });
     }
 }
-
-// public readonly record struct SensorData
-// {
-//     public long Id { get; init; }
-//     public DateTime MeasuredAt { get; init; }
-//     public float Humidity { get; init; }
-//     public float Temperature { get; init; }
-//     public float AirPressure { get; init; }
-//     public float? PM1_0 { get; init; }
-//     public float? PM2_5 { get; init; }
-//     public float? PM10 { get; init; }
-//     public int DeviceId { get; init; }
-// }
-
-// {
-// "MeasuredAt": "2024-10-25T14:30:00Z",
-// "Humidity": 55.3,
-// "Temperature": 22.1,
-// "AirPressure": 1013.25,
-// "PM1_0": 12.4,
-// "PM2_5": 18.9,
-// "PM10": 25.7
-// }

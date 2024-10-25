@@ -5,7 +5,7 @@ BEGIN
     EXEC ('CREATE SCHEMA [weatherData] AUTHORIZATION [dbo]')
 END
 
-CREATE TABLE HourlyWeatherSummary
+CREATE TABLE [weatherData].[SensorsMeasurements]
 (
     Id BIGINT PRIMARY KEY IDENTITY(1,1),
     MeasuredAt DATETIME2(0) NOT NULL DEFAULT GETDATE(),

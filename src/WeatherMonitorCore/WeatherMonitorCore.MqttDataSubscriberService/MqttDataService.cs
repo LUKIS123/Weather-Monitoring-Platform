@@ -60,7 +60,7 @@ internal class MqttDataService : IMqttDataService
         {
             _subscriptionsManagingService.GetMqttClient.ApplicationMessageReceivedAsync += async e =>
             {
-                var topic = e.ApplicationMessage.Topic;
+                var topic = e.ApplicationMessage.Topic ?? string.Empty;
                 var messagePayload = Encoding.UTF8.GetString(e.ApplicationMessage.PayloadSegment);
 
                 await mqttEventHandler.HandleMqttMessageAsync(topic, messagePayload);
