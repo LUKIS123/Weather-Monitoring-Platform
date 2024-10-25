@@ -1,9 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WeatherMonitorCore.DeviceManagement.Infrastructure;
+using WeatherMonitorCore.Infrastructure.MqttEventHandlers;
 using WeatherMonitorCore.Infrastructure.Repositories;
+using WeatherMonitorCore.Infrastructure.Utility;
 using WeatherMonitorCore.Interfaces;
 using WeatherMonitorCore.MqttAuth.Infrastructure;
+using WeatherMonitorCore.MqttDataSubscriberService.Interfaces;
+using WeatherMonitorCore.MqttDataSubscriberService.Interfaces.Repositories;
 using WeatherMonitorCore.SharedKernel.Infrastructure;
 using WeatherMonitorCore.SharedKernel.Infrastructure.Repositories;
 using WeatherMonitorCore.UserAuthentication.Infrastructure.Repositories;
@@ -24,11 +28,17 @@ public static class InfrastructureModule
         services.AddTransient<IUserAuthorizationRepository, SqlUserRepository>();
         services.AddTransient<IDeviceManagementRepository, DevicesRepository>();
         services.AddTransient<IMqttClientAuthenticationRepository, MqttCredentialsRepository>();
+        services.AddTransient<IAppMqttClientsRepository, MqttCredentialsRepository>();
+        services.AddTransient<ISensorDataRepository, SensorDataRepository>();
 
+        services.AddTransient<IDeviceMqttMessageParser, DeviceMqttMessageParser>();
         services.AddTransient(_ => TimeProvider.System);
         if (infrastructureType == InfrastructureType.AspNetCore)
         {
             services.AddTransient<IUserAccessor, JwtUserAccessor>();
+
+            // Add Mqtt Event Handlers
+            services.AddTransient<IMqttEventHandler, WeatherDataSavingHandler>();
         }
 
         return services;

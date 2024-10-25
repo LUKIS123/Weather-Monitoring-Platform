@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-WeatherMonitorCore.MqttDataSubscriberService-8412fdaa-d20c-46d9-be1f-7e67cc519b96</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />
+    <PackageReference Include="MQTTnet" Version="4.3.7.1207" />
+    <PackageReference Include="PasswordGenerator" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WeatherMonitorCore.Infrastructure\WeatherMonitorCore.Infrastructure.csproj" />
+    <ProjectReference Include="..\WeatherMonitorCore.MqttDataSubscriberService.Interfaces\WeatherMonitorCore.MqttDataSubscriberService.Interfaces.csproj" />
+    <ProjectReference Include="..\WeatherMonitorCore.Shared.MqttClient\WeatherMonitorCore.Shared.MqttClient.csproj" />
+  </ItemGroup>
+</Project>

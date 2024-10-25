@@ -12,12 +12,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
 		<PackageReference Include="OpenLocationCode" Version="2.1.1" />
 		<PackageReference Include="PasswordGenerator" Version="2.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\WeatherMonitorCore.Shared.MqttClient\WeatherMonitorCore.Shared.MqttClient.csproj" />
 	  <ProjectReference Include="..\WeatherMonitorCore.SharedKernel\WeatherMonitorCore.SharedKernel.csproj" />
 	</ItemGroup>
 
