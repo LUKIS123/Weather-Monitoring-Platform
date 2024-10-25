@@ -3,6 +3,7 @@ using WeatherMonitorCore.Contract.Shared;
 using WeatherMonitorCore.DeviceManagement.Infrastructure;
 using WeatherMonitorCore.DeviceManagement.Infrastructure.Models;
 using WeatherMonitorCore.DeviceManagement.Infrastructure.Utils;
+using WeatherMonitorCore.Shared.MqttClient.Interfaces;
 using WeatherMonitorCore.SharedKernel;
 
 namespace WeatherMonitorCore.DeviceManagement.Features.RegisterDevice;
@@ -17,6 +18,7 @@ internal class RegisterDeviceService : IRegisterDeviceService
     private readonly IDeviceManagementRepository _deviceManagementRepository;
     private readonly IPasswordGeneratorService _passwordGeneratorService;
     private readonly IDeviceCredentialsGenerator _credentialsGenerator;
+    private readonly ISubscriptionsManagingService _subscriptionsManagingService;
 
     private const ActionType DefaultActionType = ActionType.Write;
     private const bool DefaultIsActivate = false;
@@ -25,17 +27,20 @@ internal class RegisterDeviceService : IRegisterDeviceService
     public RegisterDeviceService(
         IDeviceManagementRepository deviceManagementRepository,
         IPasswordGeneratorService passwordGeneratorService,
-        IDeviceCredentialsGenerator credentialsGenerator)
+        IDeviceCredentialsGenerator credentialsGenerator,
+        ISubscriptionsManagingService subscriptionsManagingService)
     {
         _deviceManagementRepository = deviceManagementRepository;
         _passwordGeneratorService = passwordGeneratorService;
         _credentialsGenerator = credentialsGenerator;
+        _subscriptionsManagingService = subscriptionsManagingService;
     }
 
     public async Task<Result<CreateDeviceResponse>> Handle(RegisterDeviceRequest request)
     {
         var registerDeviceDto = MapRequestToDeviceDto(request);
         var deviceId = await _deviceManagementRepository.RegisterDeviceAsync(registerDeviceDto);
+        await _subscriptionsManagingService.AddTopicAsync(registerDeviceDto.MqttTopic.Topic, CancellationToken.None);
 
         return new CreateDeviceResponse(
             deviceId,

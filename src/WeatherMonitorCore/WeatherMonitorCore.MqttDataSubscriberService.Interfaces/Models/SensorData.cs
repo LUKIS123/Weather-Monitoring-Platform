@@ -2,7 +2,6 @@
 
 public readonly record struct SensorData
 {
-    public long Id { get; init; }
     public DateTime MeasuredAt { get; init; }
     public float Humidity { get; init; }
     public float Temperature { get; init; }
@@ -10,5 +9,4 @@ public readonly record struct SensorData
     public float? PM1_0 { get; init; }
     public float? PM2_5 { get; init; }
     public float? PM10 { get; init; }
-    public int DeviceId { get; init; }
 }
