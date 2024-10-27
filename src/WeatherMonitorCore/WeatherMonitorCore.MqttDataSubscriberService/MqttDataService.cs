@@ -17,7 +17,6 @@ public interface IMqttDataService : IDisposable
 
 internal class MqttDataService : IMqttDataService
 {
-    private readonly TimeSpan _period = TimeSpan.FromSeconds(5);
     private readonly IAppMqttClientsRepository _mqttClientsRepository;
     private readonly IEnumerable<IMqttEventHandler> _mqttEventHandlers;
     private readonly ISubscriptionsManagingService _subscriptionsManagingService;
@@ -70,26 +69,10 @@ internal class MqttDataService : IMqttDataService
         await _subscriptionsManagingService.GetMqttClient.ConnectAsync(_mqttClientOptions, stoppingToken);
 
         var devicesTopics = await _mqttClientsRepository.GetDevicesTopicsAsync();
+
         await _subscriptionsManagingService.SubscribeToTopics(
             devicesTopics.Select(i => i.Topic),
             stoppingToken);
-
-        using var timer = new PeriodicTimer(_period);
-        var keepAlive = true;
-        try
-        {
-            while (!stoppingToken.IsCancellationRequested && keepAlive)
-            {
-                keepAlive = await timer.WaitForNextTickAsync(stoppingToken);
-            }
-        }
-        catch (OperationCanceledException)
-        {
-        }
-        finally
-        {
-            await CleanUp(superUserCredentials.Id, stoppingToken);
-        }
     }
 
     public async Task CleanUp(Guid clientId, CancellationToken stoppingToken)

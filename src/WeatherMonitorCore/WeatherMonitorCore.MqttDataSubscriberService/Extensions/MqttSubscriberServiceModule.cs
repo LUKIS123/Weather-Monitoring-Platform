@@ -1,4 +1,6 @@
-﻿using WeatherMonitorCore.MqttDataSubscriberService.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using WeatherMonitorCore.MqttDataSubscriberService.Configuration;
 using WeatherMonitorCore.MqttDataSubscriberService.Utils;
 
 namespace WeatherMonitorCore.MqttDataSubscriberService.Extensions;
@@ -15,7 +17,7 @@ public static class MqttSubscriberServiceModule
         services.AddSingleton(brokerConnectionSettings);
 
         services.AddTransient<IServiceWorkerMqttClientGenerator, ServiceWorkerMqttClientGenerator>();
-        services.AddTransient<IMqttDataService, MqttDataService>();
+        services.AddSingleton<IMqttDataService, MqttDataService>();
         services.AddHostedService<MqttSubscriptionsHandlingWorker>();
 
         return services;
