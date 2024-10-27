@@ -1,12 +1,13 @@
-data "azurerm_resource_group" "app_rg" {
-  name = var.resource_group_name
+resource "azurerm_resource_group" "db_rg" {
+  name     = var.db_resource_group_name
+  location = var.db_resource_group_location
 }
 
 # SQL Server
 resource "azurerm_mssql_server" "weather_monitor_sql" {
   name                          = var.sql_server_name
-  resource_group_name           = data.azurerm_resource_group.app_rg.name
-  location                      = data.azurerm_resource_group.app_rg.location
+  resource_group_name           = azurerm_resource_group.db_rg.name
+  location                      = azurerm_resource_group.db_rg.location
   version                       = "12.0"
   administrator_login           = var.sql_admin_username
   administrator_login_password  = var.sql_admin_password
@@ -20,6 +21,10 @@ resource "azurerm_mssql_database" "weather_monitor_database" {
 
   sku_name    = var.sql_database_sku
   max_size_gb = var.sql_database_max_size_gb
+}
+
+data "azurerm_resource_group" "app_rg" {
+  name = var.resource_group_name
 }
 
 # App Service for Weather Monitor Web App
@@ -92,7 +97,7 @@ resource "azurerm_container_app" "weather_monitor_container_app" {
       name   = "weather-monitor-container"
       image  = "lukis123/mosquitto-go-auth-custom:23092024"
       cpu    = "0.25"
-      memory = "0.125Gi"
+      memory = "0.5Gi"
 
       env {
         name  = "WEATHER_MONITOR_ENV"

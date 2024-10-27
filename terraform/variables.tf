@@ -5,9 +5,19 @@ variable "resource_group_name" {
   description = "The name of the resource group to use."
 }
 
+variable "db_resource_group_name" {
+  type        = string
+  description = "The name of the database resource group."
+}
+
 variable "resource_group_location" {
   type        = string
   description = "The location of the resource group to use."
+}
+
+variable "db_resource_group_location" {
+  type        = string
+  description = "The location of the database resource group."
 }
 
 # SQL Server Variables
