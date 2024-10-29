@@ -14,6 +14,7 @@ SerialPM pms(PMSx003, 16, 17);
 WiFiClient net;
 MQTTClient client;
 gptimer_handle_t gptimer = NULL;
+volatile bool shouldReadAndPublishData = false;
 
 void initBmeSensor() {
   pms.init();
@@ -84,12 +85,7 @@ String getReadingsJsonFormat(bmeData bmeReadings, pmsData pmsReadings) {
 }
 
 bool IRAM_ATTR onTimer(gptimer_handle_t timer, const gptimer_alarm_event_data_t *edata, void *user_ctx) {
-  bmeData bmeReadings = getBmeSensorReadings();
-  pmsData pmsReadings = getPmsSensorReadings();
-  String jsonData = getReadingsJsonFormat(bmeReadings, pmsReadings);
-  char topicBuffer[sizeof(MqttTopic)];
-  strcpy_P(topicBuffer, MqttTopic);
-  client.publish(topicBuffer, jsonData);
+  shouldReadAndPublishData = true;
   return true;
 }
 
@@ -109,10 +105,10 @@ void setup() {
   };
   gptimer_new_timer(&config, &gptimer);
   gptimer_alarm_config_t alarm_config = {
-    .alarm_count = 60000000,  // 15 minutes in microseconds (15 * 60 * 1,000,000)=900000000
+    .alarm_count = 60000000,  // Time in microseconds
     .reload_count = 0,        // Start counting from 0
     .flags = {
-      .auto_reload_on_alarm = true  // Auto-reload for continuous 15-minute intervals
+      .auto_reload_on_alarm = true  // Auto-reload for continuous intervals
     }
   };
   gptimer_set_alarm_action(gptimer, &alarm_config);
@@ -129,5 +125,14 @@ void loop() {
   delay(10);
   if (!client.connected()) {
     connectToMqtt();
+  }
+  if (shouldReadAndPublishData) {
+    shouldReadAndPublishData = false;
+    bmeData bmeReadings = getBmeSensorReadings();
+    pmsData pmsReadings = getPmsSensorReadings();
+    String jsonData = getReadingsJsonFormat(bmeReadings, pmsReadings);
+    char topicBuffer[sizeof(MqttTopic)];
+    strcpy_P(topicBuffer, MqttTopic);
+    client.publish(topicBuffer, jsonData);
   }
 }
