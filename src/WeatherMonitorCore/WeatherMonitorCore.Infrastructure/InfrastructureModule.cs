@@ -17,6 +17,7 @@ namespace WeatherMonitorCore.Infrastructure;
 public static class InfrastructureModule
 {
     private const string DbConnection = "MS-SQL";
+    private const string TimeZoneSetting = "AppTimeZone";
 
     public static IServiceCollection AddInfrastructureModule(this IServiceCollection services, IConfiguration configuration, InfrastructureType infrastructureType = InfrastructureType.AspNetCore)
     {
@@ -33,6 +34,11 @@ public static class InfrastructureModule
 
         services.AddTransient<IDeviceMqttMessageParser, DeviceMqttMessageParser>();
         services.AddTransient(_ => TimeProvider.System);
+
+        var timeZoneId = configuration.GetValue<string>(TimeZoneSetting)
+                         ?? throw new ArgumentNullException(nameof(configuration), TimeZoneSetting);
+        services.AddTransient<ITimeZoneProvider>(_ => new TimeZoneProvider(timeZoneId));
+
         if (infrastructureType == InfrastructureType.AspNetCore)
         {
             services.AddTransient<IUserAccessor, JwtUserAccessor>();

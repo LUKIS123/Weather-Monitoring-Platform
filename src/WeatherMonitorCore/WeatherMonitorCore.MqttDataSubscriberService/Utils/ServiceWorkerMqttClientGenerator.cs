@@ -28,7 +28,7 @@ internal class ServiceWorkerMqttClientGenerator : IServiceWorkerMqttClientGenera
     {
         return new SuperUserCredentialsDto
         {
-            Id = Constants.MqttDataServiceGuid,
+            Id = WorkerMqttClientConfig.MqttDataServiceGuid,
             Username = $"{SuperUserNameSuffix.ToUpperInvariant()}-{Guid.NewGuid().ToString().ToUpper()}",
             Password = _passwordGenerator.Next(),
             ClientId = $"{SuperUserClientIdSuffix.ToUpperInvariant()}-{Guid.NewGuid().ToString().ToUpper()}",
