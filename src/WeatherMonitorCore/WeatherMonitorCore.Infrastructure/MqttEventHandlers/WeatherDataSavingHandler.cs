@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using WeatherMonitorCore.Infrastructure.Utility;
+using WeatherMonitorCore.Interfaces;
 using WeatherMonitorCore.MqttDataSubscriberService.Interfaces;
+using WeatherMonitorCore.MqttDataSubscriberService.Interfaces.Models;
 using WeatherMonitorCore.MqttDataSubscriberService.Interfaces.Repositories;
 
 namespace WeatherMonitorCore.Infrastructure.MqttEventHandlers;
@@ -10,16 +12,19 @@ internal class WeatherDataSavingHandler : IMqttEventHandler
     private readonly ISensorDataRepository _sensorDataRepository;
     private readonly IDeviceMqttMessageParser _deviceMqttMessageParser;
     private readonly TimeProvider _timeProvider;
+    private readonly ITimeZoneProvider _timeZoneProvider;
 
     public WeatherDataSavingHandler(
         ISensorDataRepository sensorDataRepository,
         IDeviceMqttMessageParser deviceMqttMessageParser,
         TimeProvider timeProvider,
+        ITimeZoneProvider timeZoneProvider,
         ILogger<WeatherDataSavingHandler> logger)
     {
         _sensorDataRepository = sensorDataRepository;
         _deviceMqttMessageParser = deviceMqttMessageParser;
         _timeProvider = timeProvider;
+        _timeZoneProvider = timeZoneProvider;
         _logger = logger;
     }
 
@@ -33,15 +38,19 @@ internal class WeatherDataSavingHandler : IMqttEventHandler
         try
         {
             var sensorData = _deviceMqttMessageParser.ParseMessage(messagePayload);
-            if (sensorData.Equals(default))
-            {
-                sensorData = sensorData with
-                {
-                    MeasuredAt = _timeProvider.GetLocalNow().LocalDateTime
-                };
-            }
+            var zoneAdjustedTimeStamp = TimeZoneInfo.ConvertTimeFromUtc(_timeProvider.GetUtcNow().DateTime, _timeZoneProvider.GetTimeZoneInfo());
 
-            await _sensorDataRepository.AddSensorDataAsync(sensorData, topic);
+            var measurementsLog = new MeasurementsLog(
+                zoneAdjustedTimeStamp,
+                sensorData.Humidity,
+                sensorData.Temperature,
+                sensorData.AirPressure,
+                sensorData.Altitude,
+                sensorData.PM1_0,
+                sensorData.PM2_5,
+                sensorData.PM10);
+
+            await _sensorDataRepository.AddSensorDataAsync(measurementsLog, topic);
         }
         catch (Exception ex)
         {

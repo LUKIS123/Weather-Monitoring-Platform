@@ -8,10 +8,11 @@ END
 CREATE TABLE [weatherData].[SensorsMeasurements]
 (
     Id BIGINT PRIMARY KEY IDENTITY(1,1),
-    MeasuredAt DATETIME2(0) NOT NULL DEFAULT GETDATE(),
+    ReceivedAt DATETIME2(0) NOT NULL DEFAULT GETDATE(),
     Humidity REAL NOT NULL,
     Temperature REAL NOT NULL,
     AirPressure REAL NOT NULL,
+    Altitude REAL NOT NULL,
     PM1_0 REAL,
     PM2_5 REAL,
     PM10 REAL,

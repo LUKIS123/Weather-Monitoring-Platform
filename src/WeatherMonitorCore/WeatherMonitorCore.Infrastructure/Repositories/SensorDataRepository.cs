@@ -13,7 +13,7 @@ internal class SensorDataRepository : ISensorDataRepository
         _dbConnectionFactory = dbConnectionFactory;
     }
 
-    public async Task AddSensorDataAsync(SensorData sensorData, string topic)
+    public async Task AddSensorDataAsync(MeasurementsLog sensorData, string topic)
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
         await connection.ExecuteAsync(@"
@@ -29,10 +29,11 @@ SET @TargetDeviceId =
 
 INSERT INTO [weatherData].[SensorsMeasurements]
     (
-    MeasuredAt,
+    ReceivedAt,
     Humidity,
     Temperature,
     AirPressure,
+    Altitude,
     PM1_0,
     PM2_5,
     PM10,
@@ -40,10 +41,11 @@ INSERT INTO [weatherData].[SensorsMeasurements]
     )
 VALUES
     (
-    @measuredAt,
+    @receivedAt,
     @humidity,
     @temperature,
     @airPressure,
+    @altitude,
     @pm1_0,
     @pm2_5,
     @pm10,
@@ -52,10 +54,11 @@ VALUES
 ", new
         {
             topic,
-            measuredAt = sensorData.MeasuredAt,
+            receivedAt = sensorData.ReceivedAt,
             humidity = sensorData.Humidity,
             temperature = sensorData.Temperature,
             airPressure = sensorData.AirPressure,
+            altitude = sensorData.Altitude,
             pm1_0 = sensorData.PM1_0,
             pm2_5 = sensorData.PM2_5,
             pm10 = sensorData.PM10

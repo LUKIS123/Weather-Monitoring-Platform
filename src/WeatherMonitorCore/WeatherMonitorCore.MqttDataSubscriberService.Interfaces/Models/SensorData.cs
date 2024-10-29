@@ -2,7 +2,6 @@
 
 public readonly record struct SensorData
 {
-    public DateTime MeasuredAt { get; init; }
     public float Humidity { get; init; }
     public float Temperature { get; init; }
     public float AirPressure { get; init; }
