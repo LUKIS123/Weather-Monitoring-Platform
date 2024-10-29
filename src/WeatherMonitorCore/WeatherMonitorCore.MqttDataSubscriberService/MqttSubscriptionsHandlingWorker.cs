@@ -27,7 +27,7 @@ public class MqttSubscriptionsHandlingWorker : BackgroundService
         {
             Task.Run(async () =>
             {
-                await _mqttDataService.CleanUp(Constants.MqttDataServiceGuid, stoppingToken);
+                await _mqttDataService.CleanUp(WorkerMqttClientConfig.MqttDataServiceGuid, stoppingToken);
             }, stoppingToken);
         });
 
@@ -52,7 +52,7 @@ public class MqttSubscriptionsHandlingWorker : BackgroundService
         }
         finally
         {
-            await _mqttDataService.CleanUp(Constants.MqttDataServiceGuid, stoppingToken);
+            await _mqttDataService.CleanUp(WorkerMqttClientConfig.MqttDataServiceGuid, stoppingToken);
         }
 
         if (_logger.IsEnabled(LogLevel.Information))
