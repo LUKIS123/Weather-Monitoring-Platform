@@ -1,25 +1,25 @@
 #include <WiFi.h>
 #include <MQTT.h>
-#include <time.h>
 #include <PMserial.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <pgmspace.h>
+#include <driver/gptimer.h>
 #include "configuration.h"
-#include "constants.h"
 #include "sensor_data_models.h"
 
-SerialPM pms(PMSx003, 16, 17);
-Adafruit_BME280 bme;
 #define SEALEVELPRESSURE_HPA (1013.25)
-char timeBuffer[30];
+Adafruit_BME280 bme;
+SerialPM pms(PMSx003, 16, 17);
+WiFiClient net;
+MQTTClient client;
+gptimer_handle_t gptimer = NULL;
 
 void initBmeSensor() {
   pms.init();
-  unsigned status;
-  status = bme.begin(0x76);
+  unsigned status = bme.begin(0x76);
   if (!status) {
-    Serial.println(F("Could not find a valid BME280 sensor!"));
+    Serial.println(F("Could not find a valid BME280 sensor"));
     Serial.print(F("SensorID was: 0x"));
     Serial.println(bme.sensorID(), 16);
     while (1) delay(10);
@@ -39,25 +39,21 @@ void connectToWiFi() {
   Serial.println(F("Connected to WiFi"));
 }
 
-void obtainTime() {
-  char ntpServerBuffer[sizeof(ntpServer)];
-  char timezoneBuffer[sizeof(timezone)];
-  char timeFormatBuffer[sizeof(timeFormat)];
-  char defaultTimeBuffer[sizeof(defaultTime)];
-  strcpy_P(ntpServerBuffer, ntpServer);
-  strcpy_P(timezoneBuffer, timezone);
-  strcpy_P(timeFormatBuffer, timeFormat);
-  strcpy_P(defaultTimeBuffer, defaultTime);
-  configTime(0, 0, ntpServerBuffer);
-  setenv("TZ", timezoneBuffer, 1);
-  tzset();
-  struct tm timeinfo;
-  if (!getLocalTime(&timeinfo)) {
-    Serial.println(F("Failed to obtain time"));
-    snprintf(timeBuffer, sizeof(timeBuffer), defaultTimeBuffer);
-    return;
+void connectToMqtt() {
+  char clientIdBuffer[sizeof(MqttClientId)];
+  char usernameBuffer[sizeof(MqttUsername)];
+  char passwordBuffer[sizeof(MqttPassword)];
+  char topicBuffer[sizeof(MqttTopic)];
+  strcpy_P(clientIdBuffer, MqttClientId);
+  strcpy_P(usernameBuffer, MqttUsername);
+  strcpy_P(passwordBuffer, MqttPassword);
+  strcpy_P(topicBuffer, MqttTopic);
+  while (!client.connect(clientIdBuffer, usernameBuffer, passwordBuffer)) {
+    delay(1000);
+    Serial.println(F("Connecting to MQTT..."));
   }
-  strftime(timeBuffer, sizeof(timeBuffer), timeFormatBuffer, &timeinfo);
+  Serial.println(F("Connected to MQTT"));
+  client.subscribe(topicBuffer);
 }
 
 bmeData getBmeSensorReadings() {
@@ -77,8 +73,7 @@ pmsData getPmsSensorReadings() {
 }
 
 String getReadingsJsonFormat(bmeData bmeReadings, pmsData pmsReadings) {
-  return "{ \"MeasuredAt\": " + String(timeBuffer)
-         + ", \"Temperature\": " + String(bmeReadings.temperature)
+  return "{ \"Temperature\": " + String(bmeReadings.temperature)
          + ", \"AirPressure\": " + String(bmeReadings.pressure)
          + ", \"Altitude\": " + String(bmeReadings.altitude)
          + ", \"Humidity\": " + String(bmeReadings.humidity)
@@ -88,20 +83,51 @@ String getReadingsJsonFormat(bmeData bmeReadings, pmsData pmsReadings) {
          + " }";
 }
 
+bool IRAM_ATTR onTimer(gptimer_handle_t timer, const gptimer_alarm_event_data_t *edata, void *user_ctx) {
+  bmeData bmeReadings = getBmeSensorReadings();
+  pmsData pmsReadings = getPmsSensorReadings();
+  String jsonData = getReadingsJsonFormat(bmeReadings, pmsReadings);
+  char topicBuffer[sizeof(MqttTopic)];
+  strcpy_P(topicBuffer, MqttTopic);
+  client.publish(topicBuffer, jsonData);
+  return true;
+}
+
 void setup() {
   Serial.begin(9600);
   initBmeSensor();
   connectToWiFi();
-  obtainTime();
+  char mqttBrokerAddressBuffer[sizeof(MqttBrokerAddress)];
+  strcpy_P(mqttBrokerAddressBuffer, MqttBrokerAddress);
+  client.begin(mqttBrokerAddressBuffer, net);
+  connectToMqtt();
+  // GPTimer configuration
+  gptimer_config_t config = {
+    .clk_src = GPTIMER_CLK_SRC_DEFAULT,  // Use default clock source
+    .direction = GPTIMER_COUNT_UP,       // Count up
+    .resolution_hz = 1000000             // 1 MHz resolution for timing
+  };
+  gptimer_new_timer(&config, &gptimer);
+  gptimer_alarm_config_t alarm_config = {
+    .alarm_count = 60000000,  // 15 minutes in microseconds (15 * 60 * 1,000,000)=900000000
+    .reload_count = 0,        // Start counting from 0
+    .flags = {
+      .auto_reload_on_alarm = true  // Auto-reload for continuous 15-minute intervals
+    }
+  };
+  gptimer_set_alarm_action(gptimer, &alarm_config);
+  gptimer_event_callbacks_t callbacks = {
+    .on_alarm = onTimer  // Attach ISR callback
+  };
+  gptimer_register_event_callbacks(gptimer, &callbacks, NULL);
+  gptimer_enable(gptimer);
+  gptimer_start(gptimer);
 }
 
 void loop() {
-  bmeData bmeReadings = getBmeSensorReadings();
-  pmsData pmsReadings = getPmsSensorReadings();
-
-  String jsonData = getReadingsJsonFormat(bmeReadings, pmsReadings);
-  Serial.print(jsonData);
-
-  delay(5000);
-  Serial.println();
+  client.loop();
+  delay(10);
+  if (!client.connected()) {
+    connectToMqtt();
+  }
 }
