@@ -95,7 +95,7 @@ void setup() {
   connectToWiFi();
   char mqttBrokerAddressBuffer[sizeof(MqttBrokerAddress)];
   strcpy_P(mqttBrokerAddressBuffer, MqttBrokerAddress);
-  client.begin(mqttBrokerAddressBuffer, net);
+  client.begin(mqttBrokerAddressBuffer, 1883, net);
   connectToMqtt();
   // GPTimer configuration
   gptimer_config_t config = {
