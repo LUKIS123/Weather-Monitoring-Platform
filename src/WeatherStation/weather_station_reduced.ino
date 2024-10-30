@@ -1,6 +1,5 @@
 #include <WiFi.h>
 #include <MQTT.h>
-#include <PMserial.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <pgmspace.h>
@@ -10,7 +9,6 @@
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 Adafruit_BME280 bme;
-SerialPM pms(PMSx003, 16, 17);
 WiFiClient net;
 MQTTClient client;
 gptimer_handle_t gptimer = NULL;
@@ -64,22 +62,11 @@ bmeData getBmeSensorReadings() {
     bme.readHumidity());
 }
 
-pmsData getPmsSensorReadings() {
-  pms.read();
-  return pmsData(
-    pms.pm01,
-    pms.pm25,
-    pms.pm10);
-}
-
-String getReadingsJsonFormat(bmeData bmeReadings, pmsData pmsReadings) {
+String getReadingsJsonFormat(bmeData bmeReadings) {
   return "{ \"Temperature\": " + String(bmeReadings.temperature)
          + ", \"AirPressure\": " + String(bmeReadings.pressure)
          + ", \"Altitude\": " + String(bmeReadings.altitude)
          + ", \"Humidity\": " + String(bmeReadings.humidity)
-         + ", \"PM1_0\": " + String(pmsReadings.pm01)
-         + ", \"PM2_5\": " + String(pmsReadings.pm25)
-         + ", \"PM10\": " + String(pmsReadings.pm10)
          + " }";
 }
 
@@ -90,7 +77,6 @@ bool IRAM_ATTR onTimer(gptimer_handle_t timer, const gptimer_alarm_event_data_t 
 
 void setup() {
   Serial.begin(9600);
-  pms.init();
   initBmeSensor();
   connectToWiFi();
   char mqttBrokerAddressBuffer[sizeof(MqttBrokerAddress)];
@@ -129,8 +115,7 @@ void loop() {
   if (shouldReadAndPublishData) {
     shouldReadAndPublishData = false;
     bmeData bmeReadings = getBmeSensorReadings();
-    pmsData pmsReadings = getPmsSensorReadings();
-    String jsonData = getReadingsJsonFormat(bmeReadings, pmsReadings);
+    String jsonData = getReadingsJsonFormat(bmeReadings);
     char topicBuffer[sizeof(MqttTopic)];
     strcpy_P(topicBuffer, MqttTopic);
     client.publish(topicBuffer, jsonData);
