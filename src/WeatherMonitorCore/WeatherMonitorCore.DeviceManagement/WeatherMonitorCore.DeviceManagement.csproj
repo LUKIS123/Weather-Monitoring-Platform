@@ -18,6 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\WeatherMonitorCore.Interfaces\WeatherMonitorCore.Interfaces.csproj" />
 	  <ProjectReference Include="..\WeatherMonitorCore.Shared.MqttClient\WeatherMonitorCore.Shared.MqttClient.csproj" />
 	  <ProjectReference Include="..\WeatherMonitorCore.SharedKernel\WeatherMonitorCore.SharedKernel.csproj" />
 	</ItemGroup>

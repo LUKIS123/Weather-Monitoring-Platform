@@ -1,4 +1,5 @@
-﻿using MQTTnet.Client;
+﻿using Microsoft.Extensions.Logging;
+using MQTTnet.Client;
 using WeatherMonitorCore.Shared.MqttClient.Features.MqttFactoryHelpers;
 using WeatherMonitorCore.Shared.MqttClient.Features.SubscribedTopicsCache;
 using WeatherMonitorCore.Shared.MqttClient.Interfaces;
@@ -10,11 +11,16 @@ internal class SubscriptionsManagingService : ISubscriptionsManagingService
     private readonly IMqttFactoryWrapper _mqttFactoryWrapper;
     private readonly ITopicsCache _topicsCache;
     private readonly IMqttClient _mqttClient;
+    private readonly ILogger<SubscriptionsManagingService> _logger;
 
-    public SubscriptionsManagingService(IMqttFactoryWrapper mqttFactoryWrapper, ITopicsCache topicsCache)
+    public SubscriptionsManagingService(
+        IMqttFactoryWrapper mqttFactoryWrapper,
+        ITopicsCache topicsCache,
+        ILogger<SubscriptionsManagingService> logger)
     {
         _mqttFactoryWrapper = mqttFactoryWrapper;
         _topicsCache = topicsCache;
+        _logger = logger;
         _mqttClient = mqttFactoryWrapper.CreateMqttClient();
     }
 
@@ -22,32 +28,59 @@ internal class SubscriptionsManagingService : ISubscriptionsManagingService
 
     public async Task AddTopicAsync(string topicToAdd, CancellationToken stoppingToken)
     {
-        var unsubscribeOptionsBuilder = _mqttFactoryWrapper.CreateUnsubscribeOptionsBuilder();
-        foreach (var topic in _topicsCache.TopicsSet)
+        if (!_topicsCache.TopicsSet.IsEmpty)
         {
-            unsubscribeOptionsBuilder.WithTopicFilter(topic);
+            var unsubscribeOptionsBuilder = _mqttFactoryWrapper.CreateUnsubscribeOptionsBuilder();
+            foreach (var topic in _topicsCache.TopicsSet)
+            {
+                unsubscribeOptionsBuilder.WithTopicFilter(topic);
+            }
+
+            await _mqttClient.UnsubscribeAsync(unsubscribeOptionsBuilder.Build(), stoppingToken);
         }
 
         _topicsCache.AddTopic(topicToAdd);
-        await _mqttClient.UnsubscribeAsync(unsubscribeOptionsBuilder.Build(), stoppingToken);
         await SubscribeToTopics(stoppingToken);
     }
 
     public async Task RemoveTopicAsync(string topicToRemove, CancellationToken stoppingToken)
     {
+        if (!_mqttClient.IsConnected)
+        {
+            _logger.LogWarning(" Failed to unsubscribe from:{topicToRemove}. Mqtt client is not connected", topicToRemove);
+            return;
+        }
+
         var unsubscribeOptionsBuilder = _mqttFactoryWrapper.CreateUnsubscribeOptionsBuilder();
         foreach (var topic in _topicsCache.TopicsSet)
         {
             unsubscribeOptionsBuilder.WithTopicFilter(topic);
         }
 
-        _topicsCache.RemoveTopic(topicToRemove);
         await _mqttClient.UnsubscribeAsync(unsubscribeOptionsBuilder.Build(), stoppingToken);
+
+        _topicsCache.RemoveTopic(topicToRemove);
+        if (_topicsCache.TopicsSet.IsEmpty)
+        {
+            return;
+        }
+
         await SubscribeToTopics(stoppingToken);
     }
 
     public async Task SubscribeToTopics(CancellationToken stoppingToken)
     {
+        if (!_mqttClient.IsConnected)
+        {
+            _logger.LogError("Failed to subscribe to topics");
+            return;
+        }
+
+        if (_topicsCache.TopicsSet.IsEmpty)
+        {
+            return;
+        }
+
         var subscribeOptionsBuilder = _mqttFactoryWrapper.CreateSubscribeOptionsBuilder();
         foreach (var topic in _topicsCache.TopicsSet)
         {
@@ -59,8 +92,19 @@ internal class SubscriptionsManagingService : ISubscriptionsManagingService
 
     public async Task SubscribeToTopics(IEnumerable<string> topics, CancellationToken stoppingToken)
     {
-        var subscribeOptionsBuilder = _mqttFactoryWrapper.CreateSubscribeOptionsBuilder();
+        if (!_mqttClient.IsConnected)
+        {
+            _logger.LogError("Failed to subscribe to topics");
+            return;
+        }
+
         _topicsCache.AddTopics(topics);
+        if (_topicsCache.TopicsSet.IsEmpty)
+        {
+            return;
+        }
+
+        var subscribeOptionsBuilder = _mqttFactoryWrapper.CreateSubscribeOptionsBuilder();
         foreach (var topic in _topicsCache.TopicsSet)
         {
             subscribeOptionsBuilder.WithTopicFilter(topic);

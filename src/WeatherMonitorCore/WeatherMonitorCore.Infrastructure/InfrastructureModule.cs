@@ -18,6 +18,7 @@ public static class InfrastructureModule
 {
     private const string DbConnection = "MS-SQL";
     private const string TimeZoneSetting = "AppTimeZone";
+    private const string EncryptionSettings = "EncryptionSettings";
 
     public static IServiceCollection AddInfrastructureModule(this IServiceCollection services, IConfiguration configuration, InfrastructureType infrastructureType = InfrastructureType.AspNetCore)
     {
@@ -38,6 +39,13 @@ public static class InfrastructureModule
         var timeZoneId = configuration.GetValue<string>(TimeZoneSetting)
                          ?? throw new ArgumentNullException(nameof(configuration), TimeZoneSetting);
         services.AddTransient<ITimeZoneProvider>(_ => new TimeZoneProvider(timeZoneId));
+
+        var encryptionKeys = configuration.GetSection(EncryptionSettings)
+                             ?? throw new ArgumentNullException(nameof(configuration), EncryptionSettings);
+        var encryptionSettings = new EncryptionSettings();
+        encryptionKeys.Bind(encryptionSettings);
+        services.AddSingleton(encryptionSettings);
+        services.AddTransient<IAesEncryptionHelper, AesEncryptionHelper>();
 
         if (infrastructureType == InfrastructureType.AspNetCore)
         {
