@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MQTTnet.Client;
 using WeatherMonitorCore.MqttDataSubscriberService.Configuration;
+using WeatherMonitorCore.Shared.MqttClient.Interfaces;
 
 namespace WeatherMonitorCore.MqttDataSubscriberService;
 
@@ -9,16 +11,19 @@ public class MqttSubscriptionsHandlingWorker : BackgroundService
     private readonly TimeSpan _period = TimeSpan.FromSeconds(5);
     private readonly ILogger<MqttSubscriptionsHandlingWorker> _logger;
     private readonly IMqttDataService _mqttDataService;
+    private readonly ISubscriptionsManagingService _subscriptionsManagingService;
     private readonly IHostApplicationLifetime _hostApplicationLifetime;
 
     public MqttSubscriptionsHandlingWorker(
         ILogger<MqttSubscriptionsHandlingWorker> logger,
         IMqttDataService mqttDataService,
-        IHostApplicationLifetime hostApplicationLifetime)
+        IHostApplicationLifetime hostApplicationLifetime,
+        ISubscriptionsManagingService subscriptionsManagingService)
     {
         _logger = logger;
         _mqttDataService = mqttDataService;
         _hostApplicationLifetime = hostApplicationLifetime;
+        _subscriptionsManagingService = subscriptionsManagingService;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -45,6 +50,15 @@ public class MqttSubscriptionsHandlingWorker : BackgroundService
             while (!stoppingToken.IsCancellationRequested && keepAlive)
             {
                 keepAlive = await timer.WaitForNextTickAsync(stoppingToken);
+                if (_subscriptionsManagingService.GetMqttClient.IsConnected) continue;
+                try
+                {
+                    await _subscriptionsManagingService.GetMqttClient.ReconnectAsync(stoppingToken);
+                }
+                catch (Exception)
+                {
+                    _logger.LogWarning("{time}: Cannot reconnect to MQTT", DateTimeOffset.Now);
+                }
             }
         }
         catch (OperationCanceledException)

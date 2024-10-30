@@ -1,5 +1,6 @@
 ﻿using WeatherMonitorCore.Contract.DeviceManagementModule;
 using WeatherMonitorCore.DeviceManagement.Infrastructure;
+using WeatherMonitorCore.Interfaces;
 using WeatherMonitorCore.SharedKernel;
 using WeatherMonitorCore.SharedKernel.Exceptions;
 
@@ -13,10 +14,12 @@ internal interface IGetMqttCredentialsService
 internal class GetMqttCredentialsService : IGetMqttCredentialsService
 {
     private readonly IDeviceManagementRepository _deviceManagementRepository;
+    private readonly IAesEncryptionHelper _aesEncryptionHelper;
 
-    public GetMqttCredentialsService(IDeviceManagementRepository deviceManagementRepository)
+    public GetMqttCredentialsService(IDeviceManagementRepository deviceManagementRepository, IAesEncryptionHelper aesEncryptionHelper)
     {
         _deviceManagementRepository = deviceManagementRepository;
+        _aesEncryptionHelper = aesEncryptionHelper;
     }
 
     public async Task<Result<DeviceMqttCredentialsResponse>> Handle(int deviceId)
@@ -31,10 +34,12 @@ internal class GetMqttCredentialsService : IGetMqttCredentialsService
             return new NotFoundException($"Device with id:{deviceId} not found");
         }
 
+        var plainTextPassword = _aesEncryptionHelper.Decrypt(device.Password);
+
         return new DeviceMqttCredentialsResponse(
             device.Id,
             device.Username,
-            device.Password,
+            plainTextPassword,
             device.ClientId,
             device.Topic
         );

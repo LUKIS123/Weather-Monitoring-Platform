@@ -1,5 +1,6 @@
 ﻿using MQTTnet.Client;
 using System.Text;
+using WeatherMonitorCore.Interfaces;
 using WeatherMonitorCore.MqttDataSubscriberService.Configuration;
 using WeatherMonitorCore.MqttDataSubscriberService.Interfaces;
 using WeatherMonitorCore.MqttDataSubscriberService.Interfaces.Models;
@@ -13,6 +14,7 @@ public interface IMqttDataService : IDisposable
 {
     Task HandleMqttSubscriptions(CancellationToken stoppingToken);
     Task CleanUp(Guid clientId, CancellationToken stoppingToken);
+    MqttClientOptions GetMqttClientOptions();
 }
 
 internal class MqttDataService : IMqttDataService
@@ -21,6 +23,7 @@ internal class MqttDataService : IMqttDataService
     private readonly IEnumerable<IMqttEventHandler> _mqttEventHandlers;
     private readonly ISubscriptionsManagingService _subscriptionsManagingService;
     private readonly IServiceWorkerMqttClientGenerator _serviceWorkerMqttClientGenerator;
+    private readonly IAesEncryptionHelper _aesEncryptionHelper;
     private readonly MqttBrokerConnection _brokerConnection;
     private MqttClientOptions _mqttClientOptions = new();
 
@@ -29,14 +32,18 @@ internal class MqttDataService : IMqttDataService
         IAppMqttClientsRepository mqttClientsRepository,
         ISubscriptionsManagingService subscriptionsManagingService,
         IServiceWorkerMqttClientGenerator serviceWorkerMqttClientGenerator,
+        IAesEncryptionHelper aesEncryptionHelper,
         MqttBrokerConnection brokerConnection)
     {
         _mqttEventHandlers = mqttEventHandlers;
         _mqttClientsRepository = mqttClientsRepository;
         _subscriptionsManagingService = subscriptionsManagingService;
         _serviceWorkerMqttClientGenerator = serviceWorkerMqttClientGenerator;
+        _aesEncryptionHelper = aesEncryptionHelper;
         _brokerConnection = brokerConnection;
     }
+
+    public MqttClientOptions GetMqttClientOptions() => _mqttClientOptions;
 
     public async Task HandleMqttSubscriptions(CancellationToken stoppingToken)
     {
@@ -45,7 +52,7 @@ internal class MqttDataService : IMqttDataService
             new CreateWorkerUserDto(
                 superUserCredentials.Id,
                 superUserCredentials.Username,
-                superUserCredentials.Password,
+                _aesEncryptionHelper.Encrypt(superUserCredentials.Password),
                 superUserCredentials.ClientId,
                 superUserCredentials.IsSuperUser));
 
