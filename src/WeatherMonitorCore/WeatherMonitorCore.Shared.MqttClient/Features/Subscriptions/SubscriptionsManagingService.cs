@@ -98,13 +98,13 @@ internal class SubscriptionsManagingService : ISubscriptionsManagingService
             return;
         }
 
+        _topicsCache.AddTopics(topics);
         if (_topicsCache.TopicsSet.IsEmpty)
         {
             return;
         }
 
         var subscribeOptionsBuilder = _mqttFactoryWrapper.CreateSubscribeOptionsBuilder();
-        _topicsCache.AddTopics(topics);
         foreach (var topic in _topicsCache.TopicsSet)
         {
             subscribeOptionsBuilder.WithTopicFilter(topic);
