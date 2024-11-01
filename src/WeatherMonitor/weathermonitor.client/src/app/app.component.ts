@@ -6,7 +6,6 @@ import { MaterialModule } from './shared/material.module';
 import { LoginComponent } from './shared/components/login/login.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ThemeSwitchComponent } from './features/menu/components/theme-switch/theme-switch.component';
-import { SampleComponent } from './sample/app.component';
 import { LogoComponent } from './shared/components/logo/logo.component';
 
 @Component({
@@ -21,7 +20,6 @@ import { LogoComponent } from './shared/components/logo/logo.component';
     LoginComponent,
     TranslateModule,
     ThemeSwitchComponent,
-    SampleComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
