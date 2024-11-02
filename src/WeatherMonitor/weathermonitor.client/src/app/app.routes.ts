@@ -10,6 +10,12 @@ export const routes: Routes = [
     component: WelcomeComponent,
   },
   {
+    path: 'Home',
+    canActivate: [authGuard],
+    loadChildren: () =>
+      import('./features/home-page/routes').then((mod) => mod.FeedRoutes),
+  },
+  {
     path: 'UserSettings',
     canActivate: [authGuard],
     loadChildren: () =>

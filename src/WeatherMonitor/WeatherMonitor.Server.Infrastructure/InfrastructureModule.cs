@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WeatherMonitor.Server.DataView.Infrastructure;
 using WeatherMonitor.Server.DeviceManagement.Infrastructure;
 using WeatherMonitor.Server.Infrastructure.Repositories;
 using WeatherMonitor.Server.Interfaces;
@@ -19,6 +20,7 @@ public static class InfrastructureModule
         // Repositories
         services.AddTransient<IUserAuthorizationRepository, SqlUserRepository>();
         services.AddTransient<IDeviceManagementRepository, DevicesRepository>();
+        services.AddTransient<IWeatherStationsRepository, DevicesRepository>();
 
         // Microservice Http Client
         services.AddTransient<ICoreMicroserviceHttpClientWrapper, CoreMicroserviceHttpClientWrapper>();

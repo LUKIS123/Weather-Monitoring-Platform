@@ -1,0 +1,30 @@
+<div class="w-full flex flex-col overflow-auto px-2 space-y-2 mb-1">
+  @if (isLoading()) {
+  <mat-progress-bar class="w-full" mode="indeterminate"></mat-progress-bar>
+  }
+  <mat-accordion class="pb-14 items-center justify-center content-center">
+    @for (station of stationsPageResult().items; track $index) {
+    <app-stations-list-element [weatherStation]="station" />
+    } @if(stationsPageResult().items.length === 0) {
+    <div class="flex justify-center items-center w-full h-[25vh]">
+      <p class="text-gray-500">
+        {{ "StationsList.Lsit.NoWeatherStations" | translate }}
+      </p>
+    </div>
+    }
+  </mat-accordion>
+  <mat-paginator
+    #paginator
+    class="fixed bottom-0 left-0 w-full"
+    (page)="handlePageEvent($event)"
+    [length]="stationsPageResult().totalItemsCount"
+    [pageSize]="stationsPageResult().pageSize"
+    [disabled]="false"
+    [showFirstLastButtons]="false"
+    [pageSizeOptions]="[]"
+    [hidePageSize]="true"
+    [pageIndex]="currentPage()"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</div>
