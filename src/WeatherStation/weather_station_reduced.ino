@@ -109,6 +109,9 @@ void setup() {
 void loop() {
   client.loop();
   delay(10);
+  if (WiFi.status() != WL_CONNECTED) {
+    connectToWiFi();
+  }
   if (!client.connected()) {
     connectToMqtt();
   }
