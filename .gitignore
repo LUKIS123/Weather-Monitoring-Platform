@@ -400,3 +400,4 @@ terraform/.terraform.lock.hcl
 terraform/.terraform
 terraform/terraform.tfstate
 terraform/terraform.tfstate.backup
+src/WeatherMonitorCore/WeatherMonitorCore/Properties/ServiceDependencies/weather-monitor-core - Zip Deploy1/profile.arm.json
