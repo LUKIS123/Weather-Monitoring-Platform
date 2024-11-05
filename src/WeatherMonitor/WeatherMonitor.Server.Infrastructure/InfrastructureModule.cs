@@ -9,7 +9,7 @@ using WeatherMonitor.Server.SharedKernel.Repositories;
 namespace WeatherMonitor.Server.Infrastructure;
 public static class InfrastructureModule
 {
-    private const string DbConnection = "MS-SQL";
+    private const string DbConnection = "MSSQL";
 
     public static IServiceCollection AddInfrastructureModule(this IServiceCollection services, IConfiguration configuration)
     {
