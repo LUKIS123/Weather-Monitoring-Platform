@@ -43,17 +43,14 @@ void connectToMqtt() {
   char clientIdBuffer[sizeof(MqttClientId)];
   char usernameBuffer[sizeof(MqttUsername)];
   char passwordBuffer[sizeof(MqttPassword)];
-  char topicBuffer[sizeof(MqttTopic)];
   strcpy_P(clientIdBuffer, MqttClientId);
   strcpy_P(usernameBuffer, MqttUsername);
   strcpy_P(passwordBuffer, MqttPassword);
-  strcpy_P(topicBuffer, MqttTopic);
   while (!client.connect(clientIdBuffer, usernameBuffer, passwordBuffer)) {
     delay(1000);
     Serial.println(F("Connecting to MQTT..."));
   }
   Serial.println(F("Connected to MQTT"));
-  client.subscribe(topicBuffer);
 }
 
 bmeData getBmeSensorReadings() {
@@ -105,8 +102,8 @@ void setup() {
   };
   gptimer_new_timer(&config, &gptimer);
   gptimer_alarm_config_t alarm_config = {
-    .alarm_count = 60000000,  // Time in microseconds
-    .reload_count = 0,        // Start counting from 0
+    .alarm_count = 900000000,  // Time in microseconds
+    .reload_count = 0,         // Start counting from 0
     .flags = {
       .auto_reload_on_alarm = true  // Auto-reload for continuous intervals
     }
@@ -126,16 +123,17 @@ void loop() {
   if (WiFi.status() != WL_CONNECTED) {
     connectToWiFi();
   }
-  if (!client.connected()) {
-    connectToMqtt();
-  }
   if (shouldReadAndPublishData) {
     shouldReadAndPublishData = false;
     bmeData bmeReadings = getBmeSensorReadings();
     pmsData pmsReadings = getPmsSensorReadings();
     String jsonData = getReadingsJsonFormat(bmeReadings, pmsReadings);
+
     char topicBuffer[sizeof(MqttTopic)];
     strcpy_P(topicBuffer, MqttTopic);
+    if (!client.connected()) {
+      connectToMqtt();
+    }
     client.publish(topicBuffer, jsonData);
   }
 }
