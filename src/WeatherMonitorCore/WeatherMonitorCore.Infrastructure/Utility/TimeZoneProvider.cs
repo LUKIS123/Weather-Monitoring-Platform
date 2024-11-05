@@ -11,7 +11,7 @@ internal class TimeZoneProvider : ITimeZoneProvider
     {
         var platformSpecificTimeZoneId = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
             ? TZConvert.IanaToWindows(timeZoneId)
-            : TZConvert.WindowsToIana(timeZoneId);
+            : timeZoneId;
         _timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(platformSpecificTimeZoneId);
     }
 
