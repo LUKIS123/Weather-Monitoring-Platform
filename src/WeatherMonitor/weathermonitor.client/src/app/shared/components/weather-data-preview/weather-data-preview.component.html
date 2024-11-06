@@ -23,10 +23,31 @@
       >
     </p>
     <p class="flex flex-row justify-between">
-      <span>{{ "Shared.PM2_5" | translate }}: </span>
-      <span>{{ sensorData()?.pM2_5 }} {{ "Shared.PMUnit" | translate }}</span>
+      <span>{{ "Shared.PM1_0" | translate }}: </span>
+      @if(sensorData()?.pM1_0 !== null){
+      <span>{{ sensorData()?.pM1_0 }} {{ "Shared.PMUnit" | translate }}</span>
+      }@else {
+      <span>{{ "Shared.MeasurementNotAvailable" | translate }}</span>
+      }
     </p>
-    }@else {
+    <p class="flex flex-row justify-between">
+      <span>{{ "Shared.PM2_5" | translate }}: </span>
+      @if(sensorData()?.pM2_5 !== null){
+      <span>{{ sensorData()?.pM2_5 }} {{ "Shared.PMUnit" | translate }}</span>
+      }@else {
+      <span>{{ "Shared.MeasurementNotAvailable" | translate }}</span>
+      }
+    </p>
+    <p class="flex flex-row justify-between">
+      <span>{{ "Shared.PM10" | translate }}: </span>
+      @if(sensorData()?.pM10 !== null){
+      <span>{{ sensorData()?.pM10 }} {{ "Shared.PMUnit" | translate }}</span>
+      }@else {
+      <span>{{ "Shared.MeasurementNotAvailable" | translate }}</span>
+      }
+    </p>
+    } 
+    @else {
     <p class="flex flex-row justify-between">
       <span>{{ "Shared.WeatherNotFound" | translate }} </span>
     </p>

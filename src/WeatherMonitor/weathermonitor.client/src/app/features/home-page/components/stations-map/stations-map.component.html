@@ -1,1 +1,33 @@
-<p>stations-map works!</p>
+<div class="w-full flex flex-col px-2 space-y-2 mb-1">
+  @if(isMapLoading()){
+  <p class="w-full h-full flex flex-row justify-center items-center">
+    <mat-spinner></mat-spinner>
+  </p>
+  }
+  <!-- <div #stationsMap class="w-full flex-grow h-[75vh]" id="stationsMap"></div> -->
+
+  <google-map
+    mapId="yourMapId"
+    height="400px"
+    width="750px"
+    [center]="center"
+    [zoom]="zoom"
+    (mapClick)="addAdvancedMarker($event)"
+  >
+    @for (position of advancedMarkerPositions; track position) {
+    <map-advanced-marker
+      #marker="mapAdvancedMarker"
+      [position]="position"
+      [options]="advancedMarkerOptions"
+      (mapClick)="handleMarkerClick(marker, displayWindow)"
+      [content]="buildContent(position)"
+    >
+    </map-advanced-marker>
+    <map-info-window #displayWindow="mapInfoWindow">
+      <p class="text-lg font-bold text-red-600">Station Name</p>
+      <p class="text-sm text-red-600">Station Address</p>
+      <p class="text-sm text-red-600">Station Phone</p>
+    </map-info-window>
+    }
+  </google-map>
+</div>

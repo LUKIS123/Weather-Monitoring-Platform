@@ -11,7 +11,7 @@ export const routes: Routes = [
   },
   {
     path: 'Home',
-    canActivate: [authGuard],
+    canActivate: [],
     loadChildren: () =>
       import('./features/home-page/routes').then((mod) => mod.FeedRoutes),
   },

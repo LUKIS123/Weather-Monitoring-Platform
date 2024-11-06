@@ -14,6 +14,7 @@
   "Shared.AltitudeUnit": "m",
   "Shared.PMUnit": "µg/m³",
   "Shared.Device": "Urządzenie",
+  "Shared.MeasurementNotAvailable": "Brak danych",
   "Shared.NotFound": "Nie znaleziono",
   "Shared.WeatherNotFound": "Brak danych pogodowych do wyświetlenia",
   "Shared.TakeMeBack": "Wróć",
@@ -22,7 +23,7 @@
   "LandingPage.GetStarted": "Zaloguj się, aby mieć dostęp do wszystkich funkcji aplikacji",
   "LandingPage.Features": "Funkcje aplikacji",
   "LandingPage.Features.Weather": "Dostęp do danych pogodowych",
-  "LandingPage.Features.Weather.Description": "Śledź najnowsze dane pogodowe z wybranych stacji w całym Wrocławiu. Uzyskaj szczegółowe informacje na temat temperatury, wilgotności i innych wskaźników pogodowych w czasie rzeczywistym.",
+  "LandingPage.Features.Weather.Description": "Śledź najnowsze dane pogodowe z wybranych stacji w całym Wrocławiu. Uzyskaj szczegółowe informacje na temat temperatury, wilgotności i innych wskaźników.",
   "LandingPage.Features.AirQuality": "Monitorowanie jakości powietrza",
   "LandingPage.Features.AirQuality.Description": "Bądź na bieżąco ze stanem powietrza, analizując poziomy pyłów PM10, PM2.5 i PM1.0. Weather Monitor pozwala szybko ocenić, czy powietrze w Twojej okolicy jest bezpieczne do aktywności na świeżym powietrzu.",
   "LandingPage.Features.StationMap": "Mapa lokalizacji stacji pogodowych",
@@ -92,5 +93,8 @@
   "StationsList.StationName": "Nazwa stacji",
   "StationsList.StationDescription": "Opis stacji",
   "StationsList.LastUpdate": "Ostatnia aktualizacja",
-  "StationsList.MissingUpdate": "Brak aktualizacji"
+  "StationsList.MissingUpdate": "Brak aktualizacji",
+  "StationsMap.Map.Error": "Wystąpił błąd podczas pobierania danych mapy",
+  "StationsMap.Error": "Wystąpił błąd podczas budowania mapy",
+  "StationsMap.NoStations": "Nie znaleziono stacji do wyświetlenia"
 }
