@@ -24,7 +24,7 @@
 
   <div>
     <div
-      class="grid grid-cols-2 md:grid-cols-3 justify-around mb-4 items-center space-x-2"
+      class="grid grid-cols-2 md:grid-cols-4 justify-around my-2 items-start"
     >
       <div class="flex flex-row items-center">
         <p class="mat-body-1">
@@ -67,11 +67,23 @@
             {{ "StationsList.LastUpdate" | translate }}:
           </span>
           <br />
-          @if(weatherStation().receivedAt !== null){
-          <span> {{ weatherStation().receivedAt }}</span>
+          @if(formattedDate() !== ''){
+          <span> {{ formattedDate() }}</span>
           }@else {
           <span>{{ "StationsList.MissingUpdate" | translate }}</span>
           }
+        </p>
+      </div>
+
+      <div class="flex flex-row items-center w-full">
+        <p class="mat-body-1 w-44">
+          <span class="text-xs text-gray-400">
+            {{ "Shared.Measurments" | translate }}:
+          </span>
+          <br />
+          <app-weather-data-preview
+            [weatherResponse]="weatherStation()"
+          ></app-weather-data-preview>
         </p>
       </div>
     </div>

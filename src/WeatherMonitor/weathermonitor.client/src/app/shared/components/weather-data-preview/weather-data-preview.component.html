@@ -1,0 +1,35 @@
+<mat-card appearance="outlined">
+  <mat-card-content>
+    @if(sensorData()!==undefined){
+    <p class="flex flex-row justify-between">
+      <span>{{ "Shared.Temperature" | translate }}: </span>
+      <span
+        >{{ sensorData()?.temperature }}
+        {{ "Shared.TemperatureUnit" | translate }}
+      </span>
+    </p>
+    <p class="flex flex-row justify-between">
+      <span>{{ "Shared.Humidity" | translate }}: </span>
+      <span
+        >{{ sensorData()?.humidity }}
+        {{ "Shared.HumidityUnit" | translate }}</span
+      >
+    </p>
+    <p class="flex flex-row justify-between">
+      <span>{{ "Shared.Pressure" | translate }}: </span>
+      <span
+        >{{ sensorData()?.airPressure }}
+        {{ "Shared.PressureUnit" | translate }}</span
+      >
+    </p>
+    <p class="flex flex-row justify-between">
+      <span>{{ "Shared.PM2_5" | translate }}: </span>
+      <span>{{ sensorData()?.pM2_5 }} {{ "Shared.PMUnit" | translate }}</span>
+    </p>
+    }@else {
+    <p class="flex flex-row justify-between">
+      <span>{{ "Shared.WeatherNotFound" | translate }} </span>
+    </p>
+    }
+  </mat-card-content>
+</mat-card>
