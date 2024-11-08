@@ -6,4 +6,5 @@ public interface IDeviceManagementRepository
     Task<int> RegisterDeviceAsync(RegisterDeviceDto createDevice);
     Task<MqttCredentialsDto> GetDeviceByIdAsync(int deviceId);
     Task RemoveDeviceAsync(int deviceId);
+    Task BulkUpdateDevicesStatusAsync(IEnumerable<int> deviceIds, bool status);
 }

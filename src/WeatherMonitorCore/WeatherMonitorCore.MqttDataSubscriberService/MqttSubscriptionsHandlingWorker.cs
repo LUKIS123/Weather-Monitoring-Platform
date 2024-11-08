@@ -36,6 +36,7 @@ public class MqttSubscriptionsHandlingWorker : BackgroundService
             }, stoppingToken);
         });
 
+        await Task.Delay(1000, stoppingToken);
         if (_logger.IsEnabled(LogLevel.Information))
         {
             _logger.LogInformation("Worker started at:{time}", DateTimeOffset.Now);

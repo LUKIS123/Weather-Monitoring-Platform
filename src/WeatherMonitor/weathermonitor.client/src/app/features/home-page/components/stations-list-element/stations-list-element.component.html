@@ -1,0 +1,120 @@
+<div
+  class="pb-2 px-2 outline outline-zinc-300 outline-1 shadow-lg my-1 relative"
+>
+  <span class="absolute top-0 right-0">
+    @if(weatherStation().username !== null && weatherStation().username !== ''){
+    <button
+      mat-icon-button
+      (click)="navigate()"
+      [matTooltip]="'StationsList.ViewData' | translate"
+    >
+      <mat-icon>manage_search</mat-icon>
+    </button>
+    }
+  </span>
+
+  <div>
+    <span class="font-bold"
+      >{{ "StationsList.StationName" | translate }}:
+    </span>
+    <span class="mat-headline-6 font-bold">{{
+      weatherStation().username
+    }}</span>
+  </div>
+
+  <div>
+    <div
+      class="grid grid-cols-2 md:grid-cols-4 justify-around my-2 items-start"
+    >
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <span class="text-xs text-gray-400">
+            {{ "DeviceManagement.IsActiveStatus" | translate }}:
+          </span>
+          <br />
+          <span>
+            {{
+              weatherStation().isActive
+                ? ("DeviceManagement.Credentials.Active" | translate)
+                : ("DeviceManagement.Credentials.InActive" | translate)
+            }}
+          </span>
+        </p>
+      </div>
+
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <span class="text-xs text-gray-400">
+            {{ "DeviceManagement.GoogleMapsCode" | translate }}:
+          </span>
+          <br />
+          @if(weatherStation().googleMapsPlusCode !== null &&
+          weatherStation().googleMapsPlusCode !== ''){
+          <span class="font-bold">
+            {{ weatherStation().googleMapsPlusCode }}
+          </span>
+          }@else {
+          <span>
+            {{ "DeviceManagement.NoGoogleMapsCode" | translate }}
+          </span>
+          }
+        </p>
+      </div>
+
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <span class="text-xs text-gray-400">
+            {{ "StationsList.LastUpdate" | translate }}:
+          </span>
+          <br />
+          @if(formattedDate() !== ''){
+          <span> {{ formattedDate() }}</span>
+          }@else {
+          <span>{{ "StationsList.MissingUpdate" | translate }}</span>
+          }
+        </p>
+      </div>
+
+      <div class="flex flex-row items-center w-full">
+        <p class="mat-body-1 min-w-44">
+          <span class="text-xs text-gray-400">
+            {{ "Shared.Measurments" | translate }}:
+          </span>
+          <br />
+          <app-weather-data-preview
+            [weatherResponse]="weatherStation()"
+          ></app-weather-data-preview>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <mat-expansion-panel
+    (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false"
+    #storyTasks
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ "StationsList.StationDescription" | translate }}
+        @if (!panelOpenState) {<mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="expand_more"
+        ></mat-icon
+        >}@else{
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Example home icon"
+          fontIcon="expand_less"
+        ></mat-icon>
+        }
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    @if(weatherStation().deviceExtraInfo !== null){
+    <p>{{ weatherStation().deviceExtraInfo }}</p>
+    }@else {
+    <p>{{ "DeviceManagement.NoDescription" | translate }}</p>
+    }
+  </mat-expansion-panel>
+</div>

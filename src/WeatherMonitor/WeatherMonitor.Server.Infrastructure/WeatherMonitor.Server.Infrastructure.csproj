@@ -17,11 +17,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WeatherMonitor.Server.DataView\WeatherMonitor.Server.DataView.csproj" />
     <ProjectReference Include="..\WeatherMonitor.Server.DeviceManagement\WeatherMonitor.Server.DeviceManagement.csproj" />
     <ProjectReference Include="..\WeatherMonitor.Server.Interfaces\WeatherMonitor.Server.Interfaces.csproj" />
     <ProjectReference Include="..\WeatherMonitor.Server.SharedKernel\WeatherMonitor.Server.SharedKernel.csproj" />

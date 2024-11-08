@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitor.Server.Inter
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitorCore.Contract", "..\WeatherMonitorCore\WeatherMonitorCore.Contract\WeatherMonitorCore.Contract.csproj", "{C7718636-1BB3-4004-A01A-4A0EF04F10FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitor.Server.DeviceManagement", "WeatherMonitor.Server.DeviceManagement\WeatherMonitor.Server.DeviceManagement.csproj", "{D8EC1408-30FF-4ED1-B36E-5856BECC3F23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitor.Server.DeviceManagement", "WeatherMonitor.Server.DeviceManagement\WeatherMonitor.Server.DeviceManagement.csproj", "{D8EC1408-30FF-4ED1-B36E-5856BECC3F23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitor.Server.DataView", "WeatherMonitor.Server.DataView\WeatherMonitor.Server.DataView.csproj", "{AAC7CA06-5ED4-49A9-B93A-671E42B09DCE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,10 @@ Global
 		{D8EC1408-30FF-4ED1-B36E-5856BECC3F23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8EC1408-30FF-4ED1-B36E-5856BECC3F23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8EC1408-30FF-4ED1-B36E-5856BECC3F23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAC7CA06-5ED4-49A9-B93A-671E42B09DCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAC7CA06-5ED4-49A9-B93A-671E42B09DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAC7CA06-5ED4-49A9-B93A-671E42B09DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAC7CA06-5ED4-49A9-B93A-671E42B09DCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

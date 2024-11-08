@@ -153,4 +153,14 @@ FROM [WeatherMonitor].[identity].[MqttTopics]
 WHERE Id=@TargetTopicId;
 ", new { deviceId });
     }
+
+    public async Task BulkUpdateDevicesStatusAsync(IEnumerable<int> deviceIds, bool status)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+        await using var multi = await connection.QueryMultipleAsync(@"
+UPDATE [identity].[Devices]
+SET IsActive = @Status
+WHERE Id IN @StationIds;
+", new { StationIds = deviceIds, Status = status });
+    }
 }

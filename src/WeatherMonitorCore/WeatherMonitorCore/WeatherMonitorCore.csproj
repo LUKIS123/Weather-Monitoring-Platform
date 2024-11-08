@@ -29,4 +29,8 @@
 		<ProjectReference Include="..\WeatherMonitorCore.UserAuthorization\WeatherMonitorCore.UserAuthorization.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Controllers\" />
+	</ItemGroup>
+
 </Project>

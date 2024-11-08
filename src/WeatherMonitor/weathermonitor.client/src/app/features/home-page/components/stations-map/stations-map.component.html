@@ -1,0 +1,24 @@
+<div class="w-full flex flex-col px-2 space-y-2 mb-1">
+  @if (isLoading()) {
+  <mat-progress-bar class="w-full" mode="indeterminate"></mat-progress-bar>
+  }
+  <google-map
+    mapId="stationsMap"
+    height="80vh"
+    width="100%"
+    [center]="center"
+    [zoom]="zoom"
+    [options]="mapOptions"
+  >
+    @for (station of weatherStations(); track $index) {
+    <map-advanced-marker
+      #marker="mapAdvancedMarker"
+      [position]="station.location"
+      [options]="advancedMarkerOptions"
+      (mapClick)="handleMarkerClick($event)"
+      [content]="buildContent(station)"
+    >
+    </map-advanced-marker>
+    }
+  </google-map>
+</div>

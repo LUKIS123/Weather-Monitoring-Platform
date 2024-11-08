@@ -21,6 +21,7 @@
     <ProjectReference Include="..\weathermonitor.client\weathermonitor.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\WeatherMonitor.Server.DataView\WeatherMonitor.Server.DataView.csproj" />
     <ProjectReference Include="..\WeatherMonitor.Server.Infrastructure\WeatherMonitor.Server.Infrastructure.csproj" />
     <ProjectReference Include="..\WeatherMonitor.Server.SharedKernel\WeatherMonitor.Server.SharedKernel.csproj" />
     <ProjectReference Include="..\WeatherMonitor.Server.UserAuthentication\WeatherMonitor.Server.UserAuthentication.csproj" />

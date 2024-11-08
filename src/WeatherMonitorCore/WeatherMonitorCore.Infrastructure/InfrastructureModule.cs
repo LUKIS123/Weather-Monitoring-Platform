@@ -16,7 +16,7 @@ namespace WeatherMonitorCore.Infrastructure;
 
 public static class InfrastructureModule
 {
-    private const string DbConnection = "MS-SQL";
+    private const string DbConnection = "MSSQL";
     private const string TimeZoneSetting = "AppTimeZone";
     private const string EncryptionSettings = "EncryptionSettings";
 
