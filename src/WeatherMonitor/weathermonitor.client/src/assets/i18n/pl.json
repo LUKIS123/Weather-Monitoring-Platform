@@ -15,6 +15,7 @@
   "Shared.PMUnit": "µg/m³",
   "Shared.Device": "Urządzenie",
   "Shared.MeasurementNotAvailable": "Brak danych",
+  "Shared.MeasurementNotAvailableShort": "Brak",
   "Shared.NotFound": "Nie znaleziono",
   "Shared.WeatherNotFound": "Brak danych pogodowych do wyświetlenia",
   "Shared.TakeMeBack": "Wróć",
@@ -96,5 +97,6 @@
   "StationsList.MissingUpdate": "Brak aktualizacji",
   "StationsMap.Map.Error": "Wystąpił błąd podczas pobierania danych mapy",
   "StationsMap.Error": "Wystąpił błąd podczas budowania mapy",
-  "StationsMap.NoStations": "Nie znaleziono stacji do wyświetlenia"
+  "StationsMap.NoStations": "Nie znaleziono stacji do wyświetlenia",
+  "StationsMap.GeoCodeError": "Wystąpił błąd podczas pobierania danych geolokalizacyjnych"
 }

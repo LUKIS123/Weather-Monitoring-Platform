@@ -125,3 +125,114 @@ body {
   margin: 0;
   font-family: "Roboto", "Helvetica Neue", sans-serif;
 }
+
+/*
+ * Weather Station Marker styles
+ */
+.stationMarkerProperty {
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 50%;
+  color: #263238;
+  display: flex;
+  font-size: 14px;
+  gap: 15px;
+  height: 30px;
+  justify-content: center;
+  padding: 4px;
+  position: relative;
+  transition: all 0.1s ease-out;
+  width: 30px;
+}
+
+.stationMarkerProperty::after {
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 9px solid #ffffff;
+  content: "";
+  height: 0;
+  left: 50%;
+  position: absolute;
+  top: 95%;
+  transform: translate(-50%, 0);
+  transition: all 0.1s ease-out;
+  width: 0;
+  z-index: 1;
+}
+
+.stationMarkerProperty .icon {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.stationMarkerProperty .icon img {
+  height: 3.125rem;
+  width: auto;
+}
+
+.stationMarkerProperty .details {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+}
+
+.stationMarkerProperty .features {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 5px;
+}
+
+.stationMarkerProperty .features > div {
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  display: flex;
+  font-size: 12px;
+  gap: 5px;
+  padding: 5px;
+}
+
+.stationMarkerProperty.highlight {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.2);
+  border-color: #263238;
+  height: 110px;
+  padding: 8px 15px;
+  width: auto;
+  z-index: 2 !important;
+}
+
+.stationMarkerProperty.highlight::after {
+  border-top: 16px solid #ffffff;
+}
+
+.stationMarkerProperty.highlight .details {
+  display: flex;
+}
+
+.stationMarkerProperty.highlight .icon img {
+  height: 3.125rem;
+  width: auto;
+}
+
+:root {
+  --stationMarker-color: #424242;
+}
+
+.stationMarkerProperty.highlight:has(.stationMarkerColor) .icon {
+  color: var(--stationMarker-color);
+}
+
+.stationMarkerProperty:not(.highlight):has(.stationMarkerColor) {
+  background-color: var(--stationMarker-color);
+}
+
+.stationMarkerProperty:not(.highlight):has(.stationMarkerColor)::after {
+  border-top: 9px solid var(--stationMarker-colo);
+}

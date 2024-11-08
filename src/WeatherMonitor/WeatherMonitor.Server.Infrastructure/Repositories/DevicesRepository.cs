@@ -97,14 +97,4 @@ FROM [identity].[Devices];
 
         return (getStationResponses, totalItems);
     }
-
-    public async Task SetStationsActiveAsync(IEnumerable<int> stationsIds)
-    {
-        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
-        await using var multi = await connection.QueryMultipleAsync(@"
-UPDATE [identity].[Devices]
-SET IsActive = 1
-WHERE Id IN @StationIds;
-", new { StationIds = stationsIds });
-    }
 }

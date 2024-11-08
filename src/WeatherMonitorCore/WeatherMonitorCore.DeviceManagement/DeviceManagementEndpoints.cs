@@ -6,6 +6,7 @@ using WeatherMonitorCore.Contract.DeviceManagementModule;
 using WeatherMonitorCore.DeviceManagement.Features.GetDeviceMqttCredentials;
 using WeatherMonitorCore.DeviceManagement.Features.RegisterDevice;
 using WeatherMonitorCore.DeviceManagement.Features.RemoveDevice;
+using WeatherMonitorCore.DeviceManagement.Features.UpdateDeviceStatus;
 using WeatherMonitorCore.SharedKernel;
 
 namespace WeatherMonitorCore.DeviceManagement;
@@ -39,5 +40,14 @@ public static class DeviceManagementEndpoints
                 var result = await removeDeviceService.Handle(deviceId);
                 await context.HandleResult(result);
             }).RequireAuthorization("IsAdminPolicy");
+
+        routes.MapPost(
+            "/api/deviceManagement/statusUpdate",
+            async (HttpContext context, [FromServices] IUpdateDeviceStatusService updateDeviceStatusService,
+                [FromBody] UpdateDeviceStatusRequest requests) =>
+            {
+                var result = await updateDeviceStatusService.Handle(requests);
+                await context.HandleResult(result);
+            }).AllowAnonymous();
     }
 }

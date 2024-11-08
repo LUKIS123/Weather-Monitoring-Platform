@@ -1,33 +1,24 @@
 <div class="w-full flex flex-col px-2 space-y-2 mb-1">
-  @if(isMapLoading()){
-  <p class="w-full h-full flex flex-row justify-center items-center">
-    <mat-spinner></mat-spinner>
-  </p>
+  @if (isLoading()) {
+  <mat-progress-bar class="w-full" mode="indeterminate"></mat-progress-bar>
   }
-  <!-- <div #stationsMap class="w-full flex-grow h-[75vh]" id="stationsMap"></div> -->
-
   <google-map
-    mapId="yourMapId"
-    height="400px"
-    width="750px"
+    mapId="stationsMap"
+    height="80vh"
+    width="100%"
     [center]="center"
     [zoom]="zoom"
-    (mapClick)="addAdvancedMarker($event)"
+    [options]="mapOptions"
   >
-    @for (position of advancedMarkerPositions; track position) {
+    @for (station of weatherStations(); track $index) {
     <map-advanced-marker
       #marker="mapAdvancedMarker"
-      [position]="position"
+      [position]="station.location"
       [options]="advancedMarkerOptions"
-      (mapClick)="handleMarkerClick(marker, displayWindow)"
-      [content]="buildContent(position)"
+      (mapClick)="handleMarkerClick($event)"
+      [content]="buildContent(station)"
     >
     </map-advanced-marker>
-    <map-info-window #displayWindow="mapInfoWindow">
-      <p class="text-lg font-bold text-red-600">Station Name</p>
-      <p class="text-sm text-red-600">Station Address</p>
-      <p class="text-sm text-red-600">Station Phone</p>
-    </map-info-window>
     }
   </google-map>
 </div>

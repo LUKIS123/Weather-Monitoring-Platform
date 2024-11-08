@@ -15,6 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\WeatherMonitor.Server.Interfaces\WeatherMonitor.Server.Interfaces.csproj" />
 	  <ProjectReference Include="..\WeatherMonitor.Server.SharedKernel\WeatherMonitor.Server.SharedKernel.csproj" />
 	</ItemGroup>
 
