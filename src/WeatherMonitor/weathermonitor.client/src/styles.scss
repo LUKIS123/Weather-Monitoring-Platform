@@ -182,7 +182,7 @@ body {
   align-items: flex-end;
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 3px;
   padding: 5px;
 }
 
@@ -192,8 +192,8 @@ body {
   border-radius: 5px;
   border: 1px solid #ccc;
   display: flex;
-  font-size: 12px;
-  gap: 5px;
+  font-size: 10px;
+  gap: 3px;
   padding: 5px;
 }
 
@@ -202,10 +202,10 @@ body {
   border-radius: 8px;
   box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.2);
   border-color: #263238;
-  height: 110px;
-  padding: 8px 15px;
+  height: 100px;
+  padding: 8px 5px;
   width: auto;
-  z-index: 2 !important;
+  z-index: 3 !important;
 }
 
 .stationMarkerProperty.highlight::after {
@@ -217,7 +217,7 @@ body {
 }
 
 .stationMarkerProperty.highlight .icon img {
-  height: 3.125rem;
+  height: 2.5rem;
   width: auto;
 }
 
