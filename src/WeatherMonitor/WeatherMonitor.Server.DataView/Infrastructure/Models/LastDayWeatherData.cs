@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace WeatherMonitor.Server.DataView.Infrastructure.Models;
 
-namespace WeatherMonitor.Server.DataView.Infrastructure.Models;
-internal class LastDayWeatherData
-{
-}
+public readonly record struct LastDayWeatherData(
+    IEnumerable<LastDayHourlyData> HourlyData
+);
+
+public readonly record struct LastDayHourlyData(
+    DateTime HourlyTimeStamp,
+    double? AvgTemperature,
+    double? AvgHumidity,
+    double? AvgAirPressure,
+    double? AvgPM1_0,
+    double? AvgPM2_5,
+    double? AvgPM10);

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using WeatherMonitor.Server.DataView.Features.GetStationsList;
+using WeatherMonitor.Server.DataView.Features.GetWeatherDataLastDay;
 using WeatherMonitor.Server.SharedKernel.HttpContextExtensions;
 
 namespace WeatherMonitor.Server.DataView;
@@ -27,6 +28,15 @@ public static class DataViewEndpoints
             async (HttpContext context, [FromServices] IGetStationsListService getDevicesService) =>
             {
                 var result = await getDevicesService.Handle(1, 1000);
+                await context.HandleResult(result);
+            }).AllowAnonymous();
+
+        routes.MapGet(
+            "/api/dataView/history/day",
+            async (HttpContext context, [FromServices] IGetWeatherDataLastDayService getWeatherDataLastDayService,
+                [FromQuery] int? deviceId = null) =>
+            {
+                var result = await getWeatherDataLastDayService.Handle(deviceId);
                 await context.HandleResult(result);
             }).AllowAnonymous();
     }
