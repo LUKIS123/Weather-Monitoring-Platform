@@ -39,10 +39,10 @@ SELECT
 FROM
     HourOffset h
     LEFT JOIN [weatherData].[SensorsMeasurements] s
-        ON DATEPART(HOUR, s.ReceivedAt) = DATEPART(HOUR, DATEADD(HOUR, -h.HourOffset, @CurrentDateTime))
-        AND CAST(s.ReceivedAt AS DATE) = CAST(DATEADD(HOUR, -h.HourOffset, @CurrentDateTime) AS DATE)
-        AND s.ReceivedAt >= DATEADD(HOUR, -24, @CurrentDateTime)
+        ON s.ReceivedAt >= DATEADD(HOUR, -h.HourOffset - 1, @CurrentDateTime)
+            AND s.ReceivedAt < DATEADD(HOUR, -h.HourOffset, @CurrentDateTime)
 ");
+
         if (deviceId.HasValue)
         {
             sql.Append(@"
@@ -55,7 +55,6 @@ GROUP BY
 ORDER BY
     {nameof(LastDayHourlyData.HourlyTimeStamp)};
 ");
-
         var results = await connection.QueryAsync<LastDayHourlyData>(
             sql.ToString(),
             new
@@ -65,5 +64,74 @@ ORDER BY
             });
 
         return new LastDayWeatherData(results);
+    }
+
+    public async Task<LastWeekWeatherData> GetLastWeekWeatherDataAsync(DateTime currentTime, int? deviceId = null)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+        var sql = new StringBuilder(@$"
+DECLARE @CurrentDateTime DATETIME = @currentTime;
+
+WITH
+    DateRange AS (
+        SELECT CAST(DATEADD(DAY, -6, CAST(@CurrentDateTime AS DATE)) AS DATE) AS Date
+        UNION ALL
+        SELECT DATEADD(DAY, 1, Date)
+        FROM DateRange
+        WHERE Date < CAST(@CurrentDateTime AS DATE)
+    ),
+    HourRange AS (
+        SELECT 0 AS HourOfDay
+        UNION ALL
+        SELECT HourOfDay + 1
+        FROM HourRange
+        WHERE HourOfDay < 23
+    ),
+    DateHourRange AS (
+        SELECT
+            DATEADD(HOUR, h.HourOfDay, CAST(d.Date AS DATETIME)) AS HourDateTime
+        FROM DateRange d
+        CROSS JOIN HourRange h
+    )
+SELECT
+    dhr.HourDateTime AS {nameof(LastWeekHourlyData.HourDateTime)},
+    ROUND(AVG(sm.Temperature), 2) AS {nameof(LastWeekHourlyData.AvgTemperature)},
+    ROUND(AVG(sm.Humidity), 2) AS {nameof(LastWeekHourlyData.AvgHumidity)},
+    ROUND(AVG(sm.AirPressure), 2) AS {nameof(LastWeekHourlyData.AvgAirPressure)},
+    ROUND(AVG(sm.PM1_0), 2) AS {nameof(LastWeekHourlyData.AvgPM1_0)},
+    ROUND(AVG(sm.PM2_5), 2) AS {nameof(LastWeekHourlyData.AvgPM2_5)},
+    ROUND(AVG(sm.PM10), 2) AS {nameof(LastWeekHourlyData.AvgPM10)}
+FROM
+    DateHourRange dhr
+    LEFT JOIN [weatherData].[SensorsMeasurements] sm
+        ON sm.ReceivedAt >= dhr.HourDateTime
+        AND sm.ReceivedAt < DATEADD(HOUR, 1, dhr.HourDateTime)
+WHERE 
+    (sm.ReceivedAt >= DATEADD(DAY, -7, @CurrentDateTime) OR sm.ReceivedAt IS NULL)
+");
+
+        if (deviceId.HasValue)
+        {
+            sql.Append(@"
+AND sm.DeviceId = @deviceId");
+        }
+
+        sql.Append(@"
+GROUP BY 
+    dhr.HourDateTime
+ORDER BY 
+    dhr.HourDateTime
+OPTION (MAXRECURSION 0);
+");
+
+        var results = await connection.QueryAsync<LastWeekHourlyData>(
+            sql.ToString(),
+            new
+            {
+                currentTime,
+                deviceId
+            });
+
+        return new LastWeekWeatherData(results);
     }
 }

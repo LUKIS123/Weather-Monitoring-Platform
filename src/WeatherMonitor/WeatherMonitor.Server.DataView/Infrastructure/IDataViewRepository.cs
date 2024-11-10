@@ -4,4 +4,5 @@ namespace WeatherMonitor.Server.DataView.Infrastructure;
 public interface IDataViewRepository
 {
     Task<LastDayWeatherData> GetLastDayWeatherDataAsync(DateTime currentTime, int? deviceId = null);
+    Task<LastWeekWeatherData> GetLastWeekWeatherDataAsync(DateTime currentTime, int? deviceId = null);
 }
