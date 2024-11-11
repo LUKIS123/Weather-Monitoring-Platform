@@ -1,9 +1,11 @@
-<p>last-day-hourly-data works!</p>
-
 @if(data().currentDate){
 <app-daily-chart
   [chartDisplayData]="chartInput()"
-  [end]="endDate() ? endDate().getTime() : 0"
-  [start]="startDate() ? startDate().getTime() : 0"
+  [end]="endDate()"
+  [start]="startDate()"
+  [seriesName]="seriesName()"
+  [unit]="unit()"
+  [chartName]="chartName()"
+  [color]="color()"
 ></app-daily-chart>
 }

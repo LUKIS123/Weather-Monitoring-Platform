@@ -7,7 +7,8 @@ import { GetLastDayDataService } from './services/get-last-day-data.service';
 import { finalize } from 'rxjs';
 import { GetWeatherDataLastDayResponse } from './models/get-weather-last-day-response';
 import { MaterialModule } from '../../shared/material.module';
-import { LastDayHourlyDataComponent } from './components/last-day-hourly-data/last-day-hourly-data.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { LastDayHourlyWeatherDataComponent } from './components/last-day-hourly-weather-data/last-day-hourly-weather-data.component';
 
 @Component({
   selector: 'app-data-view',
@@ -16,7 +17,8 @@ import { LastDayHourlyDataComponent } from './components/last-day-hourly-data/la
     CommonModule,
     TranslateModule,
     MaterialModule,
-    LastDayHourlyDataComponent,
+    MatButtonToggleModule,
+    LastDayHourlyWeatherDataComponent,
   ],
   templateUrl: './data-view.component.html',
 })
@@ -26,10 +28,15 @@ export class DataViewComponent implements OnInit {
   private readonly toastService = inject(ToastService);
   private readonly getLastDayDataService = inject(GetLastDayDataService);
 
+  timeFrame = signal<'24h' | '7d' | '30d'>('24h');
+  dataType = signal<'weather' | 'pollution'>('weather');
+
   #isLoading = signal<boolean>(true);
   public readonly isLoading = this.#isLoading.asReadonly();
+
   #deviceId = signal<number>(0);
   public deviceId = this.#deviceId.asReadonly();
+
   #data = signal<GetWeatherDataLastDayResponse>(
     {} as GetWeatherDataLastDayResponse
   );
@@ -43,21 +50,20 @@ export class DataViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadStationsData(this.deviceId());
+    this.loadStationsDataLast24h(this.deviceId());
   }
 
-  private loadStationsData(deviceId: number): void {
+  private loadStationsDataLast24h(deviceId: number): void {
     this.getLastDayDataService
       .getLastDayData(deviceId)
       .pipe(finalize(() => this.#isLoading.set(false)))
       .subscribe({
         next: (data) => {
           this.#data.set(data);
-          console.log(data);
         },
         error: () =>
           this.toastService.openError(
-            this.translateService.instant('Stats.Error')
+            this.translateService.instant('DataVisualisation.Error')
           ),
       });
   }

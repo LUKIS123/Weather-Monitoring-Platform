@@ -12,6 +12,8 @@
   "Shared.HumidityUnit": "%",
   "Shared.PressureUnit": "hPa",
   "Shared.AltitudeUnit": "m",
+  "Shared.Pollution": "Pyły zawieszone",
+  "Shared.Weather": "Dane pogodowe",
   "Shared.PMUnit": "µg/m³",
   "Shared.Device": "Urządzenie",
   "Shared.MeasurementNotAvailable": "Brak danych",
@@ -99,5 +101,16 @@
   "StationsMap.Map.Error": "Wystąpił błąd podczas pobierania danych mapy",
   "StationsMap.Error": "Wystąpił błąd podczas budowania mapy",
   "StationsMap.NoStations": "Nie znaleziono stacji do wyświetlenia",
-  "StationsMap.GeoCodeError": "Wystąpił błąd podczas pobierania danych geolokalizacyjnych"
+  "StationsMap.GeoCodeError": "Wystąpił błąd podczas pobierania danych geolokalizacyjnych",
+  "DataVisualisation.Title": "Wykresy",
+  "DataVisualisation.Error": "Wystąpił błąd podczas pobierania danych do wykresów",
+  "DataVisualisation.Temperature": "Wykres temperatury",
+  "DataVisualisation.Humidity": "Wykres wilgotności",
+  "DataVisualisation.Pressure": "Wykres ciśnienia atmosferycznego",
+  "DataVisualisation.PM1_0": "Wykres stężenia pyłów PM1.0",
+  "DataVisualisation.PM2_5": "Wykres stężenia pyłów PM2.5",
+  "DataVisualisation.PM10": "Wykres stężenia pyłów PM10",
+  "DataVisualisation.Last24Hours": "Ostatnie 24 godz.",
+  "DataVisualisation.Last7Days": "Ostatnie 7 dni",
+  "DataVisualisation.Last30Days": "Ostatnie 30 dni"
 }

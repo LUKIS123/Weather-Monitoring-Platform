@@ -1,4 +1,65 @@
-<p>data-view works!</p>
-@if( data().currentDate) {
-<app-last-day-hourly-data [data]="data()"></app-last-day-hourly-data>
-}
+<div class="flex flex-col items-center justify-center w-full h-full">
+  <div class="flex flex-col items-center justify-center w-full h-full">
+    <h1 class="text-4xl h-6">{{ "DataVisualisation.Title" | translate }}</h1>
+    <div
+      class="w-full grid grid-cols-1 lg:grid-cols-2 my-2 justify-items-center justify-around"
+    >
+      <p class="px-2">
+        <mat-button-toggle-group
+          name="dataType"
+          aria-label="Data Type"
+          [value]="dataType()"
+          (valueChange)="dataType.set($event)"
+        >
+          <mat-button-toggle
+            class="h-8 flex items-center justify-center"
+            value="weather"
+            >{{ "Shared.Weather" | translate }}</mat-button-toggle
+          >
+          <mat-button-toggle
+            class="h-8 flex items-center justify-center"
+            value="pollution"
+            >{{ "Shared.Pollution" | translate }}</mat-button-toggle
+          >
+        </mat-button-toggle-group>
+      </p>
+      <p class="px-2">
+        <mat-button-toggle-group
+          name="timeFrame"
+          aria-label="Time Frame"
+          [value]="timeFrame()"
+          (valueChange)="timeFrame.set($event)"
+        >
+          <mat-button-toggle
+            class="h-8 flex items-center justify-center"
+            value="24h"
+            >{{
+              "DataVisualisation.Last24Hours" | translate
+            }}</mat-button-toggle
+          >
+          <mat-button-toggle
+            class="h-8 flex items-center justify-center"
+            value="7d"
+            >{{ "DataVisualisation.Last7Days" | translate }}</mat-button-toggle
+          >
+          <mat-button-toggle
+            class="h-8 flex items-center justify-center"
+            value="30d"
+            >{{ "DataVisualisation.Last30Days" | translate }}</mat-button-toggle
+          >
+        </mat-button-toggle-group>
+      </p>
+    </div>
+  </div>
+
+  @if(data().currentDate) {
+  <app-last-day-hourly-weather-data
+    class="w-full h-full"
+    [data]="data()"
+  ></app-last-day-hourly-weather-data>
+  } @else if(isLoading()){
+  <div class="flex items-center justify-center w-full h-full">
+    <mat-spinner></mat-spinner>
+  </div>
+  }
+</div>
