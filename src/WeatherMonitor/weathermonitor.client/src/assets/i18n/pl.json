@@ -19,6 +19,7 @@
   "Shared.NotFound": "Nie znaleziono",
   "Shared.WeatherNotFound": "Brak danych pogodowych do wyświetlenia",
   "Shared.TakeMeBack": "Wróć",
+  "Shared.DataVisualization.Short": "Wykresy",
   "LandingPage.Description": "Weather Monitor to nowoczesna aplikacja umożliwiająca przeglądanie danych pogodowych i jakości powietrza z różnych stacji we Wrocławiu. Zyskaj szybki dostęp do informacji o temperaturze, wilgotności oraz stężeniach pyłów PM10, PM2.5 i PM1.0 z wybranych lokalizacji w mieście.",
   "LandingPage.Title": "Witaj w aplikacji Weather Monitor!",
   "LandingPage.GetStarted": "Zaloguj się, aby mieć dostęp do wszystkich funkcji aplikacji",

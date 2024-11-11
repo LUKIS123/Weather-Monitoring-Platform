@@ -32,7 +32,6 @@ public static class InfrastructureModule
 
         var timeZoneId = configuration.GetValue<string>(TimeZoneSetting)
                          ?? throw new ArgumentNullException(nameof(configuration), TimeZoneSetting);
-        services.AddTransient<ITimeZoneProvider, TimeZoneProvider>();
         services.AddTransient<ITimeZoneProvider>(_ => new TimeZoneProvider(timeZoneId));
 
         services.AddTransient<IUserAccessor, JwtUserAccessor>();

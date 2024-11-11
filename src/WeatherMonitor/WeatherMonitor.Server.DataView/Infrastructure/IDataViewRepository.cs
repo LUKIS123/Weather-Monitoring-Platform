@@ -5,4 +5,6 @@ public interface IDataViewRepository
 {
     Task<LastDayWeatherData> GetLastDayWeatherDataAsync(DateTime currentTime, int? deviceId = null);
     Task<LastWeekWeatherData> GetLastWeekWeatherDataAsync(DateTime currentTime, int? deviceId = null);
+    Task<LastMonthWeatherData> GetDayTimeLastMonthWeatherDataAsync(DateTime currentTime, int? deviceId = null);
+    Task<LastMonthWeatherData> GetNightTimeLastMonthWeatherDataAsync(DateTime currentTime, int? deviceId = null);
 }

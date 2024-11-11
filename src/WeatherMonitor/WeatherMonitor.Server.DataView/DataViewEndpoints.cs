@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using WeatherMonitor.Server.DataView.Features.GetStationsList;
 using WeatherMonitor.Server.DataView.Features.GetWeatherDataLastDay;
+using WeatherMonitor.Server.DataView.Features.GetWeatherDataLastMonth;
+using WeatherMonitor.Server.DataView.Features.GetWeatherDataLastWeek;
 using WeatherMonitor.Server.SharedKernel.HttpContextExtensions;
 
 namespace WeatherMonitor.Server.DataView;
@@ -37,6 +39,24 @@ public static class DataViewEndpoints
                 [FromQuery] int? deviceId = null) =>
             {
                 var result = await getWeatherDataLastDayService.Handle(deviceId);
+                await context.HandleResult(result);
+            }).AllowAnonymous();
+
+        routes.MapGet(
+            "/api/dataView/history/week",
+            async (HttpContext context, [FromServices] IGetWeatherDataLastWeekService getWeatherDataLastWeekService,
+                [FromQuery] int? deviceId = null) =>
+            {
+                var result = await getWeatherDataLastWeekService.Handle(deviceId);
+                await context.HandleResult(result);
+            }).AllowAnonymous();
+
+        routes.MapGet(
+            "/api/dataView/history/month",
+            async (HttpContext context, [FromServices] IGetWeatherDataLastMonthService getWeatherDataLastMonthService,
+                [FromQuery] int? deviceId = null) =>
+            {
+                var result = await getWeatherDataLastMonthService.Handle(deviceId);
                 await context.HandleResult(result);
             }).AllowAnonymous();
     }

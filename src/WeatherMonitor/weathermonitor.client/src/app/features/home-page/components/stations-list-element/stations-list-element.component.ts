@@ -31,6 +31,8 @@ export class StationsListElementComponent {
   public panelOpenState = false;
 
   navigate() {
-    this.router.navigate(['/']);
+    this.router.navigate([
+      `/DataVisualization/Station/${this.weatherStation().deviceId}`,
+    ]);
   }
 }

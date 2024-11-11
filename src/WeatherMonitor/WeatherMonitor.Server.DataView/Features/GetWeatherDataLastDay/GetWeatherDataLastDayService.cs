@@ -30,7 +30,9 @@ internal class GetWeatherDataLastDayService : IGetWeatherDataLastDayService
         var zoneAdjustedTime =
             TimeZoneInfo.ConvertTimeFromUtc(_timeProvider.GetUtcNow().DateTime, _timeZoneProvider.GetTimeZoneInfo());
 
-        var result = await _dataViewRepository.GetLastDayWeatherDataAsync(zoneAdjustedTime, deviceId);
+        var result = await _dataViewRepository.GetLastDayWeatherDataAsync(
+            new DateTime(zoneAdjustedTime.Year, zoneAdjustedTime.Month, zoneAdjustedTime.Day, zoneAdjustedTime.Hour, 0, 0),
+            deviceId);
 
         return new GetWeatherDataLastDayResponse(zoneAdjustedTime, result.HourlyData);
     }

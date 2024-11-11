@@ -1,9 +1,15 @@
 ﻿using WeatherMonitor.Server.DataView.Infrastructure;
-using WeatherMonitor.Server.DataView.Infrastructure.Models;
 using WeatherMonitor.Server.Interfaces;
+using WeatherMonitor.Server.SharedKernel;
 
 namespace WeatherMonitor.Server.DataView.Features.GetWeatherDataLastWeek;
-internal class GetWeatherDataLastWeekService
+
+internal interface IGetWeatherDataLastWeekService
+{
+    Task<Result<GetWeatherDataLastWeekResponse>> Handle(int? deviceId);
+}
+
+internal class GetWeatherDataLastWeekService : IGetWeatherDataLastWeekService
 {
     private readonly ITimeZoneProvider _timeZoneProvider;
     private readonly TimeProvider _timeProvider;
@@ -19,16 +25,25 @@ internal class GetWeatherDataLastWeekService
         _dataViewRepository = dataViewRepository;
     }
 
-
-    // todo: zwraca min i max w response, poza samymi danymi, zpytania zapisane w azure data studio tylko pamietaz zeby brac ostateczna wersje
-    //https://chatgpt.com/c/672f997a-d650-800f-b891-440670f26080
-    public async Task<LastWeekWeatherData> Handle(int? deviceId)
+    public async Task<Result<GetWeatherDataLastWeekResponse>> Handle(int? deviceId)
     {
         var zoneAdjustedTime =
             TimeZoneInfo.ConvertTimeFromUtc(_timeProvider.GetUtcNow().DateTime, _timeZoneProvider.GetTimeZoneInfo());
+        zoneAdjustedTime = new DateTime(
+            zoneAdjustedTime.Year,
+            zoneAdjustedTime.Month,
+            zoneAdjustedTime.Day,
+            zoneAdjustedTime.Hour,
+            0,
+            0);
 
         var result = await _dataViewRepository.GetLastWeekWeatherDataAsync(zoneAdjustedTime, deviceId);
 
-        return new GetWeatherDataLastWeekResponse(null, zoneAdjustedTime, result.LastWeekHourlyData);
+        var startDateTime = result.LastWeekHourlyData.FirstOrDefault().HourDateTime;
+        startDateTime = startDateTime == default
+            ? zoneAdjustedTime.AddDays(-7)
+            : startDateTime;
+
+        return new GetWeatherDataLastWeekResponse(startDateTime, zoneAdjustedTime, result.LastWeekHourlyData);
     }
 }
