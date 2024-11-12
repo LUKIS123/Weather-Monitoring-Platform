@@ -1,11 +1,83 @@
-@if(data().currentDate){
-<app-daily-chart
-  [chartDisplayData]="chartInput()"
-  [end]="endDate()"
-  [start]="startDate()"
-  [seriesName]="seriesName()"
-  [unit]="unit()"
-  [chartName]="chartName()"
-  [color]="color()"
-></app-daily-chart>
-}
+<div class="w-full h-full flex flex-col justify-center items-center space-y-4">
+  @if(dataType() === 'weather'){
+  <mat-card appearance="outlined" class="w-full h-full py-2">
+    <mat-card-content>
+      <app-daily-chart
+        [chartDisplayData]="temperatureData()"
+        [end]="endDate()"
+        [start]="startDate()"
+        [seriesName]="temperatureSeriesName()"
+        [unit]="temperatureUnit()"
+        [chartName]="chartName()"
+        [color]="temperatureColor()"
+      ></app-daily-chart>
+    </mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined" class="w-full h-full py-2 px-2">
+    <mat-card-content>
+      <app-daily-chart
+        [chartDisplayData]="humidityData()"
+        [end]="endDate()"
+        [start]="startDate()"
+        [seriesName]="humiditySeriesName()"
+        [unit]="humidityUnit()"
+        [chartName]="chartName()"
+        [color]="humidityColor()"
+      ></app-daily-chart
+    ></mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined" class="w-full h-full py-2 px-2">
+    <mat-card-content>
+      <app-daily-chart
+        [chartDisplayData]="pressureData()"
+        [end]="endDate()"
+        [start]="startDate()"
+        [seriesName]="pressureSeriesName()"
+        [unit]="pressureUnit()"
+        [chartName]="chartName()"
+        [color]="pressureColor()"
+      ></app-daily-chart>
+    </mat-card-content>
+  </mat-card>
+  }@else {
+  <mat-card appearance="outlined" class="w-full h-full py-2">
+    <mat-card-content>
+      <app-daily-chart
+        [chartDisplayData]="pm1_0Data()"
+        [end]="endDate()"
+        [start]="startDate()"
+        [seriesName]="pm1_0SeriesName()"
+        [unit]="pm1_0Unit()"
+        [chartName]="chartName()"
+        [color]="pm1_0Color()"
+      ></app-daily-chart>
+    </mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined" class="w-full h-full py-2 px-2">
+    <mat-card-content>
+      <app-daily-chart
+        [chartDisplayData]="pm2_5Data()"
+        [end]="endDate()"
+        [start]="startDate()"
+        [seriesName]="pm2_5SeriesName()"
+        [unit]="pm2_5Unit()"
+        [chartName]="chartName()"
+        [color]="pm2_5Color()"
+      ></app-daily-chart
+    ></mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined" class="w-full h-full py-2 px-2">
+    <mat-card-content>
+      <app-daily-chart
+        [chartDisplayData]="pm10Data()"
+        [end]="endDate()"
+        [start]="startDate()"
+        [seriesName]="pm10SeriesName()"
+        [unit]="pm10Unit()"
+        [chartName]="chartName()"
+        [color]="pm10Color()"
+      ></app-daily-chart>
+    </mat-card-content>
+  </mat-card>
+  }
+</div>

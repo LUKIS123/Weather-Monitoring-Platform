@@ -23,9 +23,21 @@ export class ChartsConfigService {
     unit: 'hPa',
   } as ChartOptions;
 
-  public readonly pollutionChartOptions: ChartOptions = {
-    color: '#7dcea0',
-    seriesName: 'Shared.Pollution',
+  public readonly pm1_0ChartOptions: ChartOptions = {
+    color: '#a8e6a1',
+    seriesName: 'Shared.PM1_0',
+    unit: 'µg/m³',
+  } as ChartOptions;
+
+  public readonly pm2_5ChartOptions: ChartOptions = {
+    color: '#4caf50',
+    seriesName: 'Shared.PM2_5',
+    unit: 'µg/m³',
+  } as ChartOptions;
+
+  public readonly pm10ChartOptions: ChartOptions = {
+    color: '#1b5e20',
+    seriesName: 'Shared.PM10',
     unit: 'µg/m³',
   } as ChartOptions;
 }

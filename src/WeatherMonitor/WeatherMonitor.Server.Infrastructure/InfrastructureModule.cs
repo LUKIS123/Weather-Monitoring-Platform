@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WeatherMonitor.Server.DataView.Infrastructure;
 using WeatherMonitor.Server.DeviceManagement.Infrastructure;
@@ -19,6 +20,7 @@ public static class InfrastructureModule
                                   ?? throw new ArgumentNullException(nameof(configuration), DbConnection);
         services.AddTransient<IDbConnectionFactory>(_ => new SqlDbConnectionFactory(sqlConnectionString));
 
+        SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
         // Repositories
         services.AddTransient<IUserAuthorizationRepository, SqlUserRepository>();
         services.AddTransient<IDeviceManagementRepository, DevicesRepository>();

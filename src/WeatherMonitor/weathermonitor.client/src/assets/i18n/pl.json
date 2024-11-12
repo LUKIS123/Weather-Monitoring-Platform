@@ -102,7 +102,7 @@
   "StationsMap.Error": "Wystąpił błąd podczas budowania mapy",
   "StationsMap.NoStations": "Nie znaleziono stacji do wyświetlenia",
   "StationsMap.GeoCodeError": "Wystąpił błąd podczas pobierania danych geolokalizacyjnych",
-  "DataVisualisation.Title": "Wykresy",
+  "DataVisualisation.Station.Title": "Wykresy dla stacji",
   "DataVisualisation.Error": "Wystąpił błąd podczas pobierania danych do wykresów",
   "DataVisualisation.Temperature": "Wykres temperatury",
   "DataVisualisation.Humidity": "Wykres wilgotności",
@@ -112,5 +112,6 @@
   "DataVisualisation.PM10": "Wykres stężenia pyłów PM10",
   "DataVisualisation.Last24Hours": "Ostatnie 24 godz.",
   "DataVisualisation.Last7Days": "Ostatnie 7 dni",
-  "DataVisualisation.Last30Days": "Ostatnie 30 dni"
+  "DataVisualisation.Last30Days": "Ostatnie 30 dni",
+  "DataVisualisation.NoData": "Brak danych do wyświetlenia"
 }

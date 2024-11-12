@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input, Signal } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NgApexchartsModule, ApexOptions } from 'ng-apexcharts';
 import { ThemeService } from '../../../features/menu/services/theme.service';
 
@@ -12,6 +12,7 @@ import { ThemeService } from '../../../features/menu/services/theme.service';
 })
 export class DailyChartComponent {
   private readonly themeService = inject(ThemeService);
+  private readonly translateService = inject(TranslateService);
 
   private readonly textColor: Signal<string> = computed(() =>
     this.themeService.darkTheme() ? 'white' : 'black'
@@ -117,11 +118,21 @@ export class DailyChartComponent {
         },
       },
       y: {
-        formatter: (value) => `${value.toFixed(2)} ${this.unit()}`,
+        formatter: (value) => {
+          if (value === null) {
+            return '';
+          }
+          return `${value.toFixed(2)} ${this.unit()}`;
+        },
       },
       marker: {
         show: false,
       },
+    },
+    noData: {
+      text: this.translateService.instant('DataVisualisation.NoData'),
+      align: 'center',
+      verticalAlign: 'middle',
     },
   };
 }
