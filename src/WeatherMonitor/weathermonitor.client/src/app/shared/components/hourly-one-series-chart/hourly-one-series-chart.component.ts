@@ -1,16 +1,16 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input, Signal } from '@angular/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { NgApexchartsModule, ApexOptions } from 'ng-apexcharts';
+import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
 import { ThemeService } from '../../../features/menu/services/theme.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-daily-chart',
+  selector: 'app-hourly-one-series-chart',
   standalone: true,
   imports: [CommonModule, TranslateModule, NgApexchartsModule],
-  templateUrl: './daily-chart.component.html',
+  templateUrl: './hourly-one-series-chart.component.html',
 })
-export class DailyChartComponent {
+export class HourlyOneSeriesChartComponent {
   private readonly themeService = inject(ThemeService);
   private readonly translateService = inject(TranslateService);
 

@@ -1,1 +1,101 @@
-<p>last-month-daily-data works!</p>
+<div class="w-full h-full flex flex-col justify-center items-center space-y-4">
+  @if(dataType() === 'weather'){
+  <mat-card appearance="outlined" class="w-full h-full py-2">
+    <mat-card-content>
+      <app-daily-two-series-chart
+        [chartDataFirstSeries]="temperatureData().dayTime"
+        [chartDataSecondSeries]="temperatureData().nightTime"
+        [end]="endDate()"
+        [start]="startDate()"
+        [firstSeriesName]="temperatureFirstSeriesName"
+        [secondSeriesName]="temperatureSecondSeriesName"
+        [dataDisplayName]="temperatureDataDisplayName"
+        [unit]="temperatureUnit"
+        [chartName]="chartName"
+        [colors]="temperatureColors"
+      ></app-daily-two-series-chart>
+    </mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined" class="w-full h-full py-2 px-2">
+    <mat-card-content>
+      <app-daily-two-series-chart
+        [chartDataFirstSeries]="humidityData().dayTime"
+        [chartDataSecondSeries]="humidityData().nightTime"
+        [end]="endDate()"
+        [start]="startDate()"
+        [firstSeriesName]="humidityFirstSeriesName"
+        [secondSeriesName]="humiditySecondSeriesName"
+        [dataDisplayName]="humidityDataDisplayName"
+        [unit]="humidityUnit"
+        [chartName]="chartName"
+        [colors]="humidityColors"
+      ></app-daily-two-series-chart
+    ></mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined" class="w-full h-full py-2 px-2">
+    <mat-card-content>
+      <app-daily-two-series-chart
+        [chartDataFirstSeries]="pressureData().dayTime"
+        [chartDataSecondSeries]="pressureData().nightTime"
+        [end]="endDate()"
+        [start]="startDate()"
+        [firstSeriesName]="pressureFirstSeriesName"
+        [secondSeriesName]="pressureSecondSeriesName"
+        [dataDisplayName]="pressureDataDisplayName"
+        [unit]="pressureUnit"
+        [chartName]="chartName"
+        [colors]="pressureColors"
+      ></app-daily-two-series-chart>
+    </mat-card-content>
+  </mat-card>
+  }@else {
+  <mat-card appearance="outlined" class="w-full h-full py-2">
+    <mat-card-content>
+      <app-daily-two-series-chart
+        [chartDataFirstSeries]="pm1_0Data().dayTime"
+        [chartDataSecondSeries]="pm1_0Data().nightTime"
+        [end]="endDate()"
+        [start]="startDate()"
+        [firstSeriesName]="pm1_0FirstSeriesName"
+        [secondSeriesName]="pm1_0SecondSeriesName"
+        [dataDisplayName]="pm1_0DataDisplayName"
+        [unit]="pm1_0Unit"
+        [chartName]="chartName"
+        [colors]="pm1_0Colors"
+      ></app-daily-two-series-chart>
+    </mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined" class="w-full h-full py-2 px-2">
+    <mat-card-content>
+      <app-daily-two-series-chart
+        [chartDataFirstSeries]="pm2_5Data().dayTime"
+        [chartDataSecondSeries]="pm2_5Data().nightTime"
+        [end]="endDate()"
+        [start]="startDate()"
+        [firstSeriesName]="pm2_5FirstSeriesName"
+        [secondSeriesName]="pm2_5SecondSeriesName"
+        [dataDisplayName]="pm2_5DataDisplayName"
+        [unit]="pm2_5Unit"
+        [chartName]="chartName"
+        [colors]="pm2_5Colors"
+      ></app-daily-two-series-chart
+    ></mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined" class="w-full h-full py-2 px-2">
+    <mat-card-content>
+      <app-daily-two-series-chart
+        [chartDataFirstSeries]="pm10Data().dayTime"
+        [chartDataSecondSeries]="pm10Data().nightTime"
+        [end]="endDate()"
+        [start]="startDate()"
+        [firstSeriesName]="pm10FirstSeriesName"
+        [secondSeriesName]="pm10SecondSeriesName"
+        [dataDisplayName]="pm10DataDisplayName"
+        [unit]="pm10Unit"
+        [chartName]="chartName"
+        [colors]="pm10Colors"
+      ></app-daily-two-series-chart>
+    </mat-card-content>
+  </mat-card>
+  }
+</div>

@@ -2,81 +2,81 @@
   @if(dataType() === 'weather'){
   <mat-card appearance="outlined" class="w-full h-full py-2">
     <mat-card-content>
-      <app-daily-chart
+      <app-hourly-one-series-chart
         [chartDisplayData]="temperatureData()"
         [end]="endDate()"
         [start]="startDate()"
-        [seriesName]="temperatureSeriesName()"
-        [unit]="temperatureUnit()"
-        [chartName]="chartName()"
-        [color]="temperatureColor()"
-      ></app-daily-chart>
+        [seriesName]="temperatureSeriesName"
+        [unit]="temperatureUnit"
+        [chartName]="chartName"
+        [color]="temperatureColor"
+      ></app-hourly-one-series-chart>
     </mat-card-content>
   </mat-card>
   <mat-card appearance="outlined" class="w-full h-full py-2 px-2">
     <mat-card-content>
-      <app-daily-chart
+      <app-hourly-one-series-chart
         [chartDisplayData]="humidityData()"
         [end]="endDate()"
         [start]="startDate()"
-        [seriesName]="humiditySeriesName()"
-        [unit]="humidityUnit()"
-        [chartName]="chartName()"
-        [color]="humidityColor()"
-      ></app-daily-chart
+        [seriesName]="humiditySeriesName"
+        [unit]="humidityUnit"
+        [chartName]="chartName"
+        [color]="humidityColor"
+      ></app-hourly-one-series-chart
     ></mat-card-content>
   </mat-card>
   <mat-card appearance="outlined" class="w-full h-full py-2 px-2">
     <mat-card-content>
-      <app-daily-chart
+      <app-hourly-one-series-chart
         [chartDisplayData]="pressureData()"
         [end]="endDate()"
         [start]="startDate()"
-        [seriesName]="pressureSeriesName()"
-        [unit]="pressureUnit()"
-        [chartName]="chartName()"
-        [color]="pressureColor()"
-      ></app-daily-chart>
+        [seriesName]="pressureSeriesName"
+        [unit]="pressureUnit"
+        [chartName]="chartName"
+        [color]="pressureColor"
+      ></app-hourly-one-series-chart>
     </mat-card-content>
   </mat-card>
   }@else {
   <mat-card appearance="outlined" class="w-full h-full py-2">
     <mat-card-content>
-      <app-daily-chart
+      <app-hourly-one-series-chart
         [chartDisplayData]="pm1_0Data()"
         [end]="endDate()"
         [start]="startDate()"
-        [seriesName]="pm1_0SeriesName()"
-        [unit]="pm1_0Unit()"
-        [chartName]="chartName()"
-        [color]="pm1_0Color()"
-      ></app-daily-chart>
+        [seriesName]="pm1_0SeriesName"
+        [unit]="pm1_0Unit"
+        [chartName]="chartName"
+        [color]="pm1_0Color"
+      ></app-hourly-one-series-chart>
     </mat-card-content>
   </mat-card>
   <mat-card appearance="outlined" class="w-full h-full py-2 px-2">
     <mat-card-content>
-      <app-daily-chart
+      <app-hourly-one-series-chart
         [chartDisplayData]="pm2_5Data()"
         [end]="endDate()"
         [start]="startDate()"
-        [seriesName]="pm2_5SeriesName()"
-        [unit]="pm2_5Unit()"
-        [chartName]="chartName()"
-        [color]="pm2_5Color()"
-      ></app-daily-chart
+        [seriesName]="pm2_5SeriesName"
+        [unit]="pm2_5Unit"
+        [chartName]="chartName"
+        [color]="pm2_5Color"
+      ></app-hourly-one-series-chart
     ></mat-card-content>
   </mat-card>
   <mat-card appearance="outlined" class="w-full h-full py-2 px-2">
     <mat-card-content>
-      <app-daily-chart
+      <app-hourly-one-series-chart
         [chartDisplayData]="pm10Data()"
         [end]="endDate()"
         [start]="startDate()"
-        [seriesName]="pm10SeriesName()"
-        [unit]="pm10Unit()"
-        [chartName]="chartName()"
-        [color]="pm10Color()"
-      ></app-daily-chart>
+        [seriesName]="pm10SeriesName"
+        [unit]="pm10Unit"
+        [chartName]="chartName"
+        [color]="pm10Color"
+      ></app-hourly-one-series-chart>
     </mat-card-content>
   </mat-card>
   }
