@@ -16,6 +16,12 @@ export const routes: Routes = [
       import('./features/home-page/routes').then((mod) => mod.FeedRoutes),
   },
   {
+    path: 'DataVisualization',
+    canActivate: [],
+    loadChildren: () =>
+      import('./features/data-view/routes').then((mod) => mod.DataViewRoutes),
+  },
+  {
     path: 'UserSettings',
     canActivate: [authGuard],
     loadChildren: () =>

@@ -1,0 +1,16 @@
+<p class="text-lg mt-2 text-center">
+  <span>{{ seriesName() }}</span> - <span>{{ chartName() | translate }}</span>
+</p>
+<apx-chart
+  [series]="dailyChartOptions().series!"
+  [chart]="dailyChartOptions().chart!"
+  [colors]="dailyChartOptions().colors!"
+  [dataLabels]="commonOptions.dataLabels!"
+  [markers]="commonOptions.markers!"
+  [stroke]="commonOptions.stroke!"
+  [grid]="commonOptions.grid!"
+  [xaxis]="dailyChartOptions().xaxis!"
+  [yaxis]="dailyChartOptions().yaxis!"
+  [tooltip]="commonOptions.tooltip!"
+  [legend]="dailyChartOptions().legend!"
+></apx-chart>

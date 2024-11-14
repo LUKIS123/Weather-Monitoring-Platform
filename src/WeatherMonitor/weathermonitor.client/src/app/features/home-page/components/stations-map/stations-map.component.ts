@@ -31,7 +31,7 @@ export class StationsMapComponent implements OnInit {
   };
   mapOptions: google.maps.MapOptions = {
     mapTypeControl: false,
-    fullscreenControl: false,
+    fullscreenControl: true,
     streetViewControl: false,
   };
 

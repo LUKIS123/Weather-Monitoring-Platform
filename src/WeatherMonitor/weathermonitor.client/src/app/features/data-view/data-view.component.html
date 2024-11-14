@@ -1,0 +1,86 @@
+<div class="flex flex-col items-center justify-center w-full h-full">
+  <div class="flex flex-col items-center justify-center w-full h-full">
+    <h1 class="text-4xl h-6">
+      {{ "DataVisualisation.Station.Title" | translate }}
+    </h1>
+    <div
+      class="w-full grid grid-cols-1 lg:grid-cols-2 my-2 justify-items-center justify-around"
+    >
+      <p class="px-2">
+        <mat-button-toggle-group
+          name="dataType"
+          aria-label="Data Type"
+          [value]="dataType()"
+          (valueChange)="dataType.set($event)"
+        >
+          <mat-button-toggle
+            class="h-8 flex items-center justify-center"
+            value="weather"
+            >{{ "Shared.Weather" | translate }}</mat-button-toggle
+          >
+          <mat-button-toggle
+            class="h-8 flex items-center justify-center"
+            value="pollution"
+            >{{ "Shared.Pollution" | translate }}</mat-button-toggle
+          >
+        </mat-button-toggle-group>
+      </p>
+      <p class="px-2">
+        <mat-button-toggle-group
+          name="timeFrame"
+          aria-label="Time Frame"
+          [value]="timeFrame()"
+          (valueChange)="onTimeFrameChange($event)"
+        >
+          <mat-button-toggle
+            class="h-8 flex items-center justify-center"
+            value="24h"
+            >{{
+              "DataVisualisation.Last24Hours" | translate
+            }}</mat-button-toggle
+          >
+          <mat-button-toggle
+            class="h-8 flex items-center justify-center"
+            value="7d"
+            >{{ "DataVisualisation.Last7Days" | translate }}</mat-button-toggle
+          >
+          <mat-button-toggle
+            class="h-8 flex items-center justify-center"
+            value="30d"
+            >{{ "DataVisualisation.Last30Days" | translate }}</mat-button-toggle
+          >
+        </mat-button-toggle-group>
+      </p>
+    </div>
+  </div>
+
+  @if(isDataLoaded()) { 
+    @switch (timeFrame()) { 
+      @case ('24h') {
+      <app-last-day-hourly-data
+        class="w-11/12 h-full"
+        [data]="last24hData()"
+        [dataType]="dataType()"
+      ></app-last-day-hourly-data>
+      } 
+      @case ('7d') {
+      <app-last-week-hourly-data 
+        class="w-11/12 h-full"
+        [data]="last7dData()"
+        [dataType]="dataType()"
+      ></app-last-week-hourly-data>
+      } 
+      @case ('30d') {
+      <app-last-month-daily-data
+        class="w-11/12 h-full"
+        [data]="last30dData()"
+        [dataType]="dataType()"
+      ></app-last-month-daily-data>
+      }
+    } 
+  } @else if(isLoading()){
+  <div class="flex items-center justify-center w-full h-full">
+    <mat-spinner></mat-spinner>
+  </div>
+  }
+</div>

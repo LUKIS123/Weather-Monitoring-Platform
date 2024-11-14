@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WeatherMonitor.Server.DataView.Infrastructure.Models;
 
 namespace WeatherMonitor.Server.DataView.Infrastructure;
-internal interface IDataViewRepository
+public interface IDataViewRepository
 {
+    Task<LastDayWeatherData> GetLastDayWeatherDataAsync(DateTime currentTime, int? deviceId = null);
+    Task<LastWeekWeatherData> GetLastWeekWeatherDataAsync(DateTime currentTime, int? deviceId = null);
+    Task<LastMonthWeatherData> GetDayTimeLastMonthWeatherDataAsync(DateTime currentTime, int? deviceId = null);
+    Task<LastMonthWeatherData> GetNightTimeLastMonthWeatherDataAsync(DateTime currentTime, int? deviceId = null);
 }

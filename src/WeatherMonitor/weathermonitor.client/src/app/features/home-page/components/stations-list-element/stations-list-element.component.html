@@ -32,7 +32,7 @@
             {{ "DeviceManagement.IsActiveStatus" | translate }}:
           </span>
           <br />
-          <span>
+          <span class="font-bold">
             {{
               weatherStation().isActive
                 ? ("DeviceManagement.Credentials.Active" | translate)
@@ -68,7 +68,7 @@
           </span>
           <br />
           @if(formattedDate() !== ''){
-          <span> {{ formattedDate() }}</span>
+          <span class="font-bold"> {{ formattedDate() }}</span>
           }@else {
           <span>{{ "StationsList.MissingUpdate" | translate }}</span>
           }
