@@ -25,6 +25,7 @@ internal class RegisterDeviceService : IRegisterDeviceService
     private const ActionType DefaultActionType = ActionType.Write;
     private const bool DefaultIsActivate = false;
     private const bool DefaultIsSuperUser = false;
+    private const string DefaultPlusCode = "4356+2Q Wrocław";
 
     public RegisterDeviceService(
         IDeviceManagementRepository deviceManagementRepository,
@@ -74,9 +75,12 @@ internal class RegisterDeviceService : IRegisterDeviceService
         var mqttClientGuid = Guid.NewGuid();
         var mqttTopicGuid = Guid.NewGuid();
         var mqttAllowedTopicGuid = Guid.NewGuid();
+        var mapsPlusCode = string.IsNullOrWhiteSpace(request.GoogleMapsPlusCode)
+            ? DefaultPlusCode
+            : request.GoogleMapsPlusCode;
 
         var createDevice = new CreateDeviceDto(
-            request.GoogleMapsPlusCode,
+            mapsPlusCode,
             request.DeviceExtraInfo,
             DefaultIsActivate
         );

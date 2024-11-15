@@ -74,16 +74,15 @@ DECLARE @CurrentDateTime DATETIME = @currentTime;
 
 WITH
     Numbers AS (
-        SELECT TOP (168)
+        SELECT TOP (28)
             ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1 AS Number
         FROM
-            (VALUES (0),(0),(0),(0),(0),(0),(0),(0),(0),(0)) AS a(n)
-            CROSS JOIN (VALUES (0),(0),(0),(0),(0),(0),(0),(0),(0),(0)) AS b(n)
-            CROSS JOIN (VALUES (0),(0),(0),(0),(0),(0),(0),(0),(0),(0)) AS c(n)
+            (VALUES (0),(0),(0),(0),(0),(0),(0)) AS a(n)
+            CROSS JOIN (VALUES (0),(0),(0),(0)) AS b(n)
     ),
     DateHourRange AS (
         SELECT
-            DATEADD(HOUR, -n.Number, @CurrentDateTime) AS HourDateTime
+            DATEADD(HOUR, -n.Number * 6, @CurrentDateTime) AS HourDateTime
         FROM Numbers n
     )
 SELECT
@@ -98,7 +97,7 @@ FROM
     DateHourRange dhr
     LEFT JOIN [weatherData].[SensorsMeasurements] sm
         ON sm.ReceivedAt >= dhr.HourDateTime
-           AND sm.ReceivedAt < DATEADD(HOUR, 1, dhr.HourDateTime)");
+           AND sm.ReceivedAt < DATEADD(HOUR, 6, dhr.HourDateTime)");
 
         if (deviceId.HasValue)
         {

@@ -56,6 +56,7 @@ export class HourlyOneSeriesChartComponent {
             selection: true,
           },
         },
+        background: this.themeService.darkTheme() ? '#424242' : '#fff',
       },
       colors: [this.color()],
       xaxis: {
