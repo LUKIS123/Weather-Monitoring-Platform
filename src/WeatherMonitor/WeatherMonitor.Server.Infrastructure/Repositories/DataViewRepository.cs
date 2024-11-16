@@ -40,7 +40,7 @@ FROM
     HourOffset h
     LEFT JOIN [weatherData].[SensorsMeasurements] s
         ON s.ReceivedAt >= DATEADD(HOUR, -h.HourOffset - 1, @CurrentDateTime)
-            AND s.ReceivedAt < DATEADD(HOUR, -h.HourOffset, @CurrentDateTime)
+            AND s.ReceivedAt < DATEADD(HOUR, -h.HourOffset, @CurrentDateTime) + '00:59:59.999'
 ");
 
         if (deviceId.HasValue)
