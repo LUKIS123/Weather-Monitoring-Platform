@@ -10,15 +10,15 @@ public static class MqttSubscriberServiceModule
 
     public static IServiceCollection AddMqttSubscriberServiceWorkerModule(this IServiceCollection services, IConfiguration configuration)
     {
-        var mqttBrokerSection = configuration.GetSection(MqttBrokerSettings)
-                                ?? throw new ArgumentNullException(nameof(configuration), MqttBrokerSettings);
-        var brokerConnectionSettings = new MqttBrokerConnection();
-        mqttBrokerSection.Bind(brokerConnectionSettings);
-        services.AddSingleton(brokerConnectionSettings);
-
-        services.AddTransient<IServiceWorkerMqttClientGenerator, ServiceWorkerMqttClientGenerator>();
-        services.AddSingleton<IMqttDataService, MqttDataService>();
-        services.AddHostedService<MqttSubscriptionsHandlingWorker>();
+        // var mqttBrokerSection = configuration.GetSection(MqttBrokerSettings)
+        //                         ?? throw new ArgumentNullException(nameof(configuration), MqttBrokerSettings);
+        // var brokerConnectionSettings = new MqttBrokerConnection();
+        // mqttBrokerSection.Bind(brokerConnectionSettings);
+        // services.AddSingleton(brokerConnectionSettings);
+        //
+        // services.AddTransient<IServiceWorkerMqttClientGenerator, ServiceWorkerMqttClientGenerator>();
+        // services.AddSingleton<IMqttDataService, MqttDataService>();
+        // services.AddHostedService<MqttSubscriptionsHandlingWorker>();
 
         return services;
     }

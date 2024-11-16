@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WeatherMonitor.Server.DataView.Infrastructure;
 using WeatherMonitor.Server.DeviceManagement.Infrastructure;
+using WeatherMonitor.Server.Infrastructure.Models;
 using WeatherMonitor.Server.Infrastructure.Repositories;
 using WeatherMonitor.Server.Infrastructure.Utility;
 using WeatherMonitor.Server.Interfaces;
@@ -13,6 +14,7 @@ public static class InfrastructureModule
 {
     private const string DbConnection = "MSSQL";
     private const string TimeZoneSetting = "AppTimeZone";
+    private const string Auth0ApiConfig = "Auth0Api";
 
     public static IServiceCollection AddInfrastructureModule(this IServiceCollection services, IConfiguration configuration)
     {
@@ -29,6 +31,12 @@ public static class InfrastructureModule
 
         // Microservice Http Client
         services.AddTransient<ICoreMicroserviceHttpClientWrapper, CoreMicroserviceHttpClientWrapper>();
+
+        var auth0ConfigSection = configuration.GetSection(Auth0ApiConfig)
+                          ?? throw new ArgumentNullException(nameof(configuration), Auth0ApiConfig);
+        var auth0Config = new Auth0ApiConfiguration();
+        auth0ConfigSection.Bind(auth0Config);
+        services.AddSingleton(auth0Config);
 
         services.AddTransient(_ => TimeProvider.System);
 

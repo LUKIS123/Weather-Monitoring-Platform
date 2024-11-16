@@ -24,6 +24,7 @@ public static class DataViewEndpoints
                 var result = await stationsListService.Handle(pageNumber, DefaultPageSize);
                 await context.HandleResult(result);
             }).AllowAnonymous();
+        //..RequireAuthorization(policy => policy.RequireRole("PowerUser", "ControlPanelUser"));
 
         routes.MapGet(
             "/api/dataView/stations/map",
