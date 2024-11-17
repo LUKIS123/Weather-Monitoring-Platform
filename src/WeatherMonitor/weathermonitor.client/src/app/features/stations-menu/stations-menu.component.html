@@ -1,0 +1,38 @@
+<div class="flex flex-col items-center justify-center w-full h-full">
+  <div class="flex flex-col items-center justify-center w-full h-full">
+    @if(viewMode() === 'permissions'){
+    <h1 class="text-4xl h-6">
+      {{ "AvailableStations.Permissions" | translate }}
+    </h1>
+    }@else {
+    <h1 class="text-4xl h-6">{{ "AvailableStations.Menu" | translate }}</h1>
+    }
+
+    <p class="self-end px-2">
+      <mat-button-toggle-group
+        name="stationsViewOptions"
+        aria-label="Stations View Options"
+        [value]="viewMode()"
+        (valueChange)="viewMode.set($event)"
+      >
+        <mat-button-toggle
+          class="h-8 flex items-center justify-center"
+          value="stationsAvailable"
+          >{{ "AvailableStations.AllStations" | translate }}</mat-button-toggle
+        >
+        <mat-button-toggle
+          class="h-8 flex items-center justify-center"
+          value="permissions"
+          >{{
+            "AvailableStations.YourPermissions" | translate
+          }}</mat-button-toggle
+        >
+      </mat-button-toggle-group>
+    </p>
+  </div>
+  @if(viewMode() === 'stationsAvailable'){
+  <app-available-stations-list class="w-full"></app-available-stations-list>
+  }@else{
+  <app-permissions-list class="w-full"></app-permissions-list>
+  }
+</div>

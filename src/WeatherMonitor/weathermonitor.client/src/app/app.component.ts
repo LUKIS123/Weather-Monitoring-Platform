@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { AuthorizationService } from './features/authorization/services/authorization-service';
-import { MenuComponent } from './features/menu/menu.component';
 import { MaterialModule } from './shared/material.module';
 import { LoginComponent } from './shared/components/login/login.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,7 +13,6 @@ import { LogoComponent } from './shared/components/logo/logo.component';
   imports: [
     RouterOutlet,
     RouterModule,
-    MenuComponent,
     MaterialModule,
     LogoComponent,
     LoginComponent,

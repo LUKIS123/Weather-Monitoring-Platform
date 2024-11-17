@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using WeatherMonitorCore.Contract.UserAuthenticationModule;
 using WeatherMonitorCore.UserAuthentication.Features.SignIn;
+using WeatherMonitorCore.UserAuthentication.Features.UpdateRole;
 
 namespace WeatherMonitorCore.UserAuthentication;
 
@@ -30,5 +31,17 @@ public static class UserAuthenticationEndpoints
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 }
             }).AllowAnonymous();
+
+        routes.MapPost(
+            "/api/user/setRole",
+            async (HttpContext context, IUpdateRoleService updateRoleService,
+                [FromBody] UpdateRoleRequest request) =>
+            {
+                var success = await updateRoleService.UpdateRole(request.UserId, request.Role);
+
+                context.Response.StatusCode = success
+                    ? StatusCodes.Status200OK
+                    : StatusCodes.Status400BadRequest;
+            }).RequireAuthorization("IsAdminPolicy");
     }
 }

@@ -44,6 +44,7 @@
   "UserAccount.Unknown": "Nieznany",
   "UserAccount.Error": "Wystąpił błąd podczas pobierania danych użytkownika",
   "Navigation.Home": "Strona główna",
+  "Navigation.StationAccess": "Dostęp do stacji",
   "Navigation.DarkTheme": "Ciemny motyw",
   "Navigation.AdminDeviceManagement": "Zarządzanie urządzeniami",
   "DeviceManagement.Title": "Zarządzanie urządzeniami",
@@ -131,5 +132,11 @@
   "DataVisualisation.PM2_5.Night": "Stężenie pyłów PM2.5 w ciągu nocy",
   "DataVisualisation.PM10.DayAndNight": "Stężenie pyłów PM10 w ciągu dnia i nocy",
   "DataVisualisation.PM10.Day": "Stężenie pyłów PM10 w ciągu dnia",
-  "DataVisualisation.PM10.Night": "Stężenie pyłów PM10 w ciągu nocy"
+  "DataVisualisation.PM10.Night": "Stężenie pyłów PM10 w ciągu nocy",
+  "AvailableStations.Menu": "Dostępne stacje",
+  "AvailableStations.Permissions": "Twoje stacje",
+  "AvailableStations.AllStations": "Dostępne stacje",
+  "AvailableStations.YourPermissions": "Dostęp do stacji",
+  "AvailableStations.Error": "Wystąpił błąd podczas pobierania listy stacji",
+  "AvailableStations.AddressFetchError": "Wystąpił błąd podczas pobierania adresu stacji"
 }

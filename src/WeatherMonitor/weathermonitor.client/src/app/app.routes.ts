@@ -10,14 +10,22 @@ export const routes: Routes = [
     component: WelcomeComponent,
   },
   {
-    path: 'Home',
+    path: 'AvailableStations',
     canActivate: [],
+    loadChildren: () =>
+      import('./features/stations-menu/routes').then(
+        (mod) => mod.AvailableStationsRoutes
+      ),
+  },
+  {
+    path: 'Home',
+    canActivate: [authGuard],
     loadChildren: () =>
       import('./features/home-page/routes').then((mod) => mod.FeedRoutes),
   },
   {
     path: 'DataVisualization',
-    canActivate: [],
+    canActivate: [authGuard],
     loadChildren: () =>
       import('./features/data-view/routes').then((mod) => mod.DataViewRoutes),
   },

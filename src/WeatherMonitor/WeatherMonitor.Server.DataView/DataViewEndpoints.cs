@@ -23,7 +23,7 @@ public static class DataViewEndpoints
             {
                 var result = await stationsListService.Handle(pageNumber, DefaultPageSize);
                 await context.HandleResult(result);
-            }).AllowAnonymous();
+            }).RequireAuthorization();
 
         routes.MapGet(
             "/api/dataView/stations/map",
@@ -31,7 +31,7 @@ public static class DataViewEndpoints
             {
                 var result = await getDevicesService.Handle(1, 1000);
                 await context.HandleResult(result);
-            }).AllowAnonymous();
+            }).RequireAuthorization();
 
         routes.MapGet(
             "/api/dataView/history/day",
@@ -40,7 +40,7 @@ public static class DataViewEndpoints
             {
                 var result = await getWeatherDataLastDayService.Handle(deviceId);
                 await context.HandleResult(result);
-            }).AllowAnonymous();
+            }).RequireAuthorization();
 
         routes.MapGet(
             "/api/dataView/history/week",
@@ -49,7 +49,7 @@ public static class DataViewEndpoints
             {
                 var result = await getWeatherDataLastWeekService.Handle(deviceId);
                 await context.HandleResult(result);
-            }).AllowAnonymous();
+            }).RequireAuthorization();
 
         routes.MapGet(
             "/api/dataView/history/month",
@@ -58,6 +58,6 @@ public static class DataViewEndpoints
             {
                 var result = await getWeatherDataLastMonthService.Handle(deviceId);
                 await context.HandleResult(result);
-            }).AllowAnonymous();
+            }).RequireAuthorization();
     }
 }
