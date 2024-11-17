@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   MatPaginatorIntl,
@@ -7,7 +7,8 @@ import {
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../shared/material.module';
 import { MatPaginatorIntlPl } from '../../../../shared/components/paginator/MatPaginatorIntlPl';
-import { AvailableStation } from '../../models/available-station';
+import { StationWithAddress } from '../../models/station-with-address';
+import { AuthorizationService } from '../../../authorization/services/authorization-service';
 
 @Component({
   selector: 'app-available-stations-list-element',
@@ -17,7 +18,10 @@ import { AvailableStation } from '../../models/available-station';
   templateUrl: './available-stations-list-element.component.html',
 })
 export class AvailableStationsListElementComponent {
-  station = input.required<AvailableStation>();
+  private authService = inject(AuthorizationService);
+  isLoggedIn = this.authService.isAuthorized;
+
+  station = input.required<StationWithAddress>();
 
   public panelOpenState = false;
 }

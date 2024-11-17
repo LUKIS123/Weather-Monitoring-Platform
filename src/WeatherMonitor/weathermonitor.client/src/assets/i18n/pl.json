@@ -58,6 +58,7 @@
   "DeviceManagement.GoogleMapsCode": "Kod lokalizacji Google Maps",
   "DeviceManagement.NoGoogleMapsCode": "Brak kodu Google Maps",
   "DeviceManagement.IsActiveStatus": "Status aktywności",
+  "DeviceManagement.Address": "Adres urządzenia",
   "DeviceManagement.Register.Title": "Rejestracja nowego urządzenia",
   "DeviceManagement.Register.Subtitle": "Wprowadź dane urządzenia",
   "DeviceManagement.Register.Button": "Dodaj urządzenie",
@@ -136,7 +137,9 @@
   "AvailableStations.Menu": "Dostępne stacje",
   "AvailableStations.Permissions": "Twoje stacje",
   "AvailableStations.AllStations": "Dostępne stacje",
-  "AvailableStations.YourPermissions": "Dostęp do stacji",
+  "AvailableStations.YourPermissions": "Twój dostęp do stacji",
   "AvailableStations.Error": "Wystąpił błąd podczas pobierania listy stacji",
-  "AvailableStations.AddressFetchError": "Wystąpił błąd podczas pobierania adresu stacji"
+  "AvailableStations.AddressFetchError": "Wystąpił błąd podczas pobierania adresu stacji",
+  "AvailableStations.Request": "Poproś o dostęp",
+  "AvailableStations.LoginRemainder": "Zaloguj się, aby móc wysłać prośbę o dostęp"
 }

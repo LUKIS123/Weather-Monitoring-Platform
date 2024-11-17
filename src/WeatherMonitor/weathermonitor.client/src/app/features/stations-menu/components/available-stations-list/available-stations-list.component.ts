@@ -11,7 +11,6 @@ import { MatPaginatorIntlPl } from '../../../../shared/components/paginator/MatP
 import { ListAvailableStationsService } from '../../services/list-available-stations.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { PageResult } from '../../../../shared/models/page-result';
-import { AvailableStation } from '../../models/available-station';
 import { finalize, map, switchMap, zip } from 'rxjs';
 import { AvailableStationsListElementComponent } from '../available-stations-list-element/available-stations-list-element.component';
 import { PlusCodeConverterService } from '../../../../shared/services/plus-code-converter.service';
@@ -105,7 +104,6 @@ export class AvailableStationsListComponent implements OnInit {
                 )
               )
           );
-
           return zip(stationObservables).pipe(
             map(
               (stationsWithAddresses) =>

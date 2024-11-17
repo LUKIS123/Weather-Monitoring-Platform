@@ -30,7 +30,24 @@
       </mat-button-toggle-group>
     </p>
   </div>
-  @if(viewMode() === 'stationsAvailable'){
+  @if(!isLoggedIn()){
+  <div class="w-10/12 pt-3 pb-6">
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <span class="ml-4 flex items-center">
+          {{ "AvailableStations.LoginRemainder" | translate }}:
+          <asl-google-signin-button
+            class="ml-4"
+            type="icon"
+            shape="circle"
+            theme="outline"
+            size="large"
+          ></asl-google-signin-button>
+        </span>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  } @if(viewMode() === 'stationsAvailable'){
   <app-available-stations-list class="w-full"></app-available-stations-list>
   }@else{
   <app-permissions-list class="w-full"></app-permissions-list>

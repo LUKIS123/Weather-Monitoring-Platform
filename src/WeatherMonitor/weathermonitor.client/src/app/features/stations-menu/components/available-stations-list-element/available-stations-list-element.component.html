@@ -5,7 +5,9 @@
     <span class="font-bold"
       >{{ "StationsList.StationName" | translate }}:
     </span>
-    <span class="mat-headline-6 font-bold">{{ station().deviceName }}</span>
+    <span class="mat-headline-6 font-bold">{{
+      station().station.deviceName
+    }}</span>
   </div>
 
   <div>
@@ -20,7 +22,7 @@
           <br />
           <span class="font-bold">
             {{
-              station().isActive
+              station().station.isActive
                 ? ("DeviceManagement.Credentials.Active" | translate)
                 : ("DeviceManagement.Credentials.InActive" | translate)
             }}
@@ -34,15 +36,48 @@
             {{ "DeviceManagement.GoogleMapsCode" | translate }}:
           </span>
           <br />
-          @if(station().googleMapsPlusCode !== null &&
-          station().googleMapsPlusCode !== ''){
+          @if(station().station.googleMapsPlusCode !== null &&
+          station().station.googleMapsPlusCode !== ''){
           <span class="font-bold">
-            {{ station().googleMapsPlusCode }}
+            {{ station().station.googleMapsPlusCode }}
           </span>
           }@else {
           <span>
             {{ "DeviceManagement.NoGoogleMapsCode" | translate }}
           </span>
+          }
+        </p>
+      </div>
+
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <span class="text-xs text-gray-400">
+            {{ "DeviceManagement.Address" | translate }}:
+          </span>
+          <br />
+          @if (station().address.street && station().address.streetNumber) {
+          <span class="font-bold">
+            {{ station().address.street }} {{ station().address.streetNumber }},
+          </span>
+          } @if (station().address.street && !station().address.streetNumber) {
+          <span class="font-bold"> {{ station().address.street }}, </span>
+          }
+          <span class="font-bold">
+            {{ station().address.city }}, {{ station().address.voivodship }}
+          </span>
+        </p>
+      </div>
+
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          @if(isLoggedIn()){
+          <button mat-stroked-button>
+            {{ "AvailableStations.Request" | translate }}
+          </button>
+          }@else {
+          <button mat-stroked-button disabled>
+            {{ "AvailableStations.Request" | translate }}
+          </button>
           }
         </p>
       </div>
@@ -71,8 +106,8 @@
         }
       </mat-panel-title>
     </mat-expansion-panel-header>
-    @if(station().deviceExtraInfo !== null){
-    <p>{{ station().deviceExtraInfo }}</p>
+    @if(station().station.deviceExtraInfo !== null){
+    <p>{{ station().station.deviceExtraInfo }}</p>
     }@else {
     <p>{{ "DeviceManagement.NoDescription" | translate }}</p>
     }
