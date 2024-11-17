@@ -163,7 +163,7 @@ WHERE Id=@TargetTopicId;
     public async Task BulkUpdateDevicesStatusAsync(IEnumerable<int> deviceIds, bool status)
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
-        await using var multi = await connection.QueryMultipleAsync(@"
+        await connection.ExecuteAsync(@"
 UPDATE [identity].[Devices]
 SET IsActive = @Status
 WHERE Id IN @StationIds;
