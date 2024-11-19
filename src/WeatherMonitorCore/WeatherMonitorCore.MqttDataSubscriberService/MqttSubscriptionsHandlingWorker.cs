@@ -31,19 +31,14 @@ public class MqttSubscriptionsHandlingWorker : BackgroundService
         try
         {
             await Task.Delay(1000, stoppingToken);
-            if (_logger.IsEnabled(LogLevel.Information))
-            {
-                _logger.LogInformation("Worker started at:{time}", DateTimeOffset.Now);
-            }
+            _logger.LogInformation("Worker started at:{time}", DateTimeOffset.Now);
 
             await _mqttDataService.HandleMqttSubscriptions(stoppingToken);
 
             using var timer = new PeriodicTimer(_period);
-            var keepAlive = true;
-
-            while (!stoppingToken.IsCancellationRequested && keepAlive)
+            while (await timer.WaitForNextTickAsync(stoppingToken))
             {
-                keepAlive = await timer.WaitForNextTickAsync(stoppingToken);
+
                 if (_subscriptionsManagingService.GetMqttClient.IsConnected) continue;
                 try
                 {
@@ -64,10 +59,7 @@ public class MqttSubscriptionsHandlingWorker : BackgroundService
         {
             await _mqttDataService.CleanUp(WorkerMqttClientConfig.MqttDataServiceGuid, stoppingToken);
 
-            if (_logger.IsEnabled(LogLevel.Information))
-            {
-                _logger.LogInformation("Worker stopped at:{time}", DateTimeOffset.Now);
-            }
+            _logger.LogInformation("Worker stopped at:{time}", DateTimeOffset.Now);
         }
     }
 

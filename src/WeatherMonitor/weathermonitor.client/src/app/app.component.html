@@ -37,11 +37,25 @@
         routerLink="Home"
         class="cursor-pointer flex items-center space-x-4 py-4 px-2"
         (click)="sidenav.toggle()"
-        tabindex="0"
+        tabindex="1"
         (keyup.enter)="sidenav.toggle()"
       >
         <mat-icon>home</mat-icon>
         <span class="text-lg">{{ "Navigation.Home" | translate }}</span>
+      </div>
+
+      <div
+        mat-ripple
+        routerLink="DataVisualization"
+        class="cursor-pointer flex items-center space-x-4 py-4 px-2"
+        (click)="sidenav.toggle()"
+        tabindex="2"
+        (keyup.enter)="sidenav.toggle()"
+      >
+        <mat-icon>query_stats</mat-icon>
+        <span class="text-lg">{{
+          "Navigation.AggregateDataView" | translate
+        }}</span>
       </div>
       } @if(isAdminRole()){
       <div
@@ -49,7 +63,7 @@
         routerLink="DeviceManagement"
         class="cursor-pointer flex items-center space-x-4 py-4 px-2"
         (click)="sidenav.toggle()"
-        tabindex="1"
+        tabindex="3"
         (keyup.enter)="sidenav.toggle()"
       >
         <mat-icon>admin_panel_settings</mat-icon>

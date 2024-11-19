@@ -14,22 +14,21 @@ internal class DataViewRepository : IDataViewRepository
         _dbConnectionFactory = dbConnectionFactory;
     }
 
-    public async Task<LastDayWeatherData> GetLastDayWeatherDataAsync(DateTime currentTime, int? deviceId = null)
+    public async Task<LastDayWeatherData> GetLastDayWeatherDataAsync(DateTime currentTime, int? deviceId = null, string? plusCodeSearch = null)
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
         var sql = new StringBuilder(@$"
 DECLARE @CurrentDateTime DATETIME = @currentTime;
 
-WITH
-    HourOffset AS (
-        SELECT 0 AS HourOffset
-        UNION ALL
-        SELECT HourOffset + 1
-        FROM HourOffset
-        WHERE HourOffset < 23
-    )
+WITH HourOffset AS (
+    SELECT 0 AS HourOffset
+    UNION ALL
+    SELECT HourOffset + 1
+    FROM HourOffset
+    WHERE HourOffset < 23
+)
 SELECT
-    DATEADD(HOUR, -h.HourOffset, @CurrentDateTime) AS {nameof(LastDayHourlyData.HourlyTimeStamp)},
+    DATEADD(HOUR, -h.HourOffset, DATEADD(MINUTE, -DATEPART(MINUTE, @CurrentDateTime), @CurrentDateTime)) AS {nameof(LastDayHourlyData.HourlyTimeStamp)},
     ROUND(AVG(s.Temperature), 2) AS {nameof(LastDayHourlyData.AvgTemperature)},
     ROUND(AVG(s.Humidity), 2) AS {nameof(LastDayHourlyData.AvgHumidity)},
     ROUND(AVG(s.AirPressure), 2) AS {nameof(LastDayHourlyData.AvgAirPressure)},
@@ -39,38 +38,129 @@ SELECT
 FROM
     HourOffset h
     LEFT JOIN [weatherData].[SensorsMeasurements] s
-        ON s.ReceivedAt >= DATEADD(HOUR, -h.HourOffset - 1, @CurrentDateTime)
-            AND s.ReceivedAt < DATEADD(HOUR, -h.HourOffset, @CurrentDateTime) + '00:59:59.999'
+        ON s.ReceivedAt >= DATEADD(HOUR, -h.HourOffset - 1, DATEADD(MINUTE, -DATEPART(MINUTE, @CurrentDateTime), @CurrentDateTime))
+           AND s.ReceivedAt < DATEADD(HOUR, -h.HourOffset, DATEADD(MINUTE, -DATEPART(MINUTE, @CurrentDateTime), @CurrentDateTime))
 ");
 
         if (deviceId.HasValue)
         {
             sql.Append(@"
-WHERE s.DeviceId = @deviceId");
+WHERE s.DeviceId = @weatherDeviceId");
+        }
+        else if (!string.IsNullOrWhiteSpace(plusCodeSearch))
+        {
+            sql.Append(@"
+    LEFT JOIN [identity].[Devices] d ON d.Id = s.DeviceId
+WHERE CONTAINS(d.GoogleMapsPlusCode, @mapsPlusCodeSearch)");
         }
 
         sql.Append(@"
 GROUP BY
-    DATEADD(HOUR, -h.HourOffset, @CurrentDateTime)
+    DATEADD(HOUR, -h.HourOffset, DATEADD(MINUTE, -DATEPART(MINUTE, @CurrentDateTime), @CurrentDateTime))
 ORDER BY
-    DATEADD(HOUR, -h.HourOffset, @CurrentDateTime);
+    DATEADD(HOUR, -h.HourOffset, DATEADD(MINUTE, -DATEPART(MINUTE, @CurrentDateTime), @CurrentDateTime));
 ");
+
         var results = await connection.QueryAsync<LastDayHourlyData>(
             sql.ToString(),
             new
             {
                 currentTime,
-                deviceId
+                weatherDeviceId = deviceId ?? (object)DBNull.Value,
+                mapsPlusCodeSearch = string.IsNullOrWhiteSpace(plusCodeSearch)
+                    ? (object)DBNull.Value
+                    : plusCodeSearch
             });
 
         return new LastDayWeatherData(results);
     }
 
-    public async Task<LastWeekWeatherData> GetLastWeekWeatherDataAsync(DateTime currentTime, int? deviceId = null)
+    //     public async Task<LastWeekWeatherData> GetLastWeekWeatherDataAsync(DateTime currentTime, int? deviceId = null,
+    //         string? plusCodeSearch = null)
+    //     {
+    //         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+    //         var sql = new StringBuilder(@$"
+    // DECLARE @CurrentDateTime DATETIME = @currentTime;
+    //
+    // WITH
+    //     Numbers AS (
+    //         SELECT TOP (28)
+    //             ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1 AS Number
+    //         FROM
+    //             (VALUES (0),(0),(0),(0),(0),(0),(0)) AS a(n)
+    //             CROSS JOIN (VALUES (0),(0),(0),(0)) AS b(n)
+    //     ),
+    //     DateHourRange AS (
+    //         SELECT
+    //             DATEADD(HOUR, -n.Number * 6, @CurrentDateTime) AS HourDateTime
+    //         FROM Numbers n
+    //     )
+    // SELECT
+    //     dhr.HourDateTime AS {nameof(LastWeekHourlyData.HourDateTime)},
+    //     ROUND(AVG(sm.Temperature), 2) AS {nameof(LastWeekHourlyData.AvgTemperature)},
+    //     ROUND(AVG(sm.Humidity), 2) AS {nameof(LastWeekHourlyData.AvgHumidity)},
+    //     ROUND(AVG(sm.AirPressure), 2) AS {nameof(LastWeekHourlyData.AvgAirPressure)},
+    //     ROUND(AVG(sm.PM1_0), 2) AS {nameof(LastWeekHourlyData.AvgPM1_0)},
+    //     ROUND(AVG(sm.PM2_5), 2) AS {nameof(LastWeekHourlyData.AvgPM2_5)},
+    //     ROUND(AVG(sm.PM10), 2) AS {nameof(LastWeekHourlyData.AvgPM10)}
+    // FROM
+    //     DateHourRange dhr
+    //     LEFT JOIN [weatherData].[SensorsMeasurements] sm
+    //         ON sm.ReceivedAt >= dhr.HourDateTime
+    //            AND sm.ReceivedAt < DATEADD(HOUR, 6, dhr.HourDateTime)");
+    //
+    //         if (deviceId.HasValue)
+    //         {
+    //             sql.Append(@"
+    // AND (sm.DeviceId = @deviceId)");
+    //         }
+    //
+    //         sql.Append(@"
+    // GROUP BY 
+    //     dhr.HourDateTime
+    // ORDER BY 
+    //     dhr.HourDateTime;
+    // ");
+    //
+    //         var results = await connection.QueryAsync<LastWeekHourlyData>(
+    //             sql.ToString(),
+    //             new
+    //             {
+    //                 currentTime,
+    //                 deviceId
+    //             });
+    //
+    //         return new LastWeekWeatherData(results);
+    //     }
+
+    public async Task<LastWeekWeatherData> GetLastWeekWeatherDataAsync(DateTime currentTime, int? deviceId = null, string? plusCodeSearch = null)
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+        var sql = deviceId.HasValue
+            ? BuildLastWeekDataSingleStationQuery()
+            : BuildLastWeekDataAggregateQuery(plusCodeSearch);
+
+        var results = await connection.QueryAsync<LastWeekHourlyData>(
+            sql,
+            new
+            {
+                currentTime,
+                weatherDeviceId = deviceId ?? (object)DBNull.Value,
+                mapsPlusCodeSearch = string.IsNullOrWhiteSpace(plusCodeSearch)
+                    ? (object)DBNull.Value
+                    : plusCodeSearch
+            });
+
+        return new LastWeekWeatherData(results);
+    }
+
+    private string BuildLastWeekDataAggregateQuery(string? plusCodeSearch)
+    {
+        var isSearchQuery = !string.IsNullOrWhiteSpace(plusCodeSearch);
         var sql = new StringBuilder(@$"
 DECLARE @CurrentDateTime DATETIME = @currentTime;
+
+DECLARE @AlignedDateTime DATETIME = DATEADD(HOUR, (DATEDIFF(HOUR, 0, @CurrentDateTime) / 6) * 6, 0);
 
 WITH
     Numbers AS (
@@ -82,7 +172,7 @@ WITH
     ),
     DateHourRange AS (
         SELECT
-            DATEADD(HOUR, -n.Number * 6, @CurrentDateTime) AS HourDateTime
+            DATEADD(HOUR, -n.Number * 6, @AlignedDateTime) AS HourDateTime
         FROM Numbers n
     )
 SELECT
@@ -98,32 +188,123 @@ FROM
     LEFT JOIN [weatherData].[SensorsMeasurements] sm
         ON sm.ReceivedAt >= dhr.HourDateTime
            AND sm.ReceivedAt < DATEADD(HOUR, 6, dhr.HourDateTime)");
-
-        if (deviceId.HasValue)
+        if (isSearchQuery)
         {
             sql.Append(@"
-AND (sm.DeviceId = @deviceId)");
+    LEFT JOIN [identity].[Devices] d ON d.Id = sm.DeviceId");
+        }
+        sql.Append(@"
+WHERE
+    dhr.HourDateTime <= @AlignedDateTime");
+        if (isSearchQuery)
+        {
+            sql.Append(@"
+AND CONTAINS(d.GoogleMapsPlusCode, @mapsPlusCodeSearch)");
+        }
+
+        sql.Append($@"
+GROUP BY 
+    dhr.HourDateTime
+
+UNION ALL
+
+SELECT
+    @AlignedDateTime AS {nameof(LastWeekHourlyData.HourDateTime)},
+    ROUND(AVG(sm.Temperature), 2) AS {nameof(LastWeekHourlyData.AvgTemperature)},
+    ROUND(AVG(sm.Humidity), 2) AS {nameof(LastWeekHourlyData.AvgHumidity)},
+    ROUND(AVG(sm.AirPressure), 2) AS {nameof(LastWeekHourlyData.AvgAirPressure)},
+    ROUND(AVG(sm.PM1_0), 2) AS {nameof(LastWeekHourlyData.AvgPM1_0)},
+    ROUND(AVG(sm.PM2_5), 2) AS {nameof(LastWeekHourlyData.AvgPM2_5)},
+    ROUND(AVG(sm.PM10), 2) AS {nameof(LastWeekHourlyData.AvgPM10)}
+FROM
+    [weatherData].[SensorsMeasurements] sm");
+        if (isSearchQuery)
+        {
+            sql.Append(@"
+    LEFT JOIN [identity].[Devices] d ON d.Id = sm.DeviceId");
+        }
+        sql.Append(@"
+WHERE
+    sm.ReceivedAt >= @AlignedDateTime
+    AND sm.ReceivedAt < @CurrentDateTime");
+
+        if (isSearchQuery)
+        {
+            sql.Append(@"
+    AND CONTAINS(d.GoogleMapsPlusCode, @mapsPlusCodeSearch)");
         }
 
         sql.Append(@"
-GROUP BY 
-    dhr.HourDateTime
-ORDER BY 
+ORDER BY
     dhr.HourDateTime;
 ");
-
-        var results = await connection.QueryAsync<LastWeekHourlyData>(
-            sql.ToString(),
-            new
-            {
-                currentTime,
-                deviceId
-            });
-
-        return new LastWeekWeatherData(results);
+        return sql.ToString();
     }
 
-    public async Task<LastMonthWeatherData> GetDayTimeLastMonthWeatherDataAsync(DateTime currentTime, int? deviceId = null)
+    private string BuildLastWeekDataSingleStationQuery()
+    {
+        const string sql = @$"
+DECLARE @CurrentDateTime DATETIME = @currentTime;
+
+DECLARE @AlignedDateTime DATETIME = DATEADD(HOUR, (DATEDIFF(HOUR, 0, @CurrentDateTime) / 6) * 6, 0);
+
+WITH
+    Numbers AS (
+        SELECT TOP (28)
+            ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1 AS Number
+        FROM
+            (VALUES (0),(0),(0),(0),(0),(0),(0)) AS a(n)
+            CROSS JOIN (VALUES (0),(0),(0),(0)) AS b(n)
+    ),
+    DateHourRange AS (
+        SELECT
+            DATEADD(HOUR, -n.Number * 6, @AlignedDateTime) AS HourDateTime
+        FROM Numbers n
+    )
+SELECT
+    dhr.HourDateTime AS {nameof(LastWeekHourlyData.HourDateTime)},
+    ROUND(AVG(sm.Temperature), 2) AS {nameof(LastWeekHourlyData.AvgTemperature)},
+    ROUND(AVG(sm.Humidity), 2) AS {nameof(LastWeekHourlyData.AvgHumidity)},
+    ROUND(AVG(sm.AirPressure), 2) AS {nameof(LastWeekHourlyData.AvgAirPressure)},
+    ROUND(AVG(sm.PM1_0), 2) AS {nameof(LastWeekHourlyData.AvgPM1_0)},
+    ROUND(AVG(sm.PM2_5), 2) AS {nameof(LastWeekHourlyData.AvgPM2_5)},
+    ROUND(AVG(sm.PM10), 2) AS {nameof(LastWeekHourlyData.AvgPM10)}
+FROM
+    DateHourRange dhr
+    LEFT JOIN [weatherData].[SensorsMeasurements] sm
+        ON sm.ReceivedAt >= dhr.HourDateTime
+           AND sm.ReceivedAt < DATEADD(HOUR, 6, dhr.HourDateTime)
+           AND (sm.DeviceId = @weatherDeviceId)
+WHERE
+    dhr.HourDateTime <= @AlignedDateTime
+GROUP BY 
+    dhr.HourDateTime
+
+UNION ALL
+
+SELECT
+    @AlignedDateTime AS {nameof(LastWeekHourlyData.HourDateTime)},
+    ROUND(AVG(sm.Temperature), 2) AS {nameof(LastWeekHourlyData.AvgTemperature)},
+    ROUND(AVG(sm.Humidity), 2) AS {nameof(LastWeekHourlyData.AvgHumidity)},
+    ROUND(AVG(sm.AirPressure), 2) AS {nameof(LastWeekHourlyData.AvgAirPressure)},
+    ROUND(AVG(sm.PM1_0), 2) AS {nameof(LastWeekHourlyData.AvgPM1_0)},
+    ROUND(AVG(sm.PM2_5), 2) AS {nameof(LastWeekHourlyData.AvgPM2_5)},
+    ROUND(AVG(sm.PM10), 2) AS {nameof(LastWeekHourlyData.AvgPM10)}
+FROM
+    [weatherData].[SensorsMeasurements] sm
+WHERE
+    sm.ReceivedAt >= @AlignedDateTime
+    AND sm.ReceivedAt < @CurrentDateTime
+    AND sm.DeviceId = @weatherDeviceId
+
+ORDER BY
+    dhr.HourDateTime;
+";
+        return sql;
+    }
+
+    public async Task<LastMonthWeatherData> GetDayTimeLastMonthWeatherDataAsync(DateTime currentTime,
+        int? deviceId = null, string? plusCodeSearch = null)
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
         var sql = new StringBuilder(@$"
@@ -160,7 +341,13 @@ FROM
         if (deviceId.HasValue)
         {
             sql.Append(@"
-AND (sm.DeviceId = @deviceId)");
+AND (sm.DeviceId = @weatherDeviceId)");
+        }
+        else if (!string.IsNullOrWhiteSpace(plusCodeSearch))
+        {
+            sql.Append(@"
+    LEFT JOIN [identity].[Devices] d ON d.Id = sm.DeviceId
+WHERE CONTAINS(d.GoogleMapsPlusCode, @mapsPlusCodeSearch)");
         }
 
         sql.Append(@"
@@ -174,13 +361,17 @@ ORDER BY
             new
             {
                 currentTime,
-                deviceId
+                weatherDeviceId = deviceId ?? (object)DBNull.Value,
+                mapsPlusCodeSearch = string.IsNullOrWhiteSpace(plusCodeSearch)
+                    ? (object)DBNull.Value
+                    : plusCodeSearch
             });
 
         return new LastMonthWeatherData(dayTimeResults);
     }
 
-    public async Task<LastMonthWeatherData> GetNightTimeLastMonthWeatherDataAsync(DateTime currentTime, int? deviceId = null)
+    public async Task<LastMonthWeatherData> GetNightTimeLastMonthWeatherDataAsync(DateTime currentTime,
+        int? deviceId = null, string? plusCodeSearch = null)
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
         var sql = new StringBuilder(@$"
@@ -217,7 +408,13 @@ FROM
         if (deviceId.HasValue)
         {
             sql.Append(@"
-AND (sm.DeviceId = @deviceId)");
+AND (sm.DeviceId = @weatherDeviceId)");
+        }
+        else if (!string.IsNullOrWhiteSpace(plusCodeSearch))
+        {
+            sql.Append(@"
+    LEFT JOIN [identity].[Devices] d ON d.Id = sm.DeviceId
+WHERE CONTAINS(d.GoogleMapsPlusCode, @mapsPlusCodeSearch)");
         }
 
         sql.Append(@"
@@ -231,7 +428,10 @@ ORDER BY
             new
             {
                 currentTime,
-                deviceId
+                weatherDeviceId = deviceId ?? (object)DBNull.Value,
+                mapsPlusCodeSearch = string.IsNullOrWhiteSpace(plusCodeSearch)
+                    ? (object)DBNull.Value
+                    : plusCodeSearch
             });
 
         return new LastMonthWeatherData(nightTimeResults);

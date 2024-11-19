@@ -6,6 +6,36 @@
     <div
       class="w-full grid grid-cols-1 lg:grid-cols-2 my-2 justify-items-center justify-around"
     >
+      <form [formGroup]="formGroup">
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>{{
+            "DataVisualisation.PlusCodeSearch.PlusCodeMatch" | translate
+          }}</mat-label>
+          <input
+            matInput
+            placeholder="Wrocław"
+            formControlName="plusCodeSearchPhrase"
+            [errorStateMatcher]="matcher"
+          />
+          <mat-error>{{
+            "DataVisualisation.PlusCodeSearch.Required" | translate
+          }}</mat-error>
+        </mat-form-field>
+      </form>
+      <button
+        mat-flat-button
+        color="primary"
+        type="button"
+        (click)="submit()"
+        [disabled]="!isFormValid"
+      >
+        {{ "DataVisualisation.PlusCodeSearch.Submit" | translate }}
+      </button>
+    </div>
+
+    <div
+      class="w-full grid grid-cols-1 lg:grid-cols-2 my-2 justify-items-center justify-around"
+    >
       <p class="px-2">
         <mat-button-toggle-group
           name="dataType"
@@ -54,29 +84,25 @@
     </div>
   </div>
 
-  @if(isDataLoaded()) { 
-    @switch (timeFrame()) { 
-        @case ('24h') {
-        <app-last-day-hourly-data
-            class="w-11/12 h-full"
-            [data]="last24hData()"
-            [dataType]="dataType()"
-        ></app-last-day-hourly-data>
-        } @case ('7d') {
-        <app-last-week-hourly-data
-            class="w-11/12 h-full"
-            [data]="last7dData()"
-            [dataType]="dataType()"
-        ></app-last-week-hourly-data>
-        } @case ('30d') {
-        <app-last-month-daily-data
-            class="w-11/12 h-full"
-            [data]="last30dData()"
-            [dataType]="dataType()"
-        ></app-last-month-daily-data>
-        } 
-    }
-  } @else if(isLoading()){
+  @if(isDataLoaded()) { @switch (timeFrame()) { @case ('24h') {
+  <app-last-day-hourly-data
+    class="w-11/12 h-full"
+    [data]="last24hData()"
+    [dataType]="dataType()"
+  ></app-last-day-hourly-data>
+  } @case ('7d') {
+  <app-last-week-hourly-data
+    class="w-11/12 h-full"
+    [data]="last7dData()"
+    [dataType]="dataType()"
+  ></app-last-week-hourly-data>
+  } @case ('30d') {
+  <app-last-month-daily-data
+    class="w-11/12 h-full"
+    [data]="last30dData()"
+    [dataType]="dataType()"
+  ></app-last-month-daily-data>
+  } } } @else if(isLoading()){
   <div class="flex items-center justify-center w-full h-full">
     <mat-spinner></mat-spinner>
   </div>
