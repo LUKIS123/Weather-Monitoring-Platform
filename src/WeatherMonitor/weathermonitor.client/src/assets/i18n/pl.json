@@ -43,7 +43,7 @@
   "UserAccount.Admin": "Administrator",
   "UserAccount.Unknown": "Nieznany",
   "UserAccount.Error": "Wystąpił błąd podczas pobierania danych użytkownika",
-  "Navigation.Home": "Strona główna",
+  "Navigation.Home": "Strona główna - Dane bieżące",
   "Navigation.StationAccess": "Dostęp do stacji",
   "Navigation.AggregateDataView": "Wizualizacja danych pomiarowych",
   "Navigation.DarkTheme": "Ciemny motyw",
