@@ -84,8 +84,14 @@ internal class MqttDataService : IMqttDataService
 
     public async Task CleanUp(Guid clientId, CancellationToken stoppingToken)
     {
-        await _subscriptionsManagingService.GetMqttClient.DisconnectAsync(new MqttClientDisconnectOptions(), stoppingToken);
-        await _mqttClientsRepository.RemoveWorkerUserAsync(clientId);
+        try
+        {
+            await _subscriptionsManagingService.GetMqttClient.DisconnectAsync(new MqttClientDisconnectOptions(), stoppingToken);
+            await _mqttClientsRepository.RemoveWorkerUserAsync(clientId);
+        }
+        catch (OperationCanceledException)
+        {
+        }
     }
 
     public void Dispose()
