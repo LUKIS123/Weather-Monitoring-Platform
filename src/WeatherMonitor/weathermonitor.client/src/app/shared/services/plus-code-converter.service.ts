@@ -3,6 +3,7 @@ import { MapGeocoder } from '@angular/google-maps';
 import { catchError, map, Observable, of } from 'rxjs';
 import { ToastService } from './toast.service';
 import { TranslateService } from '@ngx-translate/core';
+import { StationAddress } from '../models/station-address';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +31,43 @@ export class PlusCodeConverterService {
             this.translateService.instant('StationsMap.GeoCodeError')
           );
           return of({ lat: 0, lng: 0 });
+        })
+      );
+  }
+
+  getAddressByPlusCode(plusCode: string): Observable<StationAddress> {
+    return this.geoService
+      .geocode({
+        address: plusCode,
+      })
+      .pipe(
+        map((response) => {
+          const addressComponents = response.results[0].address_components;
+          const streetNumber = addressComponents.find((component) =>
+            component.types.includes('street_number')
+          )?.long_name;
+          const street = addressComponents.find((component) =>
+            component.types.includes('route')
+          )?.long_name;
+          const city = addressComponents.find((component) =>
+            component.types.includes('locality')
+          )?.long_name;
+
+          return {
+            street: street,
+            streetNumber: streetNumber,
+            city: city || '',
+          };
+        }),
+        catchError(() => {
+          this.toastService.openError(
+            this.translateService.instant('AvailableStations.AddressFetchError')
+          );
+          return of({
+            street: undefined,
+            streetNumber: undefined,
+            city: '',
+          });
         })
       );
   }

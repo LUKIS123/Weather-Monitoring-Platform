@@ -7,6 +7,7 @@ using WeatherMonitor.Server.Infrastructure.Repositories;
 using WeatherMonitor.Server.Infrastructure.Utility;
 using WeatherMonitor.Server.Interfaces;
 using WeatherMonitor.Server.SharedKernel.Repositories;
+using WeatherMonitor.Server.StationsPermissions.Infrastructure;
 
 namespace WeatherMonitor.Server.Infrastructure;
 public static class InfrastructureModule
@@ -26,6 +27,7 @@ public static class InfrastructureModule
         services.AddTransient<IDeviceManagementRepository, DevicesRepository>();
         services.AddTransient<IWeatherStationsRepository, DevicesRepository>();
         services.AddTransient<IDataViewRepository, DataViewRepository>();
+        services.AddTransient<IStationsPermissionsRepository, StationsPermissionsRepository>();
 
         // Microservice Http Client
         services.AddTransient<ICoreMicroserviceHttpClientWrapper, CoreMicroserviceHttpClientWrapper>();

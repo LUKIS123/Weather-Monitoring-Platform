@@ -32,7 +32,10 @@ internal class GoogleSignInService : IExternalSignInService
         try
         {
             var validatedToken = await GoogleJsonWebSignature.ValidateAsync(authenticateRequest.IdToken);
-            var userSettings = await _userSettingsRepository.GetOrCreateUser(validatedToken.Subject);
+            var userSettings = await _userSettingsRepository.GetOrCreateUser(
+                validatedToken.Subject,
+                validatedToken.Email,
+                validatedToken.Name);
 
             var jwtToken = _jwtAuthorizationService.GenerateJwtToken(
                 new UserInfo

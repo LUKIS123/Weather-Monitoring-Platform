@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WeatherMonitorCore.UserAuthentication.Features.Authentication;
 using WeatherMonitorCore.UserAuthentication.Features.SignIn;
+using WeatherMonitorCore.UserAuthentication.Features.UpdateRole;
 using WeatherMonitorCore.UserAuthentication.Infrastructure.Jwt;
 
 namespace WeatherMonitorCore.UserAuthentication;
@@ -20,6 +21,7 @@ public static class UserAuthenticationModule
         services.AddTransient<IExternalSignInService, GoogleSignInService>();
         services.AddTransient<IJwtAuthorizationService, JwtAuthorizationService>();
         services.AddTransient<IAuthenticationService, AuthenticationService>();
+        services.AddTransient<IUpdateRoleService, UpdateRoleService>();
 
         services.AddAuthentication(opt =>
         {

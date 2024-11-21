@@ -6,7 +6,7 @@ namespace WeatherMonitor.Server.DataView.Features.GetWeatherDataLastDay;
 
 internal interface IGetWeatherDataLastDayService
 {
-    Task<Result<GetWeatherDataLastDayResponse>> Handle(int? deviceId);
+    Task<Result<GetWeatherDataLastDayResponse>> Handle(int? deviceId, string? plusCodeSearch);
 }
 
 internal class GetWeatherDataLastDayService : IGetWeatherDataLastDayService
@@ -25,14 +25,15 @@ internal class GetWeatherDataLastDayService : IGetWeatherDataLastDayService
         _dataViewRepository = dataViewRepository;
     }
 
-    public async Task<Result<GetWeatherDataLastDayResponse>> Handle(int? deviceId)
+    public async Task<Result<GetWeatherDataLastDayResponse>> Handle(int? deviceId, string? plusCodeSearch)
     {
         var zoneAdjustedTime =
             TimeZoneInfo.ConvertTimeFromUtc(_timeProvider.GetUtcNow().DateTime, _timeZoneProvider.GetTimeZoneInfo());
 
         var result = await _dataViewRepository.GetLastDayWeatherDataAsync(
             new DateTime(zoneAdjustedTime.Year, zoneAdjustedTime.Month, zoneAdjustedTime.Day, zoneAdjustedTime.Hour, 0, 0),
-            deviceId);
+            deviceId,
+            plusCodeSearch);
 
         return new GetWeatherDataLastDayResponse(zoneAdjustedTime, result.HourlyData);
     }

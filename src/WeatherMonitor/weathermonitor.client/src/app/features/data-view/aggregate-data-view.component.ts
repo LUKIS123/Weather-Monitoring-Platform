@@ -4,17 +4,44 @@ import { GetWeatherDataLastDayResponse } from './models/get-weather-last-day-res
 import { GetWeatherDataLastWeekResponse } from './models/get-weather-last-week-response';
 import { GetWeatherDataLastMonthResponse } from './models/get-weather-last-month-response';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
 import { ToastService } from '../../shared/services/toast.service';
-import { GetLastDayDataService } from './services/get-last-day-data.service';
-import { GetLastWeekDataService } from './services/get-last-week-data.service';
-import { GetLastMonthDataService } from './services/get-last-month-data.service';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../shared/material.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { LastDayHourlyDataComponent } from './components/last-day-hourly-data/last-day-hourly-data.component';
 import { LastWeekHourlyDataComponent } from './components/last-week-hourly-data/last-week-hourly-data.component';
 import { LastMonthDailyDataComponent } from './components/last-month-daily-data/last-month-daily-data.component';
+import { AggregateDataViewService } from './services/aggregate-data-view.service';
+import {
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  FormsModule,
+  NgForm,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ErrorStateMatcher } from '@angular/material/core';
+
+export class SearchInputErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(
+    control: FormControl | null,
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(
+      control &&
+      control.invalid &&
+      (control.dirty || control.touched || isSubmitted)
+    );
+  }
+}
+
+export interface PlusCodeSeachFormControl {
+  plusCodeSearchPhrase: FormControl<string | null>;
+}
 
 @Component({
   selector: 'app-aggregate-data-view',
@@ -27,24 +54,31 @@ import { LastMonthDailyDataComponent } from './components/last-month-daily-data/
     LastDayHourlyDataComponent,
     LastWeekHourlyDataComponent,
     LastMonthDailyDataComponent,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './aggregate-data-view.component.html',
 })
 export class AggregateDataViewComponent implements OnInit {
   private readonly translateService = inject(TranslateService);
-  private readonly activatedRoute = inject(ActivatedRoute);
   private readonly toastService = inject(ToastService);
-  private readonly getLastDayDataService = inject(GetLastDayDataService);
-  private readonly getLastWeekDataService = inject(GetLastWeekDataService);
-  private readonly getLastMonthDataService = inject(GetLastMonthDataService);
+  private readonly aggregateDataService = inject(AggregateDataViewService);
 
   timeFrame = signal<'24h' | '7d' | '30d'>('24h');
   dataType = signal<'weather' | 'pollution'>('weather');
 
+  matcher = new SearchInputErrorStateMatcher();
+  public formGroup = new FormGroup<PlusCodeSeachFormControl>({
+    plusCodeSearchPhrase: new FormControl('Wrocław', [
+      Validators.required,
+      Validators.minLength(1),
+    ]),
+  });
+
   #isLoading = signal<boolean>(true);
   public readonly isLoading = this.#isLoading.asReadonly();
-  #deviceId = signal<number>(0);
-  public deviceId = this.#deviceId.asReadonly();
 
   #last24hData = signal<GetWeatherDataLastDayResponse>(
     {} as GetWeatherDataLastDayResponse
@@ -79,37 +113,64 @@ export class AggregateDataViewComponent implements OnInit {
     }
   });
 
-  constructor() {
-    this.activatedRoute.params.subscribe((params) => {
-      const deviceId = params['deviceId'];
-      this.#deviceId.set(deviceId);
-    });
-  }
-
   ngOnInit(): void {
-    this.loadStationsDataLast24h(this.deviceId());
+    const googleMapsPlusCode =
+      this.formGroup.get('plusCodeSearchPhrase')?.value ?? 'Wrocław';
+    this.loadStationsDataLast24h(googleMapsPlusCode);
   }
 
   public onTimeFrameChange(timeFrame: '24h' | '7d' | '30d'): void {
     this.timeFrame.set(timeFrame);
     this.#isLoading.set(true);
+    const googleMapsPlusCode =
+      this.formGroup.get('plusCodeSearchPhrase')?.value ?? 'Wrocław';
     switch (timeFrame) {
       case '24h':
-        this.loadStationsDataLast24h(this.deviceId());
+        this.loadStationsDataLast24h(googleMapsPlusCode);
         break;
       case '7d':
-        this.loadStationsDataLast7d(this.deviceId());
+        this.loadStationsDataLast7d(googleMapsPlusCode);
         break;
       case '30d':
-        this.loadStationsDataLast30d(this.deviceId());
+        this.loadStationsDataLast30d(googleMapsPlusCode);
         break;
     }
   }
 
-  private loadStationsDataLast24h(deviceId: number): void {
-    this.getLastDayDataService
-      .getLastDayData(deviceId)
-      .pipe(finalize(() => this.#isLoading.set(false)))
+  public get isFormValid() {
+    return this.formGroup.valid;
+  }
+
+  submit() {
+    this.#isLoading.set(true);
+    const googleMapsPlusCode =
+      this.formGroup.get('plusCodeSearchPhrase')?.value ?? 'Wrocław';
+    switch (this.timeFrame()) {
+      case '24h':
+        this.loadStationsDataLast24h(googleMapsPlusCode);
+        break;
+      case '7d':
+        this.loadStationsDataLast7d(googleMapsPlusCode);
+        break;
+      case '30d':
+        this.loadStationsDataLast30d(googleMapsPlusCode);
+        break;
+    }
+  }
+
+  private loadStationsDataLast24h(searchPhrase: string): void {
+    this.aggregateDataService
+      .getLastDayData(searchPhrase)
+      .pipe(
+        finalize(() => {
+          this.#isLoading.set(false);
+          this.toastService.openSuccess(
+            `${this.translateService.instant(
+              'DataVisualisation.PlusCodeSearchDispplay'
+            )} ${searchPhrase}`
+          );
+        })
+      )
       .subscribe({
         next: (data) => {
           this.#last24hData.set(data);
@@ -121,10 +182,19 @@ export class AggregateDataViewComponent implements OnInit {
       });
   }
 
-  private loadStationsDataLast7d(deviceId: number) {
-    this.getLastWeekDataService
-      .getLastWeekData(deviceId)
-      .pipe(finalize(() => this.#isLoading.set(false)))
+  private loadStationsDataLast7d(searchPhrase: string) {
+    this.aggregateDataService
+      .getLastWeekData(searchPhrase)
+      .pipe(
+        finalize(() => {
+          this.#isLoading.set(false);
+          this.toastService.openSuccess(
+            `${this.translateService.instant(
+              'DataVisualisation.PlusCodeSearchDispplay'
+            )} ${searchPhrase}`
+          );
+        })
+      )
       .subscribe({
         next: (data) => {
           this.#last7dData.set(data);
@@ -136,10 +206,19 @@ export class AggregateDataViewComponent implements OnInit {
       });
   }
 
-  private loadStationsDataLast30d(deviceId: number) {
-    this.getLastMonthDataService
-      .getLastMonthkData(deviceId)
-      .pipe(finalize(() => this.#isLoading.set(false)))
+  private loadStationsDataLast30d(searchPhrase: string) {
+    this.aggregateDataService
+      .getLastMonthkData(searchPhrase)
+      .pipe(
+        finalize(() => {
+          this.#isLoading.set(false);
+          this.toastService.openSuccess(
+            `${this.translateService.instant(
+              'DataVisualisation.PlusCodeSearchDispplay'
+            )} ${searchPhrase}`
+          );
+        })
+      )
       .subscribe({
         next: (data) => {
           this.#last30dData.set(data);

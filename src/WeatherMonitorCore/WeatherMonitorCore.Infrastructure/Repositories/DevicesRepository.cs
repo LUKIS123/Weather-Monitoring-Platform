@@ -131,25 +131,31 @@ WHERE D.Id = @deviceId
 DECLARE @TargetMqttId UNIQUEIDENTIFIER;
 SET @TargetMqttId = 
     (SELECT MqttClientId
-    FROM [WeatherMonitor].[identity].[Devices]
+    FROM [identity].[Devices]
     WHERE Id=@deviceId);
 
+DELETE FROM [stationsAccess].[StationPermissionRequests]
+WHERE DeviceId = @deviceId;
+
+DELETE FROM [stationsAccess].[StationsPermissions]
+WHERE DeviceId = @deviceId;
+
 DELETE
-FROM [WeatherMonitor].[identity].[Devices]
+FROM [identity].[Devices]
 WHERE Id=@deviceId;
 
 DECLARE @TargetTopicId UNIQUEIDENTIFIER;
 SET @TargetTopicId = 
     (SELECT TopicId
-    FROM [WeatherMonitor].[identity].[MqttClientsAllowedTopics]
+    FROM [identity].[MqttClientsAllowedTopics]
     WHERE ClientId=@TargetMqttId);
 
 DELETE
-FROM [WeatherMonitor].[identity].[MqttClients]
+FROM [identity].[MqttClients]
 WHERE Id=@TargetMqttId;
 
 DELETE
-FROM [WeatherMonitor].[identity].[MqttTopics]
+FROM [identity].[MqttTopics]
 WHERE Id=@TargetTopicId;
 ", new { deviceId });
     }
@@ -157,7 +163,7 @@ WHERE Id=@TargetTopicId;
     public async Task BulkUpdateDevicesStatusAsync(IEnumerable<int> deviceIds, bool status)
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
-        await using var multi = await connection.QueryMultipleAsync(@"
+        await connection.ExecuteAsync(@"
 UPDATE [identity].[Devices]
 SET IsActive = @Status
 WHERE Id IN @StationIds;

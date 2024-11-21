@@ -7,7 +7,7 @@ namespace WeatherMonitor.Server.DataView.Features.GetWeatherDataLastMonth;
 
 internal interface IGetWeatherDataLastMonthService
 {
-    Task<Result<GetWeatherDataLastMonthResponse>> Handle(int? deviceId);
+    Task<Result<GetWeatherDataLastMonthResponse>> Handle(int? deviceId, string? plusCodeSearch);
 }
 
 internal class GetWeatherDataLastMonthService : IGetWeatherDataLastMonthService
@@ -26,7 +26,7 @@ internal class GetWeatherDataLastMonthService : IGetWeatherDataLastMonthService
         _dataViewRepository = dataViewRepository;
     }
 
-    public async Task<Result<GetWeatherDataLastMonthResponse>> Handle(int? deviceId)
+    public async Task<Result<GetWeatherDataLastMonthResponse>> Handle(int? deviceId, string? plusCodeSearch)
     {
         var zoneAdjustedTime =
             TimeZoneInfo.ConvertTimeFromUtc(_timeProvider.GetUtcNow().DateTime, _timeZoneProvider.GetTimeZoneInfo());
@@ -38,8 +38,14 @@ internal class GetWeatherDataLastMonthService : IGetWeatherDataLastMonthService
             0,
             0);
 
-        var dayTimeResults = _dataViewRepository.GetDayTimeLastMonthWeatherDataAsync(zoneAdjustedTime, deviceId);
-        var nightTimeResults = _dataViewRepository.GetNightTimeLastMonthWeatherDataAsync(zoneAdjustedTime, deviceId);
+        var dayTimeResults = _dataViewRepository.GetDayTimeLastMonthWeatherDataAsync(
+            zoneAdjustedTime,
+            deviceId,
+            plusCodeSearch);
+        var nightTimeResults = _dataViewRepository.GetNightTimeLastMonthWeatherDataAsync(
+            zoneAdjustedTime,
+            deviceId,
+            plusCodeSearch);
         await Task.WhenAll(dayTimeResults, nightTimeResults);
 
         var dayTimeData = dayTimeResults.Result.DailyData.ToArray();

@@ -44,7 +44,9 @@ export class AuthorizationService {
               role: UserRole.User,
             });
             this.getServerAuthorizationStatus();
-            this.router.navigate(['/Home']);
+            if (!this.router.url.includes('AvailableStations')) {
+              this.router.navigate(['/Home']);
+            }
           },
           error: () => {
             this.#userData.set({

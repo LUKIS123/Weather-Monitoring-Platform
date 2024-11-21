@@ -23,7 +23,7 @@ public static class DataViewEndpoints
             {
                 var result = await stationsListService.Handle(pageNumber, DefaultPageSize);
                 await context.HandleResult(result);
-            }).AllowAnonymous();
+            }).RequireAuthorization();
 
         routes.MapGet(
             "/api/dataView/stations/map",
@@ -31,33 +31,33 @@ public static class DataViewEndpoints
             {
                 var result = await getDevicesService.Handle(1, 1000);
                 await context.HandleResult(result);
-            }).AllowAnonymous();
+            }).RequireAuthorization();
 
         routes.MapGet(
             "/api/dataView/history/day",
             async (HttpContext context, [FromServices] IGetWeatherDataLastDayService getWeatherDataLastDayService,
-                [FromQuery] int? deviceId = null) =>
+                [FromQuery] int? deviceId = null, [FromQuery] string? plusCodeSearch = null) =>
             {
-                var result = await getWeatherDataLastDayService.Handle(deviceId);
+                var result = await getWeatherDataLastDayService.Handle(deviceId, plusCodeSearch);
                 await context.HandleResult(result);
-            }).AllowAnonymous();
+            }).RequireAuthorization();
 
         routes.MapGet(
             "/api/dataView/history/week",
             async (HttpContext context, [FromServices] IGetWeatherDataLastWeekService getWeatherDataLastWeekService,
-                [FromQuery] int? deviceId = null) =>
+                [FromQuery] int? deviceId = null, [FromQuery] string? plusCodeSearch = null) =>
             {
-                var result = await getWeatherDataLastWeekService.Handle(deviceId);
+                var result = await getWeatherDataLastWeekService.Handle(deviceId, plusCodeSearch);
                 await context.HandleResult(result);
-            }).AllowAnonymous();
+            }).RequireAuthorization();
 
         routes.MapGet(
             "/api/dataView/history/month",
             async (HttpContext context, [FromServices] IGetWeatherDataLastMonthService getWeatherDataLastMonthService,
-                [FromQuery] int? deviceId = null) =>
+                [FromQuery] int? deviceId = null, [FromQuery] string? plusCodeSearch = null) =>
             {
-                var result = await getWeatherDataLastMonthService.Handle(deviceId);
+                var result = await getWeatherDataLastMonthService.Handle(deviceId, plusCodeSearch);
                 await context.HandleResult(result);
-            }).AllowAnonymous();
+            }).RequireAuthorization();
     }
 }

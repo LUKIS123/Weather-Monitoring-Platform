@@ -1,0 +1,45 @@
+<div
+  class="pb-2 px-2 outline outline-zinc-300 outline-1 shadow-lg my-1 relative"
+>
+  <div>
+    <span class="font-bold"
+      >{{ "StationsList.StationName" | translate }}:
+    </span>
+    <span class="mat-headline-6 font-bold pr-2">{{
+      permissionRequest().deviceName
+    }}</span>
+    <span
+      >({{ "Shared.Id" | translate }}: {{ permissionRequest().deviceId }})</span
+    >
+  </div>
+
+  <div>
+    <div
+      class="grid grid-cols-2 md:grid-cols-4 justify-around my-2 items-start"
+    >
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <span class="text-xs text-gray-400">
+            {{ "AvailableStations.RequestDialog.GrantDate" | translate }}:
+          </span>
+          <br />
+          <span class="font-bold"> {{ getDateFormatted() }} </span>
+        </p>
+      </div>
+
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <span class="text-xs text-gray-400">
+            {{
+              "AvailableStations.RequestDialog.PermissionStatus" | translate
+            }}:
+          </span>
+          <br />
+          <span class="font-bold">
+            {{ getPermissionStatus() }}
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

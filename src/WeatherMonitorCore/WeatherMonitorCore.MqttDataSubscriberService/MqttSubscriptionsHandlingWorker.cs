@@ -28,29 +28,17 @@ public class MqttSubscriptionsHandlingWorker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _hostApplicationLifetime.ApplicationStopping.Register(() =>
-        {
-            Task.Run(async () =>
-            {
-                await _mqttDataService.CleanUp(WorkerMqttClientConfig.MqttDataServiceGuid, stoppingToken);
-            }, stoppingToken);
-        });
-
-        await Task.Delay(1000, stoppingToken);
-        if (_logger.IsEnabled(LogLevel.Information))
-        {
-            _logger.LogInformation("Worker started at:{time}", DateTimeOffset.Now);
-        }
-
-        await _mqttDataService.HandleMqttSubscriptions(stoppingToken);
-
-        using var timer = new PeriodicTimer(_period);
-        var keepAlive = true;
         try
         {
-            while (!stoppingToken.IsCancellationRequested && keepAlive)
+            await Task.Delay(1000, stoppingToken);
+            _logger.LogInformation("Worker started at:{time}", DateTimeOffset.Now);
+
+            await _mqttDataService.HandleMqttSubscriptions(stoppingToken);
+
+            using var timer = new PeriodicTimer(_period);
+            while (await timer.WaitForNextTickAsync(stoppingToken))
             {
-                keepAlive = await timer.WaitForNextTickAsync(stoppingToken);
+
                 if (_subscriptionsManagingService.GetMqttClient.IsConnected) continue;
                 try
                 {
@@ -62,16 +50,15 @@ public class MqttSubscriptionsHandlingWorker : BackgroundService
                 }
             }
         }
-        catch (OperationCanceledException)
+        catch (Exception ex)
         {
+            _logger.LogError(ex, "{time}: Error occurred in the worker", DateTimeOffset.Now);
+            _hostApplicationLifetime.StopApplication();
         }
         finally
         {
             await _mqttDataService.CleanUp(WorkerMqttClientConfig.MqttDataServiceGuid, stoppingToken);
-        }
 
-        if (_logger.IsEnabled(LogLevel.Information))
-        {
             _logger.LogInformation("Worker stopped at:{time}", DateTimeOffset.Now);
         }
     }

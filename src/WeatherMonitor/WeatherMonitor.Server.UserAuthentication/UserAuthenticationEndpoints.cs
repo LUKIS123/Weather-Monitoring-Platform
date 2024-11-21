@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Routing;
 using WeatherMonitor.Server.SharedKernel.HttpContextExtensions;
 using WeatherMonitor.Server.UserAuthentication.Features.Authentication;
 using WeatherMonitor.Server.UserAuthentication.Features.SignIn;
+using WeatherMonitor.Server.UserAuthentication.Features.UpdateRole;
 using WeatherMonitor.Server.UserAuthentication.Features.UserSettings;
+using WeatherMonitorCore.Contract.UserAuthenticationModule;
 
 namespace WeatherMonitor.Server.UserAuthentication;
 public static class UserAuthenticationEndpoints
@@ -43,6 +45,15 @@ public static class UserAuthenticationEndpoints
             "/api/user/logout",
             (HttpContext context) => { context.Response.Cookies.Delete("AuthToken"); })
             .RequireAuthorization();
+
+        routes.MapPost(
+            "/api/user/setRole",
+            async (HttpContext context, [FromServices] IUpdateRoleService updateRoleService,
+                [FromBody] UpdateRoleRequest updateRoleRequest) =>
+            {
+                var result = await updateRoleService.Handle(updateRoleRequest.UserId, updateRoleRequest.Role);
+                await context.HandleResult(result);
+            }).RequireAuthorization("IsAdminPolicy");
 
         routes.MapGet(
             "/api/user/user-info",

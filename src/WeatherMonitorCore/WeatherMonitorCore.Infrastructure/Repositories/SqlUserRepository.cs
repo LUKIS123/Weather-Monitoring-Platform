@@ -30,7 +30,7 @@ WHERE Id = @userId
         return result;
     }
 
-    public async Task<UserSettingsDto> GetOrCreateUser(string userId, Role role = Role.User)
+    public async Task<UserSettingsDto> GetOrCreateUser(string userId, string email, string? nickname, Role role = Role.User)
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
         var result = await connection.QueryFirstAsync<UserSettingsDto>(@$"
@@ -39,29 +39,35 @@ DECLARE @output TABLE (
     Role INT
 );
 
-INSERT INTO @output (Id, Role)
-SELECT TOP 1
-    Id, 
-    Role 
-FROM [identity].[Users] 
-WHERE Id = @userId;
-
-IF NOT EXISTS (SELECT 1 FROM @output)
+IF EXISTS (SELECT 1 FROM [identity].[Users] WHERE Id = @userId)
 BEGIN
-    INSERT INTO [identity].[Users] (Id, Role)
-    VALUES (@userId, @role);
+    UPDATE [identity].[Users]
+    SET 
+        Email = @email,
+        Nickname = @nickname
+    WHERE Id = @userId;
 
     INSERT INTO @output (Id, Role)
-    SELECT Id, Role 
-    FROM [identity].[Users] 
+    SELECT Id, Role
+    FROM [identity].[Users]
+    WHERE Id = @userId;
+END
+ELSE
+BEGIN
+    INSERT INTO [identity].[Users] (Id, Role, Email, Nickname)
+    VALUES (@userId, @role, @email, @nickname);
+
+    INSERT INTO @output (Id, Role)
+    SELECT Id, Role
+    FROM [identity].[Users]
     WHERE Id = @userId;
 END
 
 SELECT
     Id AS {nameof(UserSettingsDto.UserId)},
     Role AS {nameof(UserSettingsDto.Role)}
-FROM @output
-", new { userId, role });
+FROM @output;
+", new { userId, email, nickname, role });
 
         return result;
     }

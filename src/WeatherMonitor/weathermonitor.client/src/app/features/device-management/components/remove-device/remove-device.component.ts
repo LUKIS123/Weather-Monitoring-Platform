@@ -41,7 +41,12 @@ export class RemoveDeviceComponent {
 
     this.removeDeviceService
       .removeDevice(this.#details()!.id)
-      .pipe(finalize(() => this.#isLoading.set(false)))
+      .pipe(
+        finalize(() => {
+          this.#isLoading.set(false);
+          this.dialogRef.close(this.#itemRemoved());
+        })
+      )
       .subscribe({
         next: () => {
           this.#itemRemoved.set(true);
@@ -50,7 +55,6 @@ export class RemoveDeviceComponent {
               'DeviceManagement.Details.Remove.Success'
             )
           );
-          this.dialogRef.close(this.#itemRemoved());
         },
         error: () => {
           this.toastService.openError(
