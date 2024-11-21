@@ -67,25 +67,6 @@ export class AvailableStationsListComponent implements OnInit {
     this.loadWeatherStations(this.#currentPage());
   }
 
-  // private loadWeatherStations(pageNumber: number): void {
-  //   this.listAvailableStationsService
-  //     .getStationsList(pageNumber + 1)
-  //     .pipe(finalize(() => this.#isLoading.set(false)))
-  //     .subscribe({
-  //       next: (stations) => {
-  //         this.#stationsPageResult.set(stations);
-  //         this.plusCodeConverterService.getAddressByPlusCode(
-  //           stations.items[0].googleMapsPlusCode
-  //         );
-  //       },
-  //       error: () => {
-  //         this.toastService.openError(
-  //           this.translateService.instant('AvailableStations.Error')
-  //         );
-  //       },
-  //     });
-  // }
-
   private loadWeatherStations(pageNumber: number): void {
     this.listAvailableStationsService
       .getStationsList(pageNumber + 1)

@@ -26,12 +26,14 @@ SELECT D.Id AS {nameof(AvailableStation.Id)},
 FROM [identity].[Devices] D
     LEFT JOIN [identity].[MqttClients] C
     ON D.MqttClientId = C.Id
+WHERE D.IsActive = 1
 ORDER BY D.Id
 OFFSET @OffsetRows ROWS
 FETCH NEXT @FetchRows ROWS ONLY;
 
-SELECT COUNT(*) 
-FROM [identity].[Devices];
+SELECT COUNT(*)
+FROM [identity].[Devices]
+WHERE IsActive = 1;
 ";
         await using var multi = await connection.QueryMultipleAsync(
             sql,
@@ -51,7 +53,7 @@ FROM [identity].[Devices];
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
         const string sql = @$"
 WITH WeatherDevices AS (
-    SELECT 
+    SELECT
         D.Id AS DeviceId,
         M.Username AS MqttUsername
     FROM [identity].[Devices] D
@@ -68,15 +70,15 @@ SELECT
     PR.ChangeDate AS {nameof(StationUserPermissionDto.ChangeDate)},
     CASE 
         WHEN EXISTS (
-            SELECT 1
-            FROM [stationsAccess].[StationsPermissions] SP
-            WHERE SP.UserId = U.Id AND SP.DeviceId = WD.DeviceId
+            SELECT TOP 1 [Id]
+            FROM [stationsAccess].[StationPermissionRequests]
+            WHERE UserId = @userId AND DeviceId = @stationId
         ) THEN 1
         ELSE 0
     END AS {nameof(StationUserPermissionDto.PermissionRecordExists)}
 FROM [identity].[Users] U
     LEFT JOIN [stationsAccess].[StationPermissionRequests] PR
-        ON PR.UserId = U.Id
+        ON PR.UserId = U.Id AND PR.DeviceId = @stationId
     LEFT JOIN WeatherDevices WD
         ON WD.DeviceId = @stationId
 WHERE U.Id = @userId;
@@ -106,10 +108,10 @@ VALUES
             sql,
            new
            {
-               userId = userId,
-               stationId = stationId,
-               status = status,
-               createdAt = createdAt
+               userId,
+               stationId,
+               status,
+               createdAt
            });
     }
 

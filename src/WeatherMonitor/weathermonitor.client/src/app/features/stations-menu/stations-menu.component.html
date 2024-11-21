@@ -23,6 +23,7 @@
         <mat-button-toggle
           class="h-8 flex items-center justify-center"
           value="permissions"
+          [disabled]="!isLoggedIn()"
           >{{
             "AvailableStations.YourPermissions" | translate
           }}</mat-button-toggle

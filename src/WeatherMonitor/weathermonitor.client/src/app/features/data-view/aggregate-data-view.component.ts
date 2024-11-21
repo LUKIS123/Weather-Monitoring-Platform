@@ -161,7 +161,16 @@ export class AggregateDataViewComponent implements OnInit {
   private loadStationsDataLast24h(searchPhrase: string): void {
     this.aggregateDataService
       .getLastDayData(searchPhrase)
-      .pipe(finalize(() => this.#isLoading.set(false)))
+      .pipe(
+        finalize(() => {
+          this.#isLoading.set(false);
+          this.toastService.openSuccess(
+            `${this.translateService.instant(
+              'DataVisualisation.PlusCodeSearchDispplay'
+            )} ${searchPhrase}`
+          );
+        })
+      )
       .subscribe({
         next: (data) => {
           this.#last24hData.set(data);
@@ -176,7 +185,16 @@ export class AggregateDataViewComponent implements OnInit {
   private loadStationsDataLast7d(searchPhrase: string) {
     this.aggregateDataService
       .getLastWeekData(searchPhrase)
-      .pipe(finalize(() => this.#isLoading.set(false)))
+      .pipe(
+        finalize(() => {
+          this.#isLoading.set(false);
+          this.toastService.openSuccess(
+            `${this.translateService.instant(
+              'DataVisualisation.PlusCodeSearchDispplay'
+            )} ${searchPhrase}`
+          );
+        })
+      )
       .subscribe({
         next: (data) => {
           this.#last7dData.set(data);
@@ -191,7 +209,16 @@ export class AggregateDataViewComponent implements OnInit {
   private loadStationsDataLast30d(searchPhrase: string) {
     this.aggregateDataService
       .getLastMonthkData(searchPhrase)
-      .pipe(finalize(() => this.#isLoading.set(false)))
+      .pipe(
+        finalize(() => {
+          this.#isLoading.set(false);
+          this.toastService.openSuccess(
+            `${this.translateService.instant(
+              'DataVisualisation.PlusCodeSearchDispplay'
+            )} ${searchPhrase}`
+          );
+        })
+      )
       .subscribe({
         next: (data) => {
           this.#last30dData.set(data);

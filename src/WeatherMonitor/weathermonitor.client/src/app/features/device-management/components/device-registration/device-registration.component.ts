@@ -14,6 +14,7 @@ import { DeviceRegistrationService } from '../../services/device-registration.se
 import { ToastService } from '../../../../shared/services/toast.service';
 import { CreateDeviceResponse } from '../../models/create-device-response';
 import { DeviceRegistrationResult } from '../../models/device-registration-result';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-device-registration',
@@ -65,6 +66,16 @@ export class DeviceRegistrationComponent {
 
     this.deviceRegistrationService
       .registerNewDevice(deviceUsername, googleMapsPlusCode, deviceExtraInfo)
+      .pipe(
+        finalize(() => {
+          setTimeout(() => {
+            this.dialogRef.close({
+              registered: this.#registrationSuccess(),
+              createdResponse: this.#createResponse(),
+            } as DeviceRegistrationResult);
+          }, 2000);
+        })
+      )
       .subscribe({
         next: (response) => {
           this.#createResponse.set(response);
@@ -73,12 +84,6 @@ export class DeviceRegistrationComponent {
           this.toastService.openSuccess(
             this.translateService.instant('DeviceManagement.Register.Success')
           );
-          setTimeout(() => {
-            this.dialogRef.close({
-              registered: this.#registrationSuccess(),
-              createdResponse: this.#createResponse(),
-            } as DeviceRegistrationResult);
-          }, 2000);
         },
         error: () => {
           this.#registrationSuccess.set(false);

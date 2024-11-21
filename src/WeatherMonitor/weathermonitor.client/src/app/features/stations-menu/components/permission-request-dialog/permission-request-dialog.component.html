@@ -1,0 +1,143 @@
+<div class="flex items-center justify-center h-full">
+  <mat-card class="h-full w-full">
+    <mat-card-header>
+      <mat-card-title class="stubborn-text">{{
+        "AvailableStations.RequestDialog.Title" | translate
+      }}</mat-card-title>
+      <span class="absolute right-0 top-0">
+        <button mat-icon-button mat-dialog-close>
+          <mat-icon class="stubborn-icon">close</mat-icon>
+        </button>
+      </span>
+    </mat-card-header>
+    <ng-scrollbar>
+      <mat-card-content
+        class="stubborn-text"
+        style="padding: 2rem 2rem 2rem 2rem"
+      >
+        @if(isLoading()){
+        <div class="flex items-center justify-center justify-items-center py-4">
+          <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        }
+        <div class="w-full flex flex-col pb-2">
+          <h1 class="text-lg">
+            {{ "AvailableStations.RequestDialog.InfoSection" | translate }}:
+          </h1>
+          <div class="flex flex-row items-center">
+            <p class="mat-body-1">
+              <span class="text-xs text-gray-400">
+                {{ "AvailableStations.RequestDialog.Device" | translate }}:
+              </span>
+              <br />
+              <span class="font-bold">
+                {{ weatherStationData()?.station?.deviceName }}
+              </span>
+              <span
+                >({{ "Shared.Id" | translate }} :
+                {{ weatherStationData()?.station?.id }})</span
+              >
+            </p>
+          </div>
+
+          <div class="flex flex-row items-center">
+            <p class="mat-body-1">
+              <span class="text-xs text-gray-400">
+                {{ "DeviceManagement.Address" | translate }}:
+              </span>
+              <br />
+              @if (weatherStationData()?.address?.street &&
+              weatherStationData()?.address?.streetNumber) {
+              <span class="font-bold">
+                {{ weatherStationData()?.address?.street }}
+                {{ weatherStationData()?.address?.streetNumber }},
+              </span>
+              } @if (weatherStationData()?.address?.street &&
+              !weatherStationData()?.address?.streetNumber) {
+              <span class="font-bold">
+                {{ weatherStationData()?.address?.street }},
+              </span>
+              }
+              <span class="font-bold">
+                {{ weatherStationData()?.address?.city }}
+              </span>
+            </p>
+          </div>
+        </div>
+
+        @if(stationStatusResponse()?.hasPermission){
+        <mat-divider></mat-divider>
+        <div class="w-full flex flex-col pt-2">
+          <h1 class="text-lg">
+            {{ "AvailableStations.RequestDialog.UserPermission" | translate }}:
+          </h1>
+
+          <div class="flex flex-row items-center">
+            <p class="mat-body-1">
+              <span class="text-xs text-gray-400">
+                {{ "AvailableStations.RequestDialog.UserRole" | translate }}:
+              </span>
+              <br />
+              <span class="font-bold"> {{ getUserRole() }} </span>
+            </p>
+          </div>
+        </div>
+        } @if(stationStatusResponse()?.stationUserPermission?.changeDate !==
+        null && stationStatusResponse()?.stationUserPermission?.changeDate !==
+        undefined){
+        <mat-divider></mat-divider>
+        <div class="w-full flex flex-col pt-4">
+          <h1 class="text-lg">
+            {{ "AvailableStations.SendRequest.CurrentStatus" | translate }}:
+          </h1>
+          <div class="flex flex-row items-center">
+            <p class="mat-body-1">
+              <span class="text-xs text-gray-400">
+                {{
+                  "AvailableStations.RequestDialog.PermissionStatus"
+                    | translate
+                }}:
+              </span>
+              <br />
+              <span class="font-bold">
+                {{ getDateFormatted() }}
+              </span>
+            </p>
+          </div>
+          <div class="flex flex-row items-center">
+            <p class="mat-body-1">
+              <span class="text-xs text-gray-400">
+                {{ "AvailableStations.RequestDialog.GrantDate" | translate }}:
+              </span>
+              <br />
+              <span class="font-bold">
+                {{ getPermissionStatus() }}
+              </span>
+            </p>
+          </div>
+        </div>
+        }
+        <mat-divider></mat-divider>
+        <div class="flex flex-row justify-between gap-2 pt-4">
+          <button
+            mat-stroked-button
+            color="primary"
+            type="button"
+            (click)="cancel()"
+          >
+            {{ "DeviceManagement.Register.Return" | translate }}
+          </button>
+          <button
+            mat-raised-button
+            [disabled]="buttonDisable()"
+            color="primary"
+            type="button"
+            (click)="sendPermissionRequest()"
+          >
+            {{ "DeviceManagement.Register.Confirm" | translate }}
+          </button>
+        </div>
+      </mat-card-content>
+    </ng-scrollbar>
+  </mat-card>
+</div>

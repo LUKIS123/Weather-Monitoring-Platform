@@ -62,16 +62,14 @@
           } @if (station().address.street && !station().address.streetNumber) {
           <span class="font-bold"> {{ station().address.street }}, </span>
           }
-          <span class="font-bold">
-            {{ station().address.city }}, {{ station().address.voivodship }}
-          </span>
+          <span class="font-bold"> {{ station().address.city }} </span>
         </p>
       </div>
 
       <div class="flex flex-row items-center">
         <p class="mat-body-1">
           @if(isLoggedIn()){
-          <button mat-stroked-button>
+          <button mat-stroked-button (click)="openPermissionRequestPopup()">
             {{ "AvailableStations.Request" | translate }}
           </button>
           }@else {

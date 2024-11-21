@@ -43,7 +43,6 @@ export class PlusCodeConverterService {
       .pipe(
         map((response) => {
           const addressComponents = response.results[0].address_components;
-
           const streetNumber = addressComponents.find((component) =>
             component.types.includes('street_number')
           )?.long_name;
@@ -53,15 +52,11 @@ export class PlusCodeConverterService {
           const city = addressComponents.find((component) =>
             component.types.includes('locality')
           )?.long_name;
-          const voivodeship = addressComponents.find((component) =>
-            component.types.includes('administrative_area_level_1')
-          )?.long_name;
 
           return {
             street: street,
             streetNumber: streetNumber,
             city: city || '',
-            voivodship: voivodeship || '',
           };
         }),
         catchError(() => {
@@ -72,7 +67,6 @@ export class PlusCodeConverterService {
             street: undefined,
             streetNumber: undefined,
             city: '',
-            voivodship: '',
           });
         })
       );
