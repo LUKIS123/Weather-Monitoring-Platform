@@ -30,15 +30,20 @@ export class DailyTwoSeriesChartComponent {
   colors = input.required<string[]>();
 
   dailyChartOptions: Signal<Partial<ApexOptions>> = computed(() => {
+    const chartDataFirstSeries = this.chartDataFirstSeries();
+    const chartDataSecondSeries = this.chartDataSecondSeries();
+    const allYValuesNull =
+      chartDataFirstSeries.every((point) => point[1] === null) &&
+      chartDataSecondSeries.every((point) => point[1] === null);
     return {
       series: [
         {
           name: `${this.firstSeriesName()} [${this.unit()}]`,
-          data: this.chartDataFirstSeries(),
+          data: allYValuesNull ? [] : this.chartDataFirstSeries(),
         },
         {
           name: `${this.secondSeriesName()} [${this.unit()}]`,
-          data: this.chartDataSecondSeries(),
+          data: allYValuesNull ? [] : this.chartDataSecondSeries(),
         },
       ],
       chart: {
@@ -141,6 +146,10 @@ export class DailyTwoSeriesChartComponent {
       text: this.translateService.instant('DataVisualisation.NoData'),
       align: 'center',
       verticalAlign: 'middle',
+      style: {
+        color: this.textColor(),
+        fontSize: '16px',
+      },
     },
   };
 }

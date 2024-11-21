@@ -164,5 +164,7 @@
   "PermissionStatus.Unknown": "Nieznany",
   "AvailableStations.SendRequest.Error": "Wystąpił błąd podczas wysyłania prośby o dostęp",
   "AvailableStations.SendRequest.Success": "Prośba o dostęp została wysłana",
-  "AvailableStations.SendRequest.CurrentStatus": "Aktualny status dostępu"
+  "AvailableStations.SendRequest.CurrentStatus": "Aktualny status dostępu",
+  "AvailableStations.Permissions.Error": "Aktualna rola użytkownika",
+  "AvailableStations.Permissions.NoPermissions": "Brak próśb o dostęp do stacji"
 }

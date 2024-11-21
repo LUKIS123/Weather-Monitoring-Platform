@@ -106,28 +106,20 @@ export class PermissionRequestDialogComponent implements OnInit {
   }
 
   public getPermissionStatus(): string {
-    if (
-      this.stationStatusResponse()?.stationUserPermission?.permissionStatus ===
-      1
-    ) {
-      return this.translateService.instant('PermissionStatus.NotRequested');
-    } else if (
-      this.stationStatusResponse()?.stationUserPermission?.permissionStatus ===
-      2
-    ) {
-      return this.translateService.instant('PermissionStatus.Pending');
-    } else if (
-      this.stationStatusResponse()?.stationUserPermission?.permissionStatus ===
-      3
-    ) {
-      return this.translateService.instant('PermissionStatus.Granted');
-    } else if (
-      this.stationStatusResponse()?.stationUserPermission?.permissionStatus ===
-      4
-    ) {
-      return this.translateService.instant('PermissionStatus.Denied');
+    const status =
+      this.stationStatusResponse()?.stationUserPermission.permissionStatus;
+    switch (status) {
+      case 1:
+        return this.translateService.instant('PermissionStatus.NotRequested');
+      case 2:
+        return this.translateService.instant('PermissionStatus.Pending');
+      case 3:
+        return this.translateService.instant('PermissionStatus.Granted');
+      case 4:
+        return this.translateService.instant('PermissionStatus.Denied');
+      default:
+        return this.translateService.instant('PermissionStatus.Unknown');
     }
-    return this.translateService.instant('PermissionStatus.Unknown');
   }
 
   cancel() {

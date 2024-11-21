@@ -27,11 +27,13 @@ export class HourlyOneSeriesChartComponent {
   color = input.required<string>();
 
   dailyChartOptions: Signal<Partial<ApexOptions>> = computed(() => {
+    const chartData = this.chartDisplayData();
+    const allYValuesNull = chartData.every((point) => point[1] === null);
     return {
       series: [
         {
           name: `${this.seriesName()} [${this.unit()}]`,
-          data: this.chartDisplayData(),
+          data: allYValuesNull ? [] : chartData,
         },
       ],
       chart: {
@@ -134,6 +136,10 @@ export class HourlyOneSeriesChartComponent {
       text: this.translateService.instant('DataVisualisation.NoData'),
       align: 'center',
       verticalAlign: 'middle',
+      style: {
+        color: this.textColor(),
+        fontSize: '16px',
+      },
     },
   };
 }
