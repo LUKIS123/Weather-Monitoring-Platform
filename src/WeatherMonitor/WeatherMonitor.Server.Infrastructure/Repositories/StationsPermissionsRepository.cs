@@ -92,7 +92,7 @@ WHERE U.Id = @userId;
             });
     }
 
-    public async Task SendPermissionRequestAsync(int stationId, string userId, PermissionStatus status, DateTime createdAt)
+    public async Task AddPermissionRequestAsync(int stationId, string userId, PermissionStatus status, DateTime createdAt)
     {
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
         const string sql = @"
@@ -155,5 +155,27 @@ WHERE UserId = @userId;
         var totalItems = await multi.ReadFirstAsync<int>();
 
         return (requests, totalItems);
+    }
+
+    public async Task<UsersPermissionDto?> GetUsersPermissionAsync(string userId, int deviceId)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
+        const string sql = @$"
+SELECT
+    Id AS {nameof(UsersPermissionDto.Id)},
+    UserId AS {nameof(UsersPermissionDto.UserId)},
+    DeviceId AS {nameof(UsersPermissionDto.DeviceId)}
+FROM [stationsAccess].[StationsPermissions]
+WHERE
+    UserId = @userId
+    AND DeviceId = @deviceId;
+";
+        return await connection.QueryFirstOrDefaultAsync(
+            sql,
+            new
+            {
+                userId,
+                deviceId
+            });
     }
 }

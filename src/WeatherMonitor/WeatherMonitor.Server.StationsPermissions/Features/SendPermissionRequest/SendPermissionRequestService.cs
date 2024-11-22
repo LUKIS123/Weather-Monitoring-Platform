@@ -39,20 +39,28 @@ internal class SendPermissionRequestService : ISendPermissionRequestService
             return Result.OnError(new UnauthorizedException());
         }
 
-        var stationPermissionDto = await _stationsPermissionsRepository.GetStationPermissionStatusAsync(stationId, userId);
-        if (stationPermissionDto.UserRole == Role.Admin)
+        var stationPermissionDto = _stationsPermissionsRepository.GetStationPermissionStatusAsync(stationId, userId);
+        var permission = _stationsPermissionsRepository.GetUsersPermissionAsync(userId, stationId);
+        await Task.WhenAll(stationPermissionDto, permission);
+
+        if (stationPermissionDto.Result.UserRole == Role.Admin)
         {
             return Result.OnError(new BadRequestException("Admins already have permission to access the station"));
         }
 
-        if (stationPermissionDto.PermissionStatus is not null)
+        if (stationPermissionDto.Result.PermissionStatus is not (null or PermissionStatus.None))
         {
             return Result.OnError(new BadRequestException("Permission request already sent"));
         }
 
+        if (permission.Result is null || permission.Equals(default))
+        {
+            return Result.OnError(new BadRequestException("User has permission to station"));
+        }
+
         var zoneAdjustedTime =
             TimeZoneInfo.ConvertTimeFromUtc(_timeProvider.GetUtcNow().DateTime, _timeZoneProvider.GetTimeZoneInfo());
-        await _stationsPermissionsRepository.SendPermissionRequestAsync(stationId, userId, PermissionStatus.Pending, zoneAdjustedTime);
+        await _stationsPermissionsRepository.AddPermissionRequestAsync(stationId, userId, PermissionStatus.Pending, zoneAdjustedTime);
 
         return Result.OnSuccess();
     }

@@ -6,12 +6,14 @@ using WeatherMonitor.Server.SharedKernel;
 using WeatherMonitor.Server.StationsPermissions;
 using WeatherMonitor.Server.UserAuthentication;
 using WeatherMonitor.Server.UserAuthorization;
+using WeatherMonitor.Server.UserPermissionManagement;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor(); // add instance of http context accessor
+builder.Services.AddMemoryCache(); // add instance of memory cache
 
 builder.Services.AddSharedKernelModule(builder.Configuration);
 builder.Services.AddInfrastructureModule(builder.Configuration);
@@ -20,6 +22,7 @@ builder.Services.AddUserAuthorizationModule();
 builder.Services.AddDeviceManagementModule();
 builder.Services.AddDataViewModule();
 builder.Services.AddStationsPermissionsModule();
+builder.Services.AddUserManagementModule();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -70,6 +73,7 @@ app.RegisterUserEndpoints();
 app.RegisterDeviceManagementEndpoints();
 app.RegisterDataViewEndpoints();
 app.RegisterStationsPermissionsEndpoints();
+app.RegisterUserManagementEndpoints();
 
 app.MapFallbackToFile("/index.html");
 
