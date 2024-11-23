@@ -115,7 +115,7 @@ export class AggregateDataViewComponent implements OnInit {
 
   ngOnInit(): void {
     const googleMapsPlusCode =
-      this.formGroup.get('plusCodeSearchPhrase')?.value ?? 'Wrocław';
+      this.formGroup.get('nicknameSearchPhrase')?.value ?? 'Wrocław';
     this.loadStationsDataLast24h(googleMapsPlusCode);
   }
 
@@ -123,7 +123,7 @@ export class AggregateDataViewComponent implements OnInit {
     this.timeFrame.set(timeFrame);
     this.#isLoading.set(true);
     const googleMapsPlusCode =
-      this.formGroup.get('plusCodeSearchPhrase')?.value ?? 'Wrocław';
+      this.formGroup.get('nicknameSearchPhrase')?.value ?? 'Wrocław';
     switch (timeFrame) {
       case '24h':
         this.loadStationsDataLast24h(googleMapsPlusCode);
@@ -144,7 +144,7 @@ export class AggregateDataViewComponent implements OnInit {
   submit() {
     this.#isLoading.set(true);
     const googleMapsPlusCode =
-      this.formGroup.get('plusCodeSearchPhrase')?.value ?? 'Wrocław';
+      this.formGroup.get('nicknameSearchPhrase')?.value ?? 'Wrocław';
     switch (this.timeFrame()) {
       case '24h':
         this.loadStationsDataLast24h(googleMapsPlusCode);

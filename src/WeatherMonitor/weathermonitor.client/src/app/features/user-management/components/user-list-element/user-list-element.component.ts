@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-user-list-element',
   standalone: true,
   imports: [],
   templateUrl: './user-list-element.component.html',
-  styleUrl: './user-list-element.component.scss'
 })
 export class UserListElementComponent {
-
+  user = input.required<User>();
 }

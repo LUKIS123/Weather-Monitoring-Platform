@@ -261,7 +261,7 @@ FROM [identity].[Users]
 WHERE Nickname LIKE @NicknameSearch + '%'");
         }
         sql.Append(@"
-ORDER Nickname
+ORDER BY Nickname
 OFFSET @OffsetRows ROWS
 FETCH NEXT @FetchRows ROWS ONLY;
 

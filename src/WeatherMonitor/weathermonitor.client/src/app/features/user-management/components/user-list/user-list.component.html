@@ -1,1 +1,61 @@
-<p>user-list works!</p>
+<div class="w-full flex flex-col overflow-auto px-2 space-y-2 mb-1">
+  @if (isLoading()) {
+  <mat-progress-bar class="w-full" mode="indeterminate"></mat-progress-bar>
+  }
+
+  <div class="flex flex-row w-full justify-center items-center my-2">
+    <form [formGroup]="formGroup" class="mx-2 flex">
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>{{
+          "UserManagement.Permissions.Search.Placeholder" | translate
+        }}</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="nicknameSearchPhrase"
+          [errorStateMatcher]="matcher"
+          (input)="onInputChange($event)"
+        />
+        <mat-error>{{
+          "UserManagement.Permissions.Search.InputError" | translate
+        }}</mat-error>
+      </mat-form-field>
+    </form>
+    <button
+      mat-flat-button
+      color="primary"
+      type="button"
+      class="mx-2 h-full"
+      (click)="submit()"
+      [disabled]="!isFormValid"
+    >
+      {{ "UserManagement.Permissions.Search" | translate }}
+    </button>
+  </div>
+
+  <mat-accordion class="pb-14 items-center justify-center content-center">
+    @for (user of usersPageResult().items; track $index) {
+    <app-user-list-element [user]="user" />
+    } @if(usersPageResult().items.length === 0) {
+    <div class="flex justify-center items-center w-full h-[25vh]">
+      <p class="text-gray-500">
+        {{ "UserManagement.Users.NoUsers" | translate }}
+      </p>
+    </div>
+    }
+  </mat-accordion>
+  <mat-paginator
+    #paginator
+    class="fixed bottom-0 left-0 w-full"
+    (page)="handlePageEvent($event)"
+    [length]="usersPageResult().totalItemsCount"
+    [pageSize]="usersPageResult().pageSize"
+    [disabled]="false"
+    [showFirstLastButtons]="false"
+    [pageSizeOptions]="[]"
+    [hidePageSize]="true"
+    [pageIndex]="currentPage()"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</div>

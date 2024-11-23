@@ -108,6 +108,7 @@
   "StationsMap.NoStations": "Nie znaleziono stacji do wyświetlenia",
   "StationsMap.GeoCodeError": "Wystąpił błąd podczas pobierania danych geolokalizacyjnych",
   "DataVisualisation.Station.Title": "Wykresy dla stacji",
+  "DataVisualisation.Aggregate.Title": "Wykresy dla danych agregowanych",
   "DataVisualisation.Error": "Wystąpił błąd podczas pobierania danych do wykresów",
   "DataVisualisation.Temperature": "Wykres temperatury",
   "DataVisualisation.Humidity": "Wykres wilgotności",
@@ -168,6 +169,15 @@
   "AvailableStations.SendRequest.CurrentStatus": "Aktualny status dostępu",
   "AvailableStations.Permissions.Error": "Aktualna rola użytkownika",
   "AvailableStations.Permissions.NoPermissions": "Brak próśb o dostęp do stacji",
+  "UserManagement.Title": "Użytkownicy",
+  "UserManagement.Permissions.Title": "Prośby o dostęp",
   "UserManagement.PermissionsListView": "Prośby o dostęp",
-  "UserManagement.UserListView": "Użytkownicy"
+  "UserManagement.UserListView": "Użytkownicy",
+  "UserManagement.PendingPermissions.Error": "Wystąpił błąd podczas pobierania listy próśb o dostęp",
+  "UserManagement.PendingPermissions.NoPermissions": "Brak próśb o dostęp do stacji",
+  "UserManagement.Users.NoUsers": "Brak użytkowników do wyświetlenia",
+  "UserManagement.Users.Error": "Wystąpił błąd podczas pobierania listy użytkowników",
+  "UserManagement.Permissions.Search": "Wyszukaj",
+  "UserManagement.Permissions.Search.Placeholder": "Nazwa użytkownika",
+  "UserManagement.Permissions.Search.InputError": "Fraza musi zawierać między 1 a 255 znaków"
 }

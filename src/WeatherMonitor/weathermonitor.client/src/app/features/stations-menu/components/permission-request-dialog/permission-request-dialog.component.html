@@ -84,7 +84,8 @@
         </div>
         } @if(stationStatusResponse()?.stationUserPermission?.changeDate !==
         null && stationStatusResponse()?.stationUserPermission?.changeDate !==
-        undefined){
+        undefined && stationStatusResponse()?.stationUserPermission?.userRole
+        !== 2){
         <mat-divider></mat-divider>
         <div class="w-full flex flex-col pt-4">
           <h1 class="text-lg">
