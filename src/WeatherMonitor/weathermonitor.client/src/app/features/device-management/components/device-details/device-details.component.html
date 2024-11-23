@@ -10,16 +10,17 @@
         </button>
       </span>
     </mat-card-header>
-    @if(isLoading()){
-    <div class="flex items-center justify-center justify-items-center py-4">
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    </div>
-    }
     <ng-scrollbar>
       <mat-card-content
         class="stubborn-text"
         style="padding: 2rem 1rem 2rem 1rem"
       >
+        @if(isLoading()){
+        <div class="flex items-center justify-center justify-items-center py-4">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+        }
+
         <div
           [formGroup]="formGroup"
           class="flex flex-col w-full mx-auto max-w-screen-sm md:max-w-screen-xl"

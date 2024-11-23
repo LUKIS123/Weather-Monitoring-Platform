@@ -39,21 +39,25 @@ internal class SendPermissionRequestService : ISendPermissionRequestService
             return Result.OnError(new UnauthorizedException());
         }
 
-        var stationPermissionDto = _stationsPermissionsRepository.GetStationPermissionStatusAsync(stationId, userId);
-        var permission = _stationsPermissionsRepository.GetUsersPermissionAsync(userId, stationId);
-        await Task.WhenAll(stationPermissionDto, permission);
+        var stationPermissionStatusTask = _stationsPermissionsRepository.GetStationPermissionStatusAsync(stationId, userId);
+        var permissionTask = _stationsPermissionsRepository.GetUsersPermissionAsync(userId, stationId);
 
-        if (stationPermissionDto.Result.UserRole == Role.Admin)
+        await Task.WhenAll(stationPermissionStatusTask, permissionTask);
+        var stationPermissionStatus = await stationPermissionStatusTask;
+        var permission = await permissionTask;
+
+
+        if (stationPermissionStatus.UserRole == Role.Admin)
         {
             return Result.OnError(new BadRequestException("Admins already have permission to access the station"));
         }
 
-        if (stationPermissionDto.Result.PermissionStatus is not (null or PermissionStatus.None))
+        if (stationPermissionStatus.PermissionStatus is not (null or PermissionStatus.None))
         {
             return Result.OnError(new BadRequestException("Permission request already sent"));
         }
 
-        if (permission.Result is null || permission.Equals(default))
+        if (permission is null || permission.Equals(default))
         {
             return Result.OnError(new BadRequestException("User has permission to station"));
         }

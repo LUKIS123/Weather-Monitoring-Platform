@@ -1,0 +1,29 @@
+<div class="flex flex-col items-center justify-center w-full h-full">
+  <div class="flex flex-col items-center justify-center w-full h-full">
+    <h1 class="text-4xl h-6">{{ "HomePage.Title" | translate }}</h1>
+    <p class="self-end px-2">
+      <mat-button-toggle-group
+        name="usersViewOptions"
+        aria-label="Users View Options"
+        [value]="viewSelection()"
+        (valueChange)="viewSelection.set($event)"
+      >
+        <mat-button-toggle
+          class="h-8 flex items-center justify-center"
+          value="permissionRequests"
+          routerLink="/UserManagement/PermissionRequests"
+          >{{
+            "UserManagement.PermissionsListView" | translate
+          }}</mat-button-toggle
+        >
+        <mat-button-toggle
+          class="h-8 flex items-center justify-center"
+          value="users"
+          >{{ "UserManagement.UserListView" | translate }}</mat-button-toggle
+        >
+      </mat-button-toggle-group>
+    </p>
+  </div>
+
+  <app-user-list class="w-full"></app-user-list>
+</div>

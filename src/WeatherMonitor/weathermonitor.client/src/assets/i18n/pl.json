@@ -47,6 +47,7 @@
   "Navigation.Home": "Strona główna - Dane bieżące",
   "Navigation.StationAccess": "Dostęp do stacji",
   "Navigation.AggregateDataView": "Wizualizacja danych pomiarowych",
+  "Navigation.UserManagement": "Zarządzanie użytkownikami",
   "Navigation.DarkTheme": "Ciemny motyw",
   "Navigation.AdminDeviceManagement": "Zarządzanie urządzeniami",
   "DeviceManagement.Title": "Zarządzanie urządzeniami",
@@ -156,7 +157,7 @@
   "AvailableStations.RequestDialog.UserPermission": "Posiadasz dostęp do tej stacji",
   "AvailableStations.RequestDialog.UserRole": "Typ konta",
   "AvailableStations.RequestDialog.PermissionStatus": "Status dostępu",
-  "AvailableStations.RequestDialog.GrantDate": "Data przyznania dostępu",
+  "AvailableStations.RequestDialog.GrantDate": "Data ostatniej aktualizacji",
   "PermissionStatus.NotRequested": "Nie wysłano prośby",
   "PermissionStatus.Pending": "Oczekuje na zatwierdzenie",
   "PermissionStatus.Granted": "Przyznano dostęp",
@@ -166,5 +167,7 @@
   "AvailableStations.SendRequest.Success": "Prośba o dostęp została wysłana",
   "AvailableStations.SendRequest.CurrentStatus": "Aktualny status dostępu",
   "AvailableStations.Permissions.Error": "Aktualna rola użytkownika",
-  "AvailableStations.Permissions.NoPermissions": "Brak próśb o dostęp do stacji"
+  "AvailableStations.Permissions.NoPermissions": "Brak próśb o dostęp do stacji",
+  "UserManagement.PermissionsListView": "Prośby o dostęp",
+  "UserManagement.UserListView": "Użytkownicy"
 }

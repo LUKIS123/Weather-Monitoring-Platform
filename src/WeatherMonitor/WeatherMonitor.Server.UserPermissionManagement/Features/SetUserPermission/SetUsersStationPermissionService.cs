@@ -8,25 +8,33 @@ using WeatherMonitorCore.Contract.Shared;
 
 namespace WeatherMonitor.Server.UserPermissionManagement.Features.SetUserPermission;
 
-internal class SetUsersStationPermissionService
+internal interface ISetUsersStationPermissionService
+{
+    Task<Result<UpdatePermissionResponse>> Handle(UpdatePermissionRequest updatePermissionRequest);
+}
+
+internal class SetUsersStationPermissionService : ISetUsersStationPermissionService
 {
     private readonly IUserAccessor _userAccessor;
     private readonly IUserAuthorizationRepository _userAuthorizationRepository;
     private readonly IUserManagementRepository _userManagementRepository;
+    private readonly ITimeZoneProvider _timeZoneProvider;
+    private readonly TimeProvider _timeProvider;
 
     public SetUsersStationPermissionService(
         IUserAccessor userAccessor,
         IUserAuthorizationRepository userAuthorizationRepository,
-        IUserManagementRepository userManagementRepository)
+        IUserManagementRepository userManagementRepository,
+        ITimeZoneProvider timeZoneProvider,
+        TimeProvider timeProvider)
     {
         _userAccessor = userAccessor;
         _userAuthorizationRepository = userAuthorizationRepository;
         _userManagementRepository = userManagementRepository;
+        _timeZoneProvider = timeZoneProvider;
+        _timeProvider = timeProvider;
     }
 
-    // 1 denied - zmien status na denied
-    // 2 zmien na approved + dodanie do tabeli StationPermissions, jesli istnieje permission to blad
-    // 3 zmien na denied + usuniecie z tabeli StationPermissions
     public async Task<Result<UpdatePermissionResponse>> Handle(UpdatePermissionRequest updatePermissionRequest)
     {
         var userId = _userAccessor.UserId;
@@ -42,11 +50,11 @@ internal class SetUsersStationPermissionService
         }
 
         var permissionRequestTask = _userManagementRepository.GetPermissionRequestAsync(
-            userId, updatePermissionRequest.DeviceId);
+            updatePermissionRequest.UserId, updatePermissionRequest.DeviceId);
         var userPermissionTask = _userManagementRepository.GetUserPermissionAsync(
-            userId, updatePermissionRequest.DeviceId);
-        await Task.WhenAll(permissionRequestTask, userPermissionTask);
+            updatePermissionRequest.UserId, updatePermissionRequest.DeviceId);
 
+        await Task.WhenAll(permissionRequestTask, userPermissionTask);
         var permissionRequest = await permissionRequestTask;
         var userPermission = await userPermissionTask;
 
@@ -55,54 +63,62 @@ internal class SetUsersStationPermissionService
             return new UnauthorizedException("Permission request does not exist");
         }
 
-        if (permissionRequest.Value.PermissionStatus == PermissionStatus.Granted
-            && updatePermissionRequest.Status == PermissionStatus.Granted)
-        {
-            return new BadRequestException("User already has permission to the station");
-        }
+        var zoneAdjustedTime =
+            TimeZoneInfo.ConvertTimeFromUtc(_timeProvider.GetUtcNow().DateTime, _timeZoneProvider.GetTimeZoneInfo());
 
-        if (permissionRequest.Value.PermissionStatus == PermissionStatus.Pending
-            && updatePermissionRequest.Status == PermissionStatus.Denied)
+        switch (permissionRequest.Value.PermissionStatus)
         {
-            var result = await _userManagementRepository.SetPermissionRequestAsync(
-                userId,
-                updatePermissionRequest.UserId,
-                updatePermissionRequest.Status);
-            return new UpdatePermissionResponse(result, null);
-        }
-
-        if (permissionRequest.Value.PermissionStatus == PermissionStatus.Pending
-            && updatePermissionRequest.Status == PermissionStatus.Granted)
-        {
-            if (userPermission is not null)
-            {
+            case PermissionStatus.Granted
+                when updatePermissionRequest.Status == PermissionStatus.Granted:
                 return new BadRequestException("User already has permission to the station");
-            }
 
-            var result = await _userManagementRepository.AddUserStationPermissionAsync(
-                userId,
-                updatePermissionRequest.DeviceId,
-                PermissionStatus.Granted);
+            case PermissionStatus.Pending
+                when updatePermissionRequest.Status == PermissionStatus.Denied:
+                {
+                    var result = await _userManagementRepository.SetPermissionRequestAsync(
+                        updatePermissionRequest.UserId,
+                        updatePermissionRequest.DeviceId,
+                        PermissionStatus.Denied,
+                        zoneAdjustedTime);
+                    return new UpdatePermissionResponse(result, null);
+                }
 
-            return new UpdatePermissionResponse(result.request, result.permission);
+            case PermissionStatus.Pending
+                when updatePermissionRequest.Status == PermissionStatus.Granted:
+                {
+                    if (userPermission is not null)
+                    {
+                        return new BadRequestException("User already has permission to the station");
+                    }
+
+                    var result = await _userManagementRepository.AddUserStationPermissionAsync(
+                        updatePermissionRequest.UserId,
+                        updatePermissionRequest.DeviceId,
+                        PermissionStatus.Granted,
+                        zoneAdjustedTime);
+
+                    return new UpdatePermissionResponse(result.request, result.permission);
+                }
+
+            case PermissionStatus.Granted
+                when updatePermissionRequest.Status == PermissionStatus.Denied:
+                {
+                    if (userPermission is null)
+                    {
+                        return new BadRequestException("User does not have permission to the station");
+                    }
+
+                    var result = await _userManagementRepository.RemoveUserStationPermissionAsync(
+                        updatePermissionRequest.UserId,
+                        updatePermissionRequest.DeviceId,
+                        PermissionStatus.Denied,
+                        zoneAdjustedTime);
+
+                    return new UpdatePermissionResponse(result, null);
+                }
+
+            default:
+                return new BadRequestException();
         }
-
-        if (permissionRequest.Value.PermissionStatus == PermissionStatus.Granted
-            && updatePermissionRequest.Status == PermissionStatus.Denied)
-        {
-            if (userPermission is null)
-            {
-                return new BadRequestException("User does not have permission to the station");
-            }
-
-            var result = await _userManagementRepository.RemoveUserStationPermissionAsync(
-                userId,
-                updatePermissionRequest.DeviceId,
-                PermissionStatus.Denied);
-
-            return new UpdatePermissionResponse(result, null);
-        }
-
-        return new BadRequestException();
     }
 }
