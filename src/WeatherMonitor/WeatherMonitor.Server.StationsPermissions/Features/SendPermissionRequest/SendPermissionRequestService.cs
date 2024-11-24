@@ -57,7 +57,7 @@ internal class SendPermissionRequestService : ISendPermissionRequestService
             return Result.OnError(new BadRequestException("Permission request already sent"));
         }
 
-        if (permission is null || permission.Equals(default))
+        if (permission is not null || !permission.Equals(default))
         {
             return Result.OnError(new BadRequestException("User has permission to station"));
         }

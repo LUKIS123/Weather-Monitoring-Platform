@@ -96,6 +96,7 @@
   "HomePage.Title": "Strona główna",
   "HomePage.ListView": "Lista stacji",
   "HomePage.MapView": "Widok mapy",
+  "HomePage.CookiePolicy": "Używając aplikacji Weather Monitor, wyrażasz zgodę na stosowanie niezbędnych plików cookies, które są wymagane do poprawnego działania strony. Pliki te służą m.in. do zapewnienia bezpieczeństwa oraz funkcjonalności. Jeżeli nie wyrażasz zgody, prosimy o zaprzestanie korzystania z aplikacji.",
   "StationsList.Lsit.Error": "Wystąpił błąd podczas pobierania listy stacji",
   "StationsList.Lsit.NoWeatherStations": "Brak stacji pogodowych do wyświetlenia",
   "StationsList.ViewData": "Przejdż do danych stacji",
@@ -179,5 +180,18 @@
   "UserManagement.Users.Error": "Wystąpił błąd podczas pobierania listy użytkowników",
   "UserManagement.Permissions.Search": "Wyszukaj",
   "UserManagement.Permissions.Search.Placeholder": "Nazwa użytkownika",
-  "UserManagement.Permissions.Search.InputError": "Fraza musi zawierać między 1 a 255 znaków"
+  "UserManagement.Permissions.Search.InputError": "Fraza musi zawierać między 1 a 255 znaków",
+  "UserManagement.Permissions.Username": "Nazwa użytkownika",
+  "UserManagement.Permissions.RequestedAt": "Data wysłania prośby",
+  "UserManagement.Permissions.Action": "Zatwiedź / Odrzuć",
+  "UserManagement.Permissions.Action.Accept": "Zatwierdź",
+  "UserManagement.Permissions.Action.Reject": "Odrzuć",
+  "UserManagement.Permissions.Action.UserInfo": "Informacje o użytkowniku",
+  "UserManagement.Permissions.User.Nickname": "Nazwa użytkownika",
+  "UserManagement.Permissions.User.Email": "Adres e-mail",
+  "UserManagement.Permissions.Action.Success": "Prośba o dostęp została zaktualizowana",
+  "UserManagement.Permissions.Action.Error": "Wystąpił błąd podczas aktualizacji a prośby o dostęp",
+  "UserManagement.Users.UserRole": "Rola użytkownika",
+  "UserManagement.Users.UserId": "Identyfikator użytkownika",
+  "UserManagement.Users.Action": "Wyświetl uprawnienia"
 }

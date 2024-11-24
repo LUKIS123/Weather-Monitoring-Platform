@@ -113,4 +113,10 @@ export class PermissionRequestListComponent implements OnInit {
         },
       });
   }
+
+  onDecisionMade(detected: boolean, index: number) {
+    if (detected) {
+      this.refresh();
+    }
+  }
 }

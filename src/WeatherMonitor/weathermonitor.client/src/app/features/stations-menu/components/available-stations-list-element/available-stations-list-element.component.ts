@@ -1,12 +1,7 @@
 import { Component, inject, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import {
-  MatPaginatorIntl,
-  MatPaginatorModule,
-} from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../shared/material.module';
-import { MatPaginatorIntlPl } from '../../../../shared/components/paginator/MatPaginatorIntlPl';
 import { StationWithAddress } from '../../models/station-with-address';
 import { AuthorizationService } from '../../../authorization/services/authorization-service';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,8 +10,7 @@ import { PermissionRequestDialogComponent } from '../permission-request-dialog/p
 @Component({
   selector: 'app-available-stations-list-element',
   standalone: true,
-  imports: [CommonModule, MaterialModule, TranslateModule, MatPaginatorModule],
-  providers: [{ provide: MatPaginatorIntl, useClass: MatPaginatorIntlPl }],
+  imports: [CommonModule, MaterialModule, TranslateModule],
   templateUrl: './available-stations-list-element.component.html',
 })
 export class AvailableStationsListElementComponent {
@@ -33,7 +27,7 @@ export class AvailableStationsListElementComponent {
     this.#dialog.open<PermissionRequestDialogComponent, unknown, unknown>(
       PermissionRequestDialogComponent,
       {
-        data: {station},
+        data: { station },
         panelClass: 'popup',
         maxWidth: '100dvw',
       }

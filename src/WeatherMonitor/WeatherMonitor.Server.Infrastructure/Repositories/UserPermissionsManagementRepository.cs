@@ -29,10 +29,14 @@ SELECT
     M.Username AS {nameof(PendingPermissionDto.DeviceName)},
     D.GoogleMapsPlusCode AS {nameof(PendingPermissionDto.GoogleMapsPlusCode)},
     SP.Status AS {nameof(PendingPermissionDto.Status)},
-    SP.ChangeDate AS {nameof(PendingPermissionDto.RequestedAt)}
+    SP.ChangeDate AS {nameof(PendingPermissionDto.RequestedAt)},
+    U.Email AS {nameof(PendingPermissionDto.Email)},
+    U.Nickname AS {nameof(PendingPermissionDto.Nickname)} 
 FROM [stationsAccess].[StationPermissionRequests] SP
     INNER JOIN [identity].[Devices] D
     ON D.Id = SP.DeviceId 
+    INNER JOIN [identity].[Users] U
+    ON U.Id = SP.UserId
     LEFT JOIN [identity].[MqttClients] M
     ON M.Id = D.MqttClientId
 WHERE SP.Status = @Status
@@ -72,7 +76,7 @@ FROM [stationsAccess].[StationPermissionRequests]
 WHERE UserId = @UserId
     AND DeviceId = @DeviceId;
 ";
-        return await connection.QueryFirstOrDefaultAsync(
+        return await connection.QueryFirstOrDefaultAsync<UserPermissionRequestDto>(
             sql,
             new
             {
@@ -93,7 +97,7 @@ SELECT TOP 1
 WHERE UserId = @UserId
     AND DeviceId = @DeviceId;
 ";
-        return await connection.QueryFirstOrDefaultAsync(
+        return await connection.QueryFirstOrDefaultAsync<UserPermissionDto>(
             sql,
             new
             {
@@ -139,7 +143,7 @@ OUTPUT inserted.Id AS {nameof(UserPermissionRequestDto.PermissionStatus)},
        inserted.UserId AS {nameof(UserPermissionRequestDto.UserId)}, 
        inserted.DeviceId AS {nameof(UserPermissionRequestDto.DeviceId)}, 
        inserted.Status AS {nameof(UserPermissionRequestDto.PermissionStatus)},
-       inserted.ChangeDate AS DateTime AS {nameof(UserPermissionRequestDto.DateTime)};
+       inserted.ChangeDate AS {nameof(UserPermissionRequestDto.DateTime)};
 ";
         return await connection.QueryFirstAsync<UserPermissionRequestDto>(sql, new
         {

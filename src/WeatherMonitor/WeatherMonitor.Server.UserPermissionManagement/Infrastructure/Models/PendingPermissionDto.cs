@@ -9,4 +9,6 @@ public readonly record struct PendingPermissionDto(
     string DeviceName,
     string GoogleMapsPlusCode,
     PermissionStatus Status,
-    DateTime RequestedAt);
+    DateTime RequestedAt,
+    string Nickname,
+    string Email);

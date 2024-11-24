@@ -8,4 +8,6 @@ export interface PendingPermission {
   googleMapsPlusCode: string;
   status: PermissionStatusEnum;
   requestedAt: Date;
+  email: string;
+  nickname: string;
 }

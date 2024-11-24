@@ -4,7 +4,10 @@
   }
   <mat-accordion class="pb-14 items-center justify-center content-center">
     @for (request of requestsPageResult().items; track $index) {
-    <app-permission-request-list-element [permissionRequest]="request" />
+    <app-permission-request-list-element
+      [permissionRequest]="request"
+      (detectChange)="onDecisionMade($event, $index)"
+    />
     } @if(requestsPageResult().items.length === 0) {
     <div class="flex justify-center items-center w-full h-[25vh]">
       <p class="text-gray-500">

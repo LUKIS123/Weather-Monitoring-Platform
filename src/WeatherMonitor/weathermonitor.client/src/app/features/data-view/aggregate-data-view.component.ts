@@ -1,5 +1,5 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { finalize } from 'rxjs';
+import { debounceTime, finalize, Subject } from 'rxjs';
 import { GetWeatherDataLastDayResponse } from './models/get-weather-last-day-response';
 import { GetWeatherDataLastWeekResponse } from './models/get-weather-last-week-response';
 import { GetWeatherDataLastMonthResponse } from './models/get-weather-last-month-response';
@@ -69,6 +69,7 @@ export class AggregateDataViewComponent implements OnInit {
   timeFrame = signal<'24h' | '7d' | '30d'>('24h');
   dataType = signal<'weather' | 'pollution'>('weather');
 
+  private inputSubject = new Subject<string>();
   matcher = new SearchInputErrorStateMatcher();
   public formGroup = new FormGroup<PlusCodeSeachFormControl>({
     plusCodeSearchPhrase: new FormControl('Wrocław', [
@@ -115,15 +116,21 @@ export class AggregateDataViewComponent implements OnInit {
 
   ngOnInit(): void {
     const googleMapsPlusCode =
-      this.formGroup.get('nicknameSearchPhrase')?.value ?? 'Wrocław';
+      this.formGroup.get('plusCodeSearchPhrase')?.value ?? 'Wrocław';
     this.loadStationsDataLast24h(googleMapsPlusCode);
+
+    this.inputSubject.pipe(debounceTime(500)).subscribe(() => {
+      if (this.isFormValid) {
+        this.submit();
+      }
+    });
   }
 
   public onTimeFrameChange(timeFrame: '24h' | '7d' | '30d'): void {
     this.timeFrame.set(timeFrame);
     this.#isLoading.set(true);
     const googleMapsPlusCode =
-      this.formGroup.get('nicknameSearchPhrase')?.value ?? 'Wrocław';
+      this.formGroup.get('plusCodeSearchPhrase')?.value ?? 'Wrocław';
     switch (timeFrame) {
       case '24h':
         this.loadStationsDataLast24h(googleMapsPlusCode);
@@ -144,7 +151,7 @@ export class AggregateDataViewComponent implements OnInit {
   submit() {
     this.#isLoading.set(true);
     const googleMapsPlusCode =
-      this.formGroup.get('nicknameSearchPhrase')?.value ?? 'Wrocław';
+      this.formGroup.get('plusCodeSearchPhrase')?.value ?? '';
     switch (this.timeFrame()) {
       case '24h':
         this.loadStationsDataLast24h(googleMapsPlusCode);
@@ -167,7 +174,7 @@ export class AggregateDataViewComponent implements OnInit {
           this.toastService.openSuccess(
             `${this.translateService.instant(
               'DataVisualisation.PlusCodeSearchDispplay'
-            )} ${searchPhrase}`
+            )} "${searchPhrase}"`
           );
         })
       )
@@ -191,7 +198,7 @@ export class AggregateDataViewComponent implements OnInit {
           this.toastService.openSuccess(
             `${this.translateService.instant(
               'DataVisualisation.PlusCodeSearchDispplay'
-            )} ${searchPhrase}`
+            )} "${searchPhrase}"`
           );
         })
       )
@@ -215,7 +222,7 @@ export class AggregateDataViewComponent implements OnInit {
           this.toastService.openSuccess(
             `${this.translateService.instant(
               'DataVisualisation.PlusCodeSearchDispplay'
-            )} ${searchPhrase}`
+            )} "${searchPhrase}"`
           );
         })
       )
@@ -228,5 +235,10 @@ export class AggregateDataViewComponent implements OnInit {
             this.translateService.instant('DataVisualisation.Error')
           ),
       });
+  }
+
+  onInputChange($event: Event) {
+    const input = ($event.target as HTMLInputElement).value;
+    this.inputSubject.next(input);
   }
 }

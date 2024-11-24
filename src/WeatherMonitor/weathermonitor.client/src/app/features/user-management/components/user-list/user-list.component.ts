@@ -97,7 +97,9 @@ export class UserListComponent implements OnInit {
     const nickname = this.formGroup.get('nicknameSearchPhrase')?.value ?? null;
     this.loadUsers(this.#currentPage(), nickname);
     this.inputSubject.pipe(debounceTime(300)).subscribe(() => {
-      this.submit();
+      if (this.isFormValid) {
+        this.submit();
+      }
     });
   }
 

@@ -13,9 +13,9 @@
           }}</mat-label>
           <input
             matInput
-            placeholder="Wrocław"
             formControlName="plusCodeSearchPhrase"
             [errorStateMatcher]="matcher"
+            (input)="onInputChange($event)"
           />
           <mat-error>{{
             "DataVisualisation.PlusCodeSearch.Required" | translate

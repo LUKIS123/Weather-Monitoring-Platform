@@ -100,88 +100,79 @@ ORDER BY
     {
         var isSearchQuery = !string.IsNullOrWhiteSpace(plusCodeSearch);
         var sql = new StringBuilder(@$"
-DECLARE @CurrentDateTime DATETIME = @currentTime;
-
-DECLARE @AlignedDateTime DATETIME = DATEADD(HOUR, (DATEDIFF(HOUR, 0, @CurrentDateTime) / 6) * 6, 0);
-
-WITH
-    Numbers AS (
-        SELECT TOP (28)
-            ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1 AS Number
-        FROM
-            (VALUES (0),(0),(0),(0),(0),(0),(0)) AS a(n)
-            CROSS JOIN (VALUES (0),(0),(0),(0)) AS b(n)
-    ),
-    DateHourRange AS (
+    DECLARE @CurrentDateTime DATETIME = @currentTime;
+    
+    DECLARE @AlignedDateTime DATETIME = DATEADD(HOUR, (DATEDIFF(HOUR, 0, @CurrentDateTime) / 6) * 6, 0);
+    
+    WITH
+        Numbers AS (
+            SELECT TOP (28)
+                ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1 AS Number
+            FROM
+                (VALUES (0),(0),(0),(0),(0),(0),(0)) AS a(n)
+                CROSS JOIN (VALUES (0),(0),(0),(0)) AS b(n)
+        ),
+        DateHourRange AS (
+            SELECT
+                DATEADD(HOUR, -n.Number * 6, @AlignedDateTime) AS EndDateTime
+            FROM Numbers n
+        )
+    SELECT * FROM (
         SELECT
-            DATEADD(HOUR, -n.Number * 6, @AlignedDateTime) AS EndDateTime
-        FROM Numbers n
-    )
-SELECT * FROM (
-    SELECT
-        dhr.EndDateTime AS {nameof(LastWeekHourlyData.HourDateTime)},
-        ROUND(AVG(sm.Temperature), 2) AS {nameof(LastWeekHourlyData.AvgTemperature)},
-        ROUND(AVG(sm.Humidity), 2) AS {nameof(LastWeekHourlyData.AvgHumidity)},
-        ROUND(AVG(sm.AirPressure), 2) AS {nameof(LastWeekHourlyData.AvgAirPressure)},
-        ROUND(AVG(sm.PM1_0), 2) AS {nameof(LastWeekHourlyData.AvgPM1_0)},
-        ROUND(AVG(sm.PM2_5), 2) AS {nameof(LastWeekHourlyData.AvgPM2_5)},
-        ROUND(AVG(sm.PM10), 2) AS {nameof(LastWeekHourlyData.AvgPM10)}
-    FROM
-        DateHourRange dhr
-        LEFT JOIN [weatherData].[SensorsMeasurements] sm
-            ON sm.ReceivedAt >= DATEADD(HOUR, -6, dhr.EndDateTime)
-               AND sm.ReceivedAt < dhr.EndDateTime
-");
+            dhr.EndDateTime AS {nameof(LastWeekHourlyData.HourDateTime)},
+            ROUND(AVG(sm.Temperature), 2) AS {nameof(LastWeekHourlyData.AvgTemperature)},
+            ROUND(AVG(sm.Humidity), 2) AS {nameof(LastWeekHourlyData.AvgHumidity)},
+            ROUND(AVG(sm.AirPressure), 2) AS {nameof(LastWeekHourlyData.AvgAirPressure)},
+            ROUND(AVG(sm.PM1_0), 2) AS {nameof(LastWeekHourlyData.AvgPM1_0)},
+            ROUND(AVG(sm.PM2_5), 2) AS {nameof(LastWeekHourlyData.AvgPM2_5)},
+            ROUND(AVG(sm.PM10), 2) AS {nameof(LastWeekHourlyData.AvgPM10)}
+        FROM
+            DateHourRange dhr
+            LEFT JOIN [weatherData].[SensorsMeasurements] sm
+                ON sm.ReceivedAt >= DATEADD(HOUR, -6, dhr.EndDateTime)
+                   AND sm.ReceivedAt < dhr.EndDateTime
+    ");
         if (isSearchQuery)
         {
             sql.Append(@"
-        LEFT JOIN [identity].[Devices] d ON d.Id = sm.DeviceId");
+            LEFT JOIN [identity].[Devices] d 
+                ON d.Id = sm.DeviceId
+                    AND (d.GoogleMapsPlusCode LIKE '%' + @mapsPlusCodeSearch + '%')");
         }
         sql.Append(@"
-    WHERE
-        dhr.EndDateTime <= @AlignedDateTime");
-        if (isSearchQuery)
-        {
-            sql.Append(@"
-    AND d.GoogleMapsPlusCode LIKE '%' + @mapsPlusCodeSearch + '%'");
-        }
+        WHERE
+            dhr.EndDateTime <= @AlignedDateTime
+        GROUP BY 
+            dhr.EndDateTime");
 
         sql.Append($@"
-    GROUP BY 
-        dhr.EndDateTime
-
-    UNION ALL
-
-    SELECT
-        @AlignedDateTime AS {nameof(LastWeekHourlyData.HourDateTime)},
-        ROUND(AVG(sm.Temperature), 2) AS {nameof(LastWeekHourlyData.AvgTemperature)},
-        ROUND(AVG(sm.Humidity), 2) AS {nameof(LastWeekHourlyData.AvgHumidity)},
-        ROUND(AVG(sm.AirPressure), 2) AS {nameof(LastWeekHourlyData.AvgAirPressure)},
-        ROUND(AVG(sm.PM1_0), 2) AS {nameof(LastWeekHourlyData.AvgPM1_0)},
-        ROUND(AVG(sm.PM2_5), 2) AS {nameof(LastWeekHourlyData.AvgPM2_5)},
-        ROUND(AVG(sm.PM10), 2) AS {nameof(LastWeekHourlyData.AvgPM10)}
-    FROM
-        [weatherData].[SensorsMeasurements] sm");
+        UNION ALL
+    
+        SELECT
+            @CurrentDateTime AS {nameof(LastWeekHourlyData.HourDateTime)},
+            ROUND(AVG(sm.Temperature), 2) AS {nameof(LastWeekHourlyData.AvgTemperature)},
+            ROUND(AVG(sm.Humidity), 2) AS {nameof(LastWeekHourlyData.AvgHumidity)},
+            ROUND(AVG(sm.AirPressure), 2) AS {nameof(LastWeekHourlyData.AvgAirPressure)},
+            ROUND(AVG(sm.PM1_0), 2) AS {nameof(LastWeekHourlyData.AvgPM1_0)},
+            ROUND(AVG(sm.PM2_5), 2) AS {nameof(LastWeekHourlyData.AvgPM2_5)},
+            ROUND(AVG(sm.PM10), 2) AS {nameof(LastWeekHourlyData.AvgPM10)}
+        FROM
+            [weatherData].[SensorsMeasurements] sm");
         if (isSearchQuery)
         {
             sql.Append(@"
-        LEFT JOIN [identity].[Devices] d ON d.Id = sm.DeviceId");
+            LEFT JOIN [identity].[Devices] d 
+                ON d.Id = sm.DeviceId
+                    AND (d.GoogleMapsPlusCode LIKE '%' + @mapsPlusCodeSearch + '%')");
         }
-        sql.Append(@"
-    WHERE
-        sm.ReceivedAt >= @AlignedDateTime
-            AND sm.ReceivedAt < @CurrentDateTime");
-
-        if (isSearchQuery)
-        {
-            sql.Append(@"
-    AND d.GoogleMapsPlusCode LIKE '%' + @mapsPlusCodeSearch + '%'");
-        }
-
-        sql.Append(@$") 
-    AS CombinedResults
-    ORDER BY
-        {nameof(LastWeekHourlyData.HourDateTime)};");
+        sql.Append(@$"
+        WHERE
+            sm.ReceivedAt >= @AlignedDateTime
+                AND sm.ReceivedAt < @CurrentDateTime
+        ) AS CombinedResults
+        ORDER BY
+            {nameof(LastWeekHourlyData.HourDateTime)};
+    ");
 
         return sql.ToString();
     }

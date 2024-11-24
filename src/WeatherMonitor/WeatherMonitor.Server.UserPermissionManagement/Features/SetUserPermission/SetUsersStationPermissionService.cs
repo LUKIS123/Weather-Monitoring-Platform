@@ -4,6 +4,7 @@ using WeatherMonitor.Server.SharedKernel.Exceptions;
 using WeatherMonitor.Server.SharedKernel.Models;
 using WeatherMonitor.Server.SharedKernel.Repositories;
 using WeatherMonitor.Server.UserPermissionManagement.Infrastructure;
+using WeatherMonitor.Server.UserPermissionManagement.Infrastructure.Models;
 using WeatherMonitorCore.Contract.Shared;
 
 namespace WeatherMonitor.Server.UserPermissionManagement.Features.SetUserPermission;
@@ -86,7 +87,7 @@ internal class SetUsersStationPermissionService : ISetUsersStationPermissionServ
             case PermissionStatus.Pending
                 when updatePermissionRequest.Status == PermissionStatus.Granted:
                 {
-                    if (userPermission is not null)
+                    if (userPermission is not null && userPermission != default(UserPermissionDto))
                     {
                         return new BadRequestException("User already has permission to the station");
                     }
@@ -103,7 +104,7 @@ internal class SetUsersStationPermissionService : ISetUsersStationPermissionServ
             case PermissionStatus.Granted
                 when updatePermissionRequest.Status == PermissionStatus.Denied:
                 {
-                    if (userPermission is null)
+                    if (userPermission is null || userPermission == default(UserPermissionDto))
                     {
                         return new BadRequestException("User does not have permission to the station");
                     }

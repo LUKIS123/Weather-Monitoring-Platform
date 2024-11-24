@@ -143,9 +143,6 @@ export class PermissionRequestDialogComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.#isLoading.set(false);
-          setTimeout(() => {
-            this.dialogRef.close();
-          }, 2000);
         })
       )
       .subscribe({
@@ -155,11 +152,15 @@ export class PermissionRequestDialogComponent implements OnInit {
               'AvailableStations.SendRequest.Success'
             )
           );
+          setTimeout(() => {
+            this.dialogRef.close();
+          }, 2000);
         },
         error: () => {
           this.toastService.openError(
             this.translateService.instant('AvailableStations.SendRequest.Error')
           );
+          this.#disable.set(false);
         },
       });
   }
