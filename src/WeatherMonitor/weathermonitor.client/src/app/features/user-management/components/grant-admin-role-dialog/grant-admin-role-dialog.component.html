@@ -1,0 +1,48 @@
+<div class="flex items-center justify-center h-full">
+  <mat-card class="h-full w-full">
+    <mat-card-header>
+      <mat-card-title class="stubborn-text"
+        ><span
+          >{{
+            "UserManagement.Users.Permissions.GrantAdmin.Title" | translate
+          }}: </span
+        ><br /><span>
+          {{ user().nickname }}
+        </span></mat-card-title
+      >
+      <span class="absolute right-0 top-0">
+        <button mat-icon-button [mat-dialog-close]="confirmGrandAdminRole()">
+          <mat-icon class="stubborn-icon">close</mat-icon>
+        </button>
+      </span>
+    </mat-card-header>
+    <ng-scrollbar class="flex-grow overflow-auto">
+      <mat-card-content
+        class="stubborn-text flex flex-col"
+        style="padding: 2rem 2rem 2rem 2rem"
+      >
+        <mat-divider class="pb-4"></mat-divider>
+        <div class="relative bottom-1/2 w-full flex flex-row justify-between">
+          <div class="flex flex-row justify-around gap-2 pt-4 w-full">
+            <button
+              mat-stroked-button
+              color="primary"
+              type="button"
+              (click)="cancel()"
+            >
+              {{ "DeviceManagement.Register.Return" | translate }}
+            </button>
+            <button
+              mat-raised-button
+              color="warn"
+              type="button"
+              (click)="grantAdminRole()"
+            >
+              {{ "DeviceManagement.Register.Confirm" | translate }}
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </ng-scrollbar>
+  </mat-card>
+</div>

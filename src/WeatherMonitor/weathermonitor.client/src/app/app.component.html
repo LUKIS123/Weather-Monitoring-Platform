@@ -66,9 +66,23 @@
         tabindex="3"
         (keyup.enter)="sidenav.toggle()"
       >
-        <mat-icon>admin_panel_settings</mat-icon>
+        <mat-icon>device_hub</mat-icon>
         <span class="text-lg">{{
           "Navigation.AdminDeviceManagement" | translate
+        }}</span>
+      </div>
+
+      <div
+        mat-ripple
+        routerLink="UserManagement/PermissionRequests"
+        class="cursor-pointer flex items-center space-x-4 py-4 px-2"
+        (click)="sidenav.toggle()"
+        tabindex="4"
+        (keyup.enter)="sidenav.toggle()"
+      >
+        <mat-icon>admin_panel_settings</mat-icon>
+        <span class="text-lg">{{
+          "Navigation.UserManagement" | translate
         }}</span>
       </div>
       }

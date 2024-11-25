@@ -13,9 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-
 builder.Services.AddHttpContextAccessor(); // add instance of http context accessor
-builder.Services.AddMemoryCache(); // add instance of memory cache
 
 builder.Services.AddSharedKernelModule();
 builder.Services.AddInfrastructureModule(builder.Configuration);

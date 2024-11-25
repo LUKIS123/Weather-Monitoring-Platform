@@ -32,7 +32,8 @@ internal class GetUsersPermissionsService : IGetUsersPermissionsService
             return new UnauthorizedException();
         }
 
-        var (stations, totalItems) = await _stationsPermissionsRepository.GetPermissionRequestsAsync(pageNumber, PageSize, userId);
+        var (stations, totalItems) = await _stationsPermissionsRepository.GetPermissionRequestsAsync(
+            pageNumber, PageSize, userId);
 
         return new PageResult<UsersPermissionRequestDto>(stations, totalItems, PageSize, pageNumber);
     }

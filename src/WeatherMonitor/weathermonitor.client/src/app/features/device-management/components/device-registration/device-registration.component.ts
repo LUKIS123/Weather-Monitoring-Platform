@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Inject, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  Inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MaterialModule } from '../../../../shared/material.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -22,12 +29,21 @@ import { finalize } from 'rxjs';
   imports: [CommonModule, TranslateModule, MaterialModule, ReactiveFormsModule],
   templateUrl: './device-registration.component.html',
 })
-export class DeviceRegistrationComponent {
+export class DeviceRegistrationComponent implements OnInit {
   private readonly deviceRegistrationService = inject(
     DeviceRegistrationService
   );
   private readonly toastService = inject(ToastService);
   private readonly translateService = inject(TranslateService);
+
+  #isLoading = signal(false);
+  public readonly isLoading = this.#isLoading.asReadonly();
+
+  buttonDisable = signal(false);
+  validForm = signal(false);
+  shouldDisable = computed(() => {
+    return this.buttonDisable() || !this.validForm() || !this.isFormValid;
+  });
 
   #registrationSuccess = signal<boolean>(false);
   public readonly registrationSuccess = this.#registrationSuccess.asReadonly();
@@ -38,6 +54,12 @@ export class DeviceRegistrationComponent {
     @Inject(MAT_DIALOG_DATA) data: unknown,
     private dialogRef: MatDialogRef<DeviceRegistrationComponent>
   ) {}
+
+  ngOnInit(): void {
+    this.formGroup.statusChanges.subscribe((status) => {
+      this.validForm.set(status === 'VALID');
+    });
+  }
 
   public formGroup = new FormGroup<RegisterDeviceFormControl>({
     deviceUsername: new FormControl<string | null>(null, [
@@ -64,16 +86,14 @@ export class DeviceRegistrationComponent {
     const deviceExtraInfo =
       this.formGroup.get('deviceExtraInfo')?.value ?? null;
 
+    this.buttonDisable.set(true);
+    this.#isLoading.set(true);
+
     this.deviceRegistrationService
       .registerNewDevice(deviceUsername, googleMapsPlusCode, deviceExtraInfo)
       .pipe(
         finalize(() => {
-          setTimeout(() => {
-            this.dialogRef.close({
-              registered: this.#registrationSuccess(),
-              createdResponse: this.#createResponse(),
-            } as DeviceRegistrationResult);
-          }, 2000);
+          this.#isLoading.set(false);
         })
       )
       .subscribe({
@@ -81,11 +101,20 @@ export class DeviceRegistrationComponent {
           this.#createResponse.set(response);
           this.formGroup.reset();
           this.#registrationSuccess.set(true);
+
           this.toastService.openSuccess(
             this.translateService.instant('DeviceManagement.Register.Success')
           );
+
+          setTimeout(() => {
+            this.dialogRef.close({
+              registered: this.#registrationSuccess(),
+              createdResponse: this.#createResponse(),
+            } as DeviceRegistrationResult);
+          }, 2000);
         },
         error: () => {
+          this.buttonDisable.set(false);
           this.#registrationSuccess.set(false);
           this.toastService.openError(
             this.translateService.instant('DeviceManagement.Register.Error')

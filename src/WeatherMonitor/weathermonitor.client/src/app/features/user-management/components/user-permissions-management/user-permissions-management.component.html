@@ -1,0 +1,104 @@
+<div class="flex flex-col h-full w-full">
+  <div class="flex items-center justify-center h-full">
+    <mat-card class="h-full w-full">
+      <mat-card-header>
+        <mat-card-title class="stubborn-text"
+          ><span class="mat-headline-6 font-bold pr-2"
+            >{{ "UserManagement.Users.Permissions" | translate }}:</span
+          ><span class="mat-headline-6 font-bold pr-2">{{
+            user().nickname
+          }}</span>
+          <span class="mat-body-2">({{ user().email }})</span></mat-card-title
+        >
+        <mat-card-subtitle
+          ><span> {{ "UserManagement.Users.UserRole" | translate }}: </span>
+          <span class="font-bold">
+            {{ getUserRole() }}
+          </span></mat-card-subtitle
+        >
+        <span class="absolute right-0 top-0">
+          <button
+            mat-icon-button
+            [mat-dialog-close]="adminPrivilegesChangeDetected()"
+          >
+            <mat-icon class="stubborn-icon">close</mat-icon>
+          </button>
+        </span>
+      </mat-card-header>
+      <ng-scrollbar>
+        <mat-card-content
+          class="stubborn-text"
+          style="padding: 2rem 2rem 2rem 2rem"
+        >
+          <div class="flex w-full justify-end pb-2">
+            <button
+              mat-raised-button
+              class="!h-8 flex items-center justify-center self-end !text-white"
+              color="accent"
+              type="button"
+              (click)="openConfirmationDialog()"
+              [disabled]="grantAdminButtonDisabled()"
+            >
+              {{ "UserManagement.Users.Permissions.GrantAdmin" | translate }}
+            </button>
+          </div>
+
+          @if(user().role === 2) {
+          <mat-card class="mb-2">
+            <mat-card-content>
+              <div
+                class="flex flex-col items-center justify-center justify-items-center"
+              >
+                <p class="text-center">
+                  {{ "UserManagement.Users.Permissions.AdminInfo" | translate }}
+                </p>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          } @if(isLoading()){
+          <div
+            class="flex items-center justify-center justify-items-center py-4"
+          >
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+          </div>
+          }
+
+          <mat-accordion
+            class="pb-14 items-center justify-center content-center"
+          >
+            @for (permision of permissionsPageResult().items; track $index) {
+            <app-user-permission-management-element
+              [user]="user()"
+              [permission]="permision"
+              (detectChange)="onChangeDetected($event, $index)"
+            >
+            </app-user-permission-management-element>
+
+            } @if(permissionsPageResult().items.length === 0) {
+            <div class="flex justify-center items-center w-full h-[25vh]">
+              <p class="text-gray-500">
+                {{ "UserManagement.Users.NoPermissions" | translate }}
+              </p>
+            </div>
+            }
+          </mat-accordion>
+        </mat-card-content>
+      </ng-scrollbar>
+    </mat-card>
+  </div>
+
+  <mat-paginator
+    #paginator
+    class="absolute bottom-0 left-0 w-full"
+    (page)="handlePageEvent($event)"
+    [length]="permissionsPageResult().totalItemsCount"
+    [pageSize]="permissionsPageResult().pageSize"
+    [disabled]="false"
+    [showFirstLastButtons]="false"
+    [pageSizeOptions]="[]"
+    [hidePageSize]="true"
+    [pageIndex]="currentPage()"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</div>

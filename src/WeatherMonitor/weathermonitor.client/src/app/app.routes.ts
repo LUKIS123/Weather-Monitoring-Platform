@@ -46,6 +46,14 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'UserManagement',
+    canActivate: [isAdminAuthGuard],
+    loadChildren: () =>
+      import('./features/user-management/routes').then(
+        (mod) => mod.UserManagementRoutes
+      ),
+  },
+  {
     path: '**',
     component: NotFoundComponent,
   },

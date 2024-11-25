@@ -1,0 +1,163 @@
+<div class="flex items-center justify-center h-full">
+  <mat-card class="h-full w-full">
+    <mat-card-header>
+      <mat-card-title class="stubborn-text">{{
+        "AvailableStations.RequestDialog.Title" | translate
+      }}</mat-card-title>
+      <span class="absolute right-0 top-0">
+        <button mat-icon-button [mat-dialog-close]="updateStatusSuccess()">
+          <mat-icon class="stubborn-icon">close</mat-icon>
+        </button>
+      </span>
+    </mat-card-header>
+    <ng-scrollbar>
+      <mat-card-content
+        class="stubborn-text"
+        style="padding: 2rem 2rem 2rem 2rem"
+      >
+        @if(isLoading()){
+        <div class="flex items-center justify-center justify-items-center py-4">
+          <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        }
+
+        <div class="w-full flex flex-col pb-2">
+          <h1 class="text-lg">
+            {{ "UserManagement.Permissions.Action.UserInfo" | translate }}:
+          </h1>
+          <div class="flex flex-row items-center">
+            <p class="mat-body-1">
+              <span class="text-xs text-gray-400">
+                {{ "UserManagement.Permissions.User.Nickname" | translate }}:
+              </span>
+              <br />
+              <span class="font-bold">
+                {{ permissionRequest().permission.nickname }}
+              </span>
+            </p>
+          </div>
+          <div class="flex flex-row items-center">
+            <p class="mat-body-1">
+              <span class="text-xs text-gray-400">
+                {{ "UserManagement.Permissions.User.Email" | translate }}:
+              </span>
+              <br />
+              <span class="font-bold">
+                {{ permissionRequest().permission.email }}
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+        <div class="w-full flex flex-col pt-4">
+          <h1 class="text-lg">
+            {{ "AvailableStations.RequestDialog.InfoSection" | translate }}:
+          </h1>
+          <div class="flex flex-row items-center">
+            <p class="mat-body-1">
+              <span class="text-xs text-gray-400">
+                {{ "AvailableStations.RequestDialog.Device" | translate }}:
+              </span>
+              <br />
+              <span class="font-bold">
+                {{ permissionRequest().permission.deviceName }}
+              </span>
+              <span
+                >({{ "Shared.Id" | translate }}:
+                {{ permissionRequest().permission.deviceId }})</span
+              >
+            </p>
+          </div>
+          <div class="flex flex-row items-center">
+            <p class="mat-body-1">
+              <span class="text-xs text-gray-400">
+                {{ "DeviceManagement.Address" | translate }}:
+              </span>
+              <br />
+              @if (permissionRequest().address.street &&
+              permissionRequest().address.streetNumber) {
+              <span class="font-bold">
+                {{ permissionRequest().address.street }}
+                {{ permissionRequest().address.streetNumber }},
+              </span>
+              } @if (permissionRequest().address.street &&
+              !permissionRequest().address.streetNumber) {
+              <span class="font-bold">
+                {{ permissionRequest().address.street }},
+              </span>
+              }
+              <span class="font-bold">
+                {{ permissionRequest().address.city }}
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+        <div class="w-full flex flex-col pt-4">
+          <h1 class="text-lg">
+            {{ "AvailableStations.SendRequest.CurrentStatus" | translate }}:
+          </h1>
+          <div class="flex flex-row items-center">
+            <p class="mat-body-1">
+              <span class="text-xs text-gray-400">
+                {{
+                  "AvailableStations.RequestDialog.PermissionStatus"
+                    | translate
+                }}:
+              </span>
+              <br />
+              <span class="font-bold">
+                {{ getPermissionStatus() }}
+              </span>
+            </p>
+          </div>
+          <div class="flex flex-row items-center">
+            <p class="mat-body-1">
+              <span class="text-xs text-gray-400">
+                {{ "AvailableStations.RequestDialog.GrantDate" | translate }}:
+              </span>
+              <br />
+              <span class="font-bold">
+                {{ getDateFormatted() }}
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+        <div class="flex flex-row justify-between gap-2 pt-4">
+          <button
+            mat-stroked-button
+            color="primary"
+            type="button"
+            (click)="cancel()"
+          >
+            {{ "DeviceManagement.Register.Return" | translate }}
+          </button>
+          <div class="flex flex-row justify-between gap-2 md:gap-8">
+            <button
+              mat-raised-button
+              color="warn"
+              type="button"
+              (click)="sendPermissionDecision(4)"
+              [disabled]="buttonDisable()"
+            >
+              {{ "UserManagement.Permissions.Action.Reject" | translate }}
+            </button>
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="sendPermissionDecision(3)"
+              [disabled]="buttonDisable()"
+            >
+              {{ "UserManagement.Permissions.Action.Accept" | translate }}
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </ng-scrollbar>
+  </mat-card>
+</div>

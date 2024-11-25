@@ -1,0 +1,87 @@
+<div
+  class="pb-2 px-2 outline outline-zinc-300 outline-1 shadow-lg my-1 relative"
+>
+  <div>
+    <span class="font-bold pr-2"
+      >{{ "UserManagement.Permissions.Username" | translate }}:
+    </span>
+    <span class="mat-headline-6 font-bold pr-2">{{
+      permissionRequest().permission.nickname
+    }}</span>
+    <span class="mat-body-2">({{ permissionRequest().permission.email }})</span>
+  </div>
+
+  <div>
+    <div
+      class="grid grid-cols-2 md:grid-cols-5 justify-around my-2 items-start"
+    >
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <span class="text-xs text-gray-400">
+            {{ "StationsList.StationName" | translate }}:
+          </span>
+          <br />
+          <span class="font-bold">
+            {{ permissionRequest().permission.deviceName }}
+          </span>
+        </p>
+      </div>
+
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <span class="text-xs text-gray-400">
+            {{ "DeviceManagement.Address" | translate }}:
+          </span>
+          <br />
+          @if (permissionRequest().address.street &&
+          permissionRequest().address.streetNumber) {
+          <span class="font-bold">
+            {{ permissionRequest().address.street }}
+            {{ permissionRequest().address.streetNumber }},
+          </span>
+          } @if (permissionRequest().address.street &&
+          !permissionRequest().address.streetNumber) {
+          <span class="font-bold">
+            {{ permissionRequest().address.street }},
+          </span>
+          }
+          <span class="font-bold">
+            {{ permissionRequest().address.city }}
+          </span>
+        </p>
+      </div>
+
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <span class="text-xs text-gray-400">
+            {{ "UserManagement.Permissions.RequestedAt" | translate }}:
+          </span>
+          <br />
+          <span class="font-bold">
+            {{ getDateFormatted() }}
+          </span>
+        </p>
+      </div>
+
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <span class="text-xs text-gray-400">
+            {{ "AvailableStations.SendRequest.CurrentStatus" | translate }}:
+          </span>
+          <br />
+          <span class="font-bold">
+            {{ getPermissionStatus() }}
+          </span>
+        </p>
+      </div>
+
+      <div class="flex flex-row items-center">
+        <p class="mat-body-1">
+          <button mat-stroked-button (click)="openPermissionRequestPopup()">
+            {{ "UserManagement.Permissions.Action" | translate }}
+          </button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
