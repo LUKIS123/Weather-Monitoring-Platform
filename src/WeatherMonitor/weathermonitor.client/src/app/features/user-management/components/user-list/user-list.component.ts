@@ -126,6 +126,12 @@ export class UserListComponent implements OnInit {
     this.loadUsers(this.#currentPage(), nickname);
   }
 
+  public refresh(): void {
+    const nickname = this.formGroup.get('nicknameSearchPhrase')?.value ?? null;
+    this.#isLoading.set(true);
+    this.loadUsers(this.#currentPage(), nickname);
+  }
+
   private loadUsers(
     pageNumber: number,
     nicknameSearch: string | null = null
@@ -147,5 +153,11 @@ export class UserListComponent implements OnInit {
           );
         },
       });
+  }
+
+  onChangeDetected(change: boolean, index: number) {
+    if (change) {
+      this.refresh();
+    }
   }
 }

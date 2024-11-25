@@ -6,6 +6,8 @@ internal readonly record struct UserRequestWithPermissionDto(
     int Id,
     string UserId,
     int DeviceId,
+    string DeviceName,
+    string GoogleMapsPlusCode,
     PermissionStatus PermissionStatus,
     DateTime DateTime,
     int PermissionId,

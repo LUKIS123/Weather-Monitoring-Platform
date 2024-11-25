@@ -39,7 +39,11 @@
 
       <div class="flex flex-row items-center">
         <p class="mat-body-1">
-          <button mat-stroked-button (click)="openUserManagementPopup()">
+          <button
+            mat-stroked-button
+            (click)="openUserManagementPopup()"
+            [disabled]="currentUserDisable()"
+          >
             {{ "UserManagement.Users.Action" | translate }}
           </button>
         </p>

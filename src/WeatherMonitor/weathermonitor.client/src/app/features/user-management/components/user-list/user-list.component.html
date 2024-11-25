@@ -35,7 +35,10 @@
 
   <mat-accordion class="pb-14 items-center justify-center content-center">
     @for (user of usersPageResult().items; track $index) {
-    <app-user-list-element [user]="user" />
+    <app-user-list-element
+      [user]="user"
+      (detectChange)="onChangeDetected($event, $index)"
+    />
     } @if(usersPageResult().items.length === 0) {
     <div class="flex justify-center items-center w-full h-[25vh]">
       <p class="text-gray-500">

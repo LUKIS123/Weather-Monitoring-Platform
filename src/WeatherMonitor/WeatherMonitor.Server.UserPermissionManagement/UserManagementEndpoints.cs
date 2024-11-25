@@ -49,5 +49,14 @@ public static class UserManagementEndpoints
                 var result = await getUsersPermissionsService.Handle(pageNumber, userId);
                 await context.HandleResult(result);
             }).RequireAuthorization("IsAdminPolicy");
+
+        // routes.MapPost(
+        //     "/api/userManagement/grantAdminRole",
+        //     async (HttpContext context, [FromServices] IGetUsersPermissionsService getUsersPermissionsService,
+        //         [FromQuery] string userId) =>
+        //     {
+        //         var result = await getUsersPermissionsService.Handle(pageNumber, userId);
+        //         await context.HandleResult(result);
+        //     }).RequireAuthorization("IsAdminPolicy");
     }
 }

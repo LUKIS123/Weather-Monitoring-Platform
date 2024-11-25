@@ -67,12 +67,18 @@ WHERE Status = @Status;
         using var connection = await _dbConnectionFactory.GetOpenConnectionAsync();
         const string sql = @$"
 SELECT TOP 1
-    Id AS {nameof(UserPermissionRequestDto.Id)},
-    UserId AS {nameof(UserPermissionRequestDto.UserId)},
-    DeviceId AS {nameof(UserPermissionRequestDto.DeviceId)},
-    Status AS {nameof(UserPermissionRequestDto.PermissionStatus)},
-    ChangeDate AS {nameof(UserPermissionRequestDto.DateTime)}
-FROM [stationsAccess].[StationPermissionRequests] 
+    SPR.Id AS {nameof(UserPermissionRequestDto.Id)},
+    SPR.UserId AS {nameof(UserPermissionRequestDto.UserId)},
+    SPR.DeviceId AS {nameof(UserPermissionRequestDto.DeviceId)},
+    M.Username AS {nameof(UserPermissionRequestDto.DeviceName)},
+    D.GoogleMapsPlusCode AS {nameof(UserPermissionRequestDto.GoogleMapsPlusCode)},
+    SPR.Status AS {nameof(UserPermissionRequestDto.PermissionStatus)},
+    SPR.ChangeDate AS {nameof(UserPermissionRequestDto.DateTime)}
+FROM [stationsAccess].[StationPermissionRequests] SPR
+LEFT JOIN [identity].[Devices] D
+    ON D.Id = SPR.DeviceId
+LEFT JOIN [identity].[MqttClients] M
+    ON M.Id = D.MqttClientId
 WHERE UserId = @UserId
     AND DeviceId = @DeviceId;
 ";
@@ -176,12 +182,18 @@ VALUES (
     @DeviceId);
 
 SELECT TOP 1
-    Id AS {nameof(UserPermissionRequestDto.Id)},
-    UserId AS {nameof(UserPermissionRequestDto.UserId)},
-    DeviceId AS {nameof(UserPermissionRequestDto.DeviceId)},
-    Status AS {nameof(UserPermissionRequestDto.PermissionStatus)},
-    ChangeDate AS {nameof(UserPermissionRequestDto.DateTime)}
-FROM [stationsAccess].[StationPermissionRequests]
+    SPR.Id AS {nameof(UserPermissionRequestDto.Id)},
+    SPR.UserId AS {nameof(UserPermissionRequestDto.UserId)},
+    SPR.DeviceId AS {nameof(UserPermissionRequestDto.DeviceId)},
+    M.Username AS {nameof(UserPermissionRequestDto.DeviceName)},
+    D.GoogleMapsPlusCode AS {nameof(UserPermissionRequestDto.GoogleMapsPlusCode)},
+    SPR.Status AS {nameof(UserPermissionRequestDto.PermissionStatus)},
+    SPR.ChangeDate AS {nameof(UserPermissionRequestDto.DateTime)}
+FROM [stationsAccess].[StationPermissionRequests] SPR
+LEFT JOIN [identity].[Devices] D
+    ON D.Id = SPR.DeviceId
+LEFT JOIN [identity].[MqttClients] M
+    ON M.Id = D.MqttClientId
 WHERE UserId = @UserId
     AND DeviceId = @DeviceId;
 
@@ -228,12 +240,18 @@ WHERE UserId = @UserId
     AND DeviceId = @DeviceId;
 
 SELECT TOP 1
-    Id AS {nameof(UserPermissionRequestDto.Id)},
-    UserId AS {nameof(UserPermissionRequestDto.UserId)},
-    DeviceId AS {nameof(UserPermissionRequestDto.DeviceId)},
-    Status AS {nameof(UserPermissionRequestDto.PermissionStatus)},
-    ChangeDate AS {nameof(UserPermissionRequestDto.DateTime)}
-FROM [stationsAccess].[StationPermissionRequests]
+    SPR.Id AS {nameof(UserPermissionRequestDto.Id)},
+    SPR.UserId AS {nameof(UserPermissionRequestDto.UserId)},
+    SPR.DeviceId AS {nameof(UserPermissionRequestDto.DeviceId)},
+    M.Username AS {nameof(UserPermissionRequestDto.DeviceName)},
+    D.GoogleMapsPlusCode AS {nameof(UserPermissionRequestDto.GoogleMapsPlusCode)},
+    SPR.Status AS {nameof(UserPermissionRequestDto.PermissionStatus)},
+    SPR.ChangeDate AS {nameof(UserPermissionRequestDto.DateTime)}
+FROM [stationsAccess].[StationPermissionRequests] SPR
+LEFT JOIN [identity].[Devices] D
+    ON D.Id = SPR.DeviceId
+LEFT JOIN [identity].[MqttClients] M
+    ON M.Id = D.MqttClientId
 WHERE UserId = @UserId
     AND DeviceId = @DeviceId;
 
@@ -303,6 +321,8 @@ SELECT
     SPR.UserId AS {nameof(UserRequestWithPermissionDto.UserId)},
     SPR.DeviceId AS {nameof(UserRequestWithPermissionDto.DeviceId)},
     SPR.Status AS {nameof(UserRequestWithPermissionDto.PermissionStatus)},
+    M.Username AS {nameof(UserRequestWithPermissionDto.DeviceName)},
+    D.GoogleMapsPlusCode AS {nameof(UserRequestWithPermissionDto.GoogleMapsPlusCode)},
     SPR.ChangeDate AS {nameof(UserRequestWithPermissionDto.DateTime)},
     SP.Id AS {nameof(UserRequestWithPermissionDto.PermissionId)},
     SP.UserId AS {nameof(UserRequestWithPermissionDto.PermissionUserId)},
@@ -310,10 +330,18 @@ SELECT
 FROM [stationsAccess].[StationPermissionRequests] SPR
 LEFT JOIN [stationsAccess].[StationsPermissions] SP
     ON SPR.UserId = SP.UserId AND SPR.DeviceId = SP.DeviceId
+LEFT JOIN [identity].[Devices] D
+    ON D.Id = SPR.DeviceId
+LEFT JOIN [identity].[MqttClients] M
+    ON M.Id = D.MqttClientId
 WHERE SPR.UserId = @UserId
-ORDER BY SPR.ChangeDate DESC
+ORDER BY SPR.Id DESC
 OFFSET @OffsetRows ROWS
 FETCH NEXT @FetchRows ROWS ONLY;
+
+SELECT COUNT(*) 
+FROM [stationsAccess].[StationPermissionRequests]
+WHERE UserId = @UserId;
 ";
         await using var multi = await connection.QueryMultipleAsync(
             sql,
@@ -331,6 +359,8 @@ FETCH NEXT @FetchRows ROWS ONLY;
                 rwp.Id,
                 rwp.UserId,
                 rwp.DeviceId,
+                rwp.DeviceName,
+                rwp.GoogleMapsPlusCode,
                 rwp.PermissionStatus,
                 rwp.DateTime));
         return (permissionRequests, totalItems);

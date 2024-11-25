@@ -59,7 +59,7 @@ internal class SetUsersStationPermissionService : ISetUsersStationPermissionServ
         var permissionRequest = await permissionRequestTask;
         var userPermission = await userPermissionTask;
 
-        if (permissionRequest is null)
+        if (permissionRequest is null || permissionRequest == default(UserPermissionRequestDto))
         {
             return new UnauthorizedException("Permission request does not exist");
         }
@@ -116,6 +116,18 @@ internal class SetUsersStationPermissionService : ISetUsersStationPermissionServ
                         zoneAdjustedTime);
 
                     return new UpdatePermissionResponse(result, null);
+                }
+
+            case PermissionStatus.Denied
+                when updatePermissionRequest.Status == PermissionStatus.Granted:
+                {
+                    var result = await _userManagementRepository.AddUserStationPermissionAsync(
+                        updatePermissionRequest.UserId,
+                        updatePermissionRequest.DeviceId,
+                        PermissionStatus.Granted,
+                        zoneAdjustedTime);
+
+                    return new UpdatePermissionResponse(result.request, result.permission);
                 }
 
             default:

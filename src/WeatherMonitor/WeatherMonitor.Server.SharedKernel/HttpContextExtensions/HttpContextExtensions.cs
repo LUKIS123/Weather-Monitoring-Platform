@@ -15,6 +15,7 @@ public static class HttpContextExtensions
         httpContext.Response.StatusCode = exception switch
         {
             BadHttpRequestException => StatusCodes.Status400BadRequest,
+            BadRequestException => StatusCodes.Status400BadRequest,
             MicroserviceApiException => StatusCodes.Status400BadRequest,
             ResourceNotFoundException => StatusCodes.Status404NotFound,
             UnauthorizedException => StatusCodes.Status401Unauthorized,

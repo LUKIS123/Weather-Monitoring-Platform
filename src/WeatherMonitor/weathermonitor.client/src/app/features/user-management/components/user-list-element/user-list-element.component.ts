@@ -7,6 +7,7 @@ import { PermissionDecisionComponent } from '../permission-decision/permission-d
 import { UserPermissionsManagementComponent } from '../user-permissions-management/user-permissions-management.component';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../shared/material.module';
+import { AuthorizationService } from '../../../authorization/services/authorization-service';
 
 @Component({
   selector: 'app-user-list-element',
@@ -16,6 +17,8 @@ import { MaterialModule } from '../../../../shared/material.module';
 })
 export class UserListElementComponent {
   private readonly translateService = inject(TranslateService);
+  private readonly authService = inject(AuthorizationService);
+
   #dialog = inject(MatDialog);
   @Output() detectChange = new EventEmitter<boolean>();
   user = input.required<User>();
@@ -49,5 +52,12 @@ export class UserListElementComponent {
       default:
         return this.translateService.instant('UserAccount.Unknown');
     }
+  }
+
+  currentUserDisable(): boolean {
+    if (this.user()?.id === this.authService.userId()) {
+      return true;
+    }
+    return false;
   }
 }

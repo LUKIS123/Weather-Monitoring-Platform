@@ -99,7 +99,7 @@
   "HomePage.CookiePolicy": "Używając aplikacji Weather Monitor, wyrażasz zgodę na stosowanie niezbędnych plików cookies, które są wymagane do poprawnego działania strony. Pliki te służą m.in. do zapewnienia bezpieczeństwa oraz funkcjonalności. Jeżeli nie wyrażasz zgody, prosimy o zaprzestanie korzystania z aplikacji.",
   "StationsList.Lsit.Error": "Wystąpił błąd podczas pobierania listy stacji",
   "StationsList.Lsit.NoWeatherStations": "Brak stacji pogodowych do wyświetlenia",
-  "StationsList.ViewData": "Przejdż do danych stacji",
+  "StationsList.ViewData": "Dane historyczne",
   "StationsList.StationName": "Nazwa stacji",
   "StationsList.StationDescription": "Opis stacji",
   "StationsList.LastUpdate": "Ostatnia aktualizacja",
@@ -193,5 +193,12 @@
   "UserManagement.Permissions.Action.Error": "Wystąpił błąd podczas aktualizacji a prośby o dostęp",
   "UserManagement.Users.UserRole": "Rola użytkownika",
   "UserManagement.Users.UserId": "Identyfikator użytkownika",
-  "UserManagement.Users.Action": "Wyświetl uprawnienia"
+  "UserManagement.Users.Action": "Edytuj uprawnienia",
+  "UserManagement.Users.Permissions": "Uprawnienia użytkownika",
+  "UserManagement.Users.NoPermissions": "Brak uprawnień do wyświetlenia",
+  "UserManagement.Users.Permissions.Error": "Wystąpił błąd podczas pobierania uprawnień użytkownika",
+  "UserManagement.Users.Permissions.Update": "Pomyślnie zaktualizowano uprawnienie",
+  "UserManagement.Users.Permissions.UpdateError": "Wystąpił błąd podczas aktualizacji uprawnia",
+  "UserManagement.Users.Permissions.Revoke": "Cofnij uprawnienia",
+  "UserManagement.Users.Permissions.Grant": "Przyznaj uprawnienia"
 }

@@ -4,6 +4,8 @@ export interface UserPermissionRequest {
   id: number;
   userId: string;
   deviceId: number;
+  deviceName: string;
+  googleMapsPlusCode: string;
   permissionStatus: PermissionStatusEnum;
   dateTime: Date;
 }
