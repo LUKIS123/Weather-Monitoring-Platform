@@ -1,11 +1,44 @@
 <div class="w-full flex flex-col overflow-auto px-2 space-y-2 mb-1">
+  @if(stationsPageResult().items.length === 0 && !isLoading()) {
+  <div
+    class="w-full flex flex-col items-center justify-center justify-items-center"
+  >
+    <mat-card class="mb-2 w-9/12">
+      <mat-card-content>
+        <span>
+          {{
+            "StationsList.Lsit.NoWeatherStations.AskPermission.Start"
+              | translate
+          }}
+        </span>
+        <a
+          class="text-blue-500 underline hover:text-blue-700"
+          routerLink="/AvailableStations"
+        >
+          {{
+            "StationsList.Lsit.NoWeatherStations.AskPermission.Reflink"
+              | translate
+          }}
+        </a>
+        <span>
+          {{
+            "StationsList.Lsit.NoWeatherStations.AskPermission.End" | translate
+          }}</span
+        >
+      </mat-card-content>
+    </mat-card>
+  </div>
+  } 
+  
   @if (isLoading()) {
   <mat-progress-bar class="w-full" mode="indeterminate"></mat-progress-bar>
   }
+
   <mat-accordion class="pb-14 items-center justify-center content-center">
     @for (station of stationsPageResult().items; track $index) {
     <app-stations-list-element [weatherStation]="station" />
-    } @if(stationsPageResult().items.length === 0) {
+    } 
+    @if(stationsPageResult().items.length === 0) {
     <div class="flex justify-center items-center w-full h-[25vh]">
       <p class="text-gray-500">
         {{ "StationsList.Lsit.NoWeatherStations" | translate }}

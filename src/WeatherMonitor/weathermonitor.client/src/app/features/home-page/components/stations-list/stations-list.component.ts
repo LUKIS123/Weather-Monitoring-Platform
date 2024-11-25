@@ -14,6 +14,7 @@ import {
 import { finalize } from 'rxjs';
 import { MatPaginatorIntlPl } from '../../../../shared/components/paginator/MatPaginatorIntlPl';
 import { StationsListElementComponent } from '../stations-list-element/stations-list-element.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-stations-list',
@@ -21,6 +22,7 @@ import { StationsListElementComponent } from '../stations-list-element/stations-
   imports: [
     CommonModule,
     MaterialModule,
+    RouterModule,
     TranslateModule,
     MatPaginatorModule,
     StationsListElementComponent,

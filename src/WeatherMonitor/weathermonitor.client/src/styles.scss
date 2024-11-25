@@ -68,6 +68,22 @@ html {
   }
 }
 
+.smallPopup {
+  height: 50dvh;
+  width: 50dvw;
+}
+
+.smallPopup .mat-dialog-container {
+  max-width: none;
+}
+
+@media (max-width: 767px) {
+  .smallPopup {
+    height: 120dvh;
+    width: 100dvw;
+  }
+}
+
 @keyframes pulse {
   0% {
     transform: scale(0.95);

@@ -1,0 +1,47 @@
+<div class="flex items-center justify-center h-full">
+  <mat-card class="h-full w-full flex flex-col">
+    <mat-card-header>
+      <mat-card-title class="stubborn-text">
+        {{ "CookiePolicy.Title" | translate }}
+      </mat-card-title>
+    </mat-card-header>
+    <ng-scrollbar
+      class="flex-grow overflow-auto flex items-center justify-center"
+    >
+      <mat-card-content
+        class="stubborn-text flex flex-col items-center flex-grow"
+        style="padding: 1rem 2rem 2rem 2rem"
+      >
+        <div class="flex flex-col w-full items-center mb-2">
+          <img
+            imageLoader
+            src="/assets/images/WeatherMonitor.png"
+            class="w-16 md:w-24 h-auto"
+            alt=""
+          />
+        </div>
+        <mat-card class="flex flex-col items-center">
+          <mat-card-header>
+            <mat-card-title class="stubborn-text pb-4 text-center">
+              {{ "CookiePolicy.Welcone" | translate }}
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="w-11/12">
+            <p>{{ "CookiePolicy.Description" | translate }}</p>
+          </mat-card-content>
+        </mat-card>
+      </mat-card-content>
+    </ng-scrollbar>
+
+    <div class="mt-auto w-full flex justify-center p-4">
+      <button
+        mat-flat-button
+        color="primary"
+        type="button"
+        (click)="acceptCookiePolicy()"
+      >
+        {{ "CookiePolicy.Accept" | translate }}
+      </button>
+    </div>
+  </mat-card>
+</div>

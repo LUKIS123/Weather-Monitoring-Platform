@@ -2,6 +2,9 @@
 using WeatherMonitor.Server.DataView.Infrastructure.Models;
 using WeatherMonitor.Server.Interfaces;
 using WeatherMonitor.Server.SharedKernel;
+using WeatherMonitor.Server.SharedKernel.Exceptions;
+using WeatherMonitor.Server.SharedKernel.Repositories;
+using WeatherMonitorCore.Contract.Shared;
 
 namespace WeatherMonitor.Server.DataView.Features.GetWeatherDataLastMonth;
 
@@ -15,19 +18,37 @@ internal class GetWeatherDataLastMonthService : IGetWeatherDataLastMonthService
     private readonly ITimeZoneProvider _timeZoneProvider;
     private readonly TimeProvider _timeProvider;
     private readonly IDataViewRepository _dataViewRepository;
+    private readonly IUserAccessor _userAccessor;
+    private readonly IUserAuthorizationRepository _userAuthorizationRepository;
 
     public GetWeatherDataLastMonthService(
         ITimeZoneProvider timeZoneProvider,
         TimeProvider timeProvider,
-        IDataViewRepository dataViewRepository)
+        IDataViewRepository dataViewRepository,
+        IUserAccessor userAccessor,
+        IUserAuthorizationRepository userAuthorizationRepository)
     {
         _timeZoneProvider = timeZoneProvider;
         _timeProvider = timeProvider;
         _dataViewRepository = dataViewRepository;
+        _userAccessor = userAccessor;
+        _userAuthorizationRepository = userAuthorizationRepository;
     }
 
     public async Task<Result<GetWeatherDataLastMonthResponse>> Handle(int? deviceId, string? plusCodeSearch)
     {
+        var userId = _userAccessor.UserId;
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return new UnauthorizedException("User not authenticated");
+        }
+
+        var user = await _userAuthorizationRepository.GetUserAuthorizationInfoAsync(userId);
+        if (user is null)
+        {
+            return new UnauthorizedException("User not found");
+        }
+
         var zoneAdjustedTime =
             TimeZoneInfo.ConvertTimeFromUtc(_timeProvider.GetUtcNow().DateTime, _timeZoneProvider.GetTimeZoneInfo());
         zoneAdjustedTime = new DateTime(
@@ -38,18 +59,32 @@ internal class GetWeatherDataLastMonthService : IGetWeatherDataLastMonthService
             0,
             0);
 
-        var dayTimeResults = _dataViewRepository.GetDayTimeLastMonthWeatherDataAsync(
-            zoneAdjustedTime,
-            deviceId,
-            plusCodeSearch);
-        var nightTimeResults = _dataViewRepository.GetNightTimeLastMonthWeatherDataAsync(
-            zoneAdjustedTime,
-            deviceId,
-            plusCodeSearch);
-        await Task.WhenAll(dayTimeResults, nightTimeResults);
+        var dayTimeResultsTask = user.Role == Role.Admin
+            ? _dataViewRepository.GetDayTimeLastMonthWeatherDataAsync(
+                zoneAdjustedTime,
+                deviceId,
+                plusCodeSearch)
+            : _dataViewRepository.GetDayTimeLastMonthWeatherDataAsync(
+                zoneAdjustedTime,
+                userId,
+                deviceId,
+                plusCodeSearch);
 
-        var dayTimeData = dayTimeResults.Result.DailyData.ToArray();
-        var nightTimeData = nightTimeResults.Result.DailyData.ToArray();
+        var nightTimeResultsTask = user.Role == Role.Admin
+            ? _dataViewRepository.GetNightTimeLastMonthWeatherDataAsync(
+                zoneAdjustedTime,
+                deviceId,
+                plusCodeSearch)
+            : _dataViewRepository.GetNightTimeLastMonthWeatherDataAsync(
+                zoneAdjustedTime,
+                userId,
+                deviceId,
+                plusCodeSearch);
+
+        await Task.WhenAll(dayTimeResultsTask, nightTimeResultsTask);
+
+        var dayTimeData = dayTimeResultsTask.Result.DailyData.ToArray();
+        var nightTimeData = nightTimeResultsTask.Result.DailyData.ToArray();
 
         var startDateTime = GetStartDateTime(zoneAdjustedTime, dayTimeData, nightTimeData);
 
