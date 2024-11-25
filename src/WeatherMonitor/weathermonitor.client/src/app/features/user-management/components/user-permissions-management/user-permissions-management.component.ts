@@ -138,7 +138,8 @@ export class UserPermissionsManagementComponent implements OnInit {
     }
   }
 
-  onChangeDetected(changeDetected: boolean, index: number) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onChangeDetected(changeDetected: boolean, _index: number) {
     if (changeDetected) {
       this.refresh();
     }
@@ -178,7 +179,7 @@ export class UserPermissionsManagementComponent implements OnInit {
         })
       )
       .subscribe({
-        next: (result) => {
+        next: () => {
           this.adminPrivilegesChangeDetected.set(true);
           this.toastService.openSuccess(
             this.translateService.instant(

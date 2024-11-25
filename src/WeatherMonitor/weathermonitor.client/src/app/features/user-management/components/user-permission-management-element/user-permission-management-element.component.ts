@@ -17,7 +17,6 @@ import { FormatDateService } from '../../../../shared/services/format-date.servi
 import { UpdatePermissionService } from '../../services/update-permission.service';
 import { PermissionStatusEnum } from '../../../../shared/models/permission-status';
 import { UpdatePermissionRequest } from '../../models/update-permission-request ';
-import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-user-permission-management-element',

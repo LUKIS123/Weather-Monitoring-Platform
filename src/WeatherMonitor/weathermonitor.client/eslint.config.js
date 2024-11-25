@@ -9,8 +9,11 @@ export default config(
     files: ["**/*.ts"],
     extends: [
       configs.recommended,
+      // @ts-ignore
       ..._configs.recommended,
+      // @ts-ignore
       ..._configs.stylistic,
+      // @ts-ignore
       ...__configs.tsRecommended,
     ],
     processor: processInlineTemplates,

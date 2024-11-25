@@ -155,7 +155,8 @@ export class UserListComponent implements OnInit {
       });
   }
 
-  onChangeDetected(change: boolean, index: number) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onChangeDetected(change: boolean, _index: number) {
     if (change) {
       this.refresh();
     }

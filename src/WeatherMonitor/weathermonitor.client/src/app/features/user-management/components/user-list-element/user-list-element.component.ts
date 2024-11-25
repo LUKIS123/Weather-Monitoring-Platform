@@ -2,8 +2,6 @@ import { Component, EventEmitter, inject, input, Output } from '@angular/core';
 import { User } from '../../models/user';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { FormatDateService } from '../../../../shared/services/format-date.service';
-import { PermissionDecisionComponent } from '../permission-decision/permission-decision.component';
 import { UserPermissionsManagementComponent } from '../user-permissions-management/user-permissions-management.component';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../shared/material.module';

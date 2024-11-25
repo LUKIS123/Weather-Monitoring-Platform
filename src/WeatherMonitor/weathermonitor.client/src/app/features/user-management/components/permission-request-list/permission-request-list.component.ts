@@ -114,7 +114,8 @@ export class PermissionRequestListComponent implements OnInit {
       });
   }
 
-  onDecisionMade(detected: boolean, index: number) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onDecisionMade(detected: boolean, _index: number) {
     if (detected) {
       this.refresh();
     }
