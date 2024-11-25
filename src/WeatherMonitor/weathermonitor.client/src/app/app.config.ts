@@ -2,6 +2,7 @@ import {
   ApplicationConfig,
   importProvidersFrom,
   provideZoneChangeDetection,
+  isDevMode,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -20,6 +21,7 @@ import {
 } from '@angular/common/http';
 import { routes } from './app.routes';
 import { cacheInterceptor } from './interceptors/cache-interceptor';
+import { provideServiceWorker } from '@angular/service-worker';
 
 export function HttpLoaderFactory(_httpBackend: HttpBackend) {
   return new MultiTranslateHttpLoader(_httpBackend, ['/assets/i18n/']);
@@ -58,5 +60,9 @@ export const appConfig: ApplicationConfig = {
         defaultLanguage: 'pl',
       })
     ),
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
 };
