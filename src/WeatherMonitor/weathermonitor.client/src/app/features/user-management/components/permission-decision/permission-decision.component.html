@@ -5,7 +5,7 @@
         "AvailableStations.RequestDialog.Title" | translate
       }}</mat-card-title>
       <span class="absolute right-0 top-0">
-        <button mat-icon-button mat-dialog-close>
+        <button mat-icon-button [mat-dialog-close]="updateStatusSuccess()">
           <mat-icon class="stubborn-icon">close</mat-icon>
         </button>
       </span>

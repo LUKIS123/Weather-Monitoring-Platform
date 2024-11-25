@@ -7,6 +7,7 @@ using WeatherMonitor.Server.UserPermissionManagement.Features.GetPendingPermissi
 using WeatherMonitor.Server.UserPermissionManagement.Features.GetUserPermissions;
 using WeatherMonitor.Server.UserPermissionManagement.Features.GetUsers;
 using WeatherMonitor.Server.UserPermissionManagement.Features.SetUserPermission;
+using WeatherMonitor.Server.UserPermissionManagement.Features.SetUserRole;
 
 namespace WeatherMonitor.Server.UserPermissionManagement;
 
@@ -50,13 +51,13 @@ public static class UserManagementEndpoints
                 await context.HandleResult(result);
             }).RequireAuthorization("IsAdminPolicy");
 
-        // routes.MapPost(
-        //     "/api/userManagement/grantAdminRole",
-        //     async (HttpContext context, [FromServices] IGetUsersPermissionsService getUsersPermissionsService,
-        //         [FromQuery] string userId) =>
-        //     {
-        //         var result = await getUsersPermissionsService.Handle(pageNumber, userId);
-        //         await context.HandleResult(result);
-        //     }).RequireAuthorization("IsAdminPolicy");
+        routes.MapPost(
+            "/api/userManagement/grantAdminRole",
+            async (HttpContext context, [FromServices] ISetUserRoleService setUserRoleService,
+                [FromBody] SetUserRoleRequest setUserRoleRequest) =>
+            {
+                var result = await setUserRoleService.Handle(setUserRoleRequest);
+                await context.HandleResult(result);
+            }).RequireAuthorization("IsAdminPolicy");
     }
 }

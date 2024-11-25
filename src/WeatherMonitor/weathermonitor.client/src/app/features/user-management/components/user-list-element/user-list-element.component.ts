@@ -36,7 +36,7 @@ export class UserListElementComponent {
     });
 
     dialogRef.afterClosed().subscribe((result?: boolean) => {
-      if (result === true) {
+      if (result === undefined || result === true) {
         this.detectChange.emit(true);
       }
     });

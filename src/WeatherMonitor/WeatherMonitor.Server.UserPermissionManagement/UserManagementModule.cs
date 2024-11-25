@@ -3,6 +3,7 @@ using WeatherMonitor.Server.UserPermissionManagement.Features.GetPendingPermissi
 using WeatherMonitor.Server.UserPermissionManagement.Features.GetUserPermissions;
 using WeatherMonitor.Server.UserPermissionManagement.Features.GetUsers;
 using WeatherMonitor.Server.UserPermissionManagement.Features.SetUserPermission;
+using WeatherMonitor.Server.UserPermissionManagement.Features.SetUserRole;
 
 namespace WeatherMonitor.Server.UserPermissionManagement;
 
@@ -14,6 +15,7 @@ public static class UserManagementModule
         services.AddTransient<ISetUsersStationPermissionService, SetUsersStationPermissionService>();
         services.AddTransient<IGetUsersService, GetUsersService>();
         services.AddTransient<IGetUsersPermissionsService, GetUsersPermissionsService>();
+        services.AddTransient<ISetUserRoleService, SetUserRoleService>();
 
         return services;
     }

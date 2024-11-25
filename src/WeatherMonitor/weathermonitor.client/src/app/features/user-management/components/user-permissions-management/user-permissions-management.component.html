@@ -17,7 +17,10 @@
           </span></mat-card-subtitle
         >
         <span class="absolute right-0 top-0">
-          <button mat-icon-button mat-dialog-close>
+          <button
+            mat-icon-button
+            [mat-dialog-close]="adminPrivilegesChangeDetected()"
+          >
             <mat-icon class="stubborn-icon">close</mat-icon>
           </button>
         </span>
@@ -27,7 +30,32 @@
           class="stubborn-text"
           style="padding: 2rem 2rem 2rem 2rem"
         >
-          @if(isLoading()){
+          <div class="flex w-full justify-end pb-2">
+            <button
+              mat-raised-button
+              class="!h-8 flex items-center justify-center self-end !text-white"
+              color="accent"
+              type="button"
+              (click)="openConfirmationDialog()"
+              [disabled]="grantAdminButtonDisabled()"
+            >
+              {{ "UserManagement.Users.Permissions.GrantAdmin" | translate }}
+            </button>
+          </div>
+
+          @if(user().role === 2) {
+          <mat-card class="mb-2">
+            <mat-card-content>
+              <div
+                class="flex flex-col items-center justify-center justify-items-center"
+              >
+                <p class="text-center">
+                  {{ "UserManagement.Users.Permissions.AdminInfo" | translate }}
+                </p>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          } @if(isLoading()){
           <div
             class="flex items-center justify-center justify-items-center py-4"
           >

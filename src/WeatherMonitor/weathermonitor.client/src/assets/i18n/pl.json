@@ -200,5 +200,10 @@
   "UserManagement.Users.Permissions.Update": "Pomyślnie zaktualizowano uprawnienie",
   "UserManagement.Users.Permissions.UpdateError": "Wystąpił błąd podczas aktualizacji uprawnia",
   "UserManagement.Users.Permissions.Revoke": "Cofnij uprawnienia",
-  "UserManagement.Users.Permissions.Grant": "Przyznaj uprawnienia"
+  "UserManagement.Users.Permissions.Grant": "Przyznaj uprawnienia",
+  "UserManagement.Users.Permissions.GrantAdmin": "Przyznaj administratora",
+  "UserManagement.Users.Permissions.GrantAdmin.Title": "Przyznaj uprawnienia administratora użytkownikowi",
+  "UserManagement.Users.Permissions.GrantAdmin.Success": "Przyznano uprawnienia administratora",
+  "UserManagement.Users.Permissions.GrantAdmin.Error": "Wystąpił błąd podczas przyznawania uprawnień administratora",
+  "UserManagement.Users.Permissions.AdminInfo": "UWAGA: Użytkownik posiada uprawnienia administratora. Posiada dostęp do wszystkich funkcji systemu, niezależnie od uprawnień."
 }
