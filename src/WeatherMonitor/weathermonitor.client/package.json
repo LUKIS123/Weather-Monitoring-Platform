@@ -33,6 +33,7 @@
     "apexcharts": "^4.0.0",
     "jest-editor-support": "*",
     "ng-apexcharts": "^1.13.0",
+    "ngx-cookie-service": "^18.0.0",
     "ngx-scrollbar": "^16.0.0",
     "ngx-translate-multi-http-loader": "^18.2.0",
     "postcss": "^8.4.47",

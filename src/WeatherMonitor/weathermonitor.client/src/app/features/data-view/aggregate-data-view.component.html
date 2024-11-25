@@ -3,6 +3,34 @@
     <h1 class="text-4xl h-6">
       {{ "DataVisualisation.Aggregate.Title" | translate }}
     </h1>
+
+    @if(!hasValues() && !isLoading()) {
+    <mat-card class="my-4 w-9/12">
+      <mat-card-content>
+        <span>
+          {{
+            "StationsList.Lsit.NoWeatherStations.AskPermission.Start"
+              | translate
+          }}
+        </span>
+        <a
+          class="text-blue-500 underline hover:text-blue-700"
+          routerLink="/AvailableStations"
+        >
+          {{
+            "StationsList.Lsit.NoWeatherStations.AskPermission.Reflink"
+              | translate
+          }}
+        </a>
+        <span>
+          {{
+            "StationsList.Lsit.NoWeatherStations.AskPermission.End" | translate
+          }}</span
+        >
+      </mat-card-content>
+    </mat-card>
+    }
+
     <div
       class="w-full grid grid-cols-1 lg:grid-cols-2 my-2 justify-items-center justify-around"
     >
@@ -84,7 +112,8 @@
     </div>
   </div>
 
-  @if(isDataLoaded()) { @switch (timeFrame()) { @case ('24h') {
+  @if(isDataLoaded()) { 
+  @switch (timeFrame()) { @case ('24h') {
   <app-last-day-hourly-data
     class="w-11/12 h-full"
     [data]="last24hData()"

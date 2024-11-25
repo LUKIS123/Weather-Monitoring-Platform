@@ -24,6 +24,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { RouterModule } from '@angular/router';
 
 export class SearchInputErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -48,6 +49,7 @@ export interface PlusCodeSeachFormControl {
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     TranslateModule,
     MaterialModule,
     MatButtonToggleModule,
@@ -80,6 +82,19 @@ export class AggregateDataViewComponent implements OnInit {
 
   #isLoading = signal<boolean>(true);
   public readonly isLoading = this.#isLoading.asReadonly();
+  hasValues = computed(() => {
+    return (
+      (this.last24hData().hourlyData !== null &&
+        this.last24hData().hourlyData !== undefined &&
+        this.last24hData().hourlyData.length > 0) ||
+      (this.last7dData().lastWeekHourlyData !== null &&
+        this.last7dData().lastWeekHourlyData !== undefined &&
+        this.last7dData().lastWeekHourlyData.length > 0) ||
+      (this.last30dData().dayTimeData !== null &&
+        this.last30dData().dayTimeData !== undefined &&
+        this.last30dData().dayTimeData.length > 0)
+    );
+  });
 
   #last24hData = signal<GetWeatherDataLastDayResponse>(
     {} as GetWeatherDataLastDayResponse

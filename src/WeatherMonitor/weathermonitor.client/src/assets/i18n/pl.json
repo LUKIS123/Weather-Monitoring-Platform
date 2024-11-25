@@ -96,9 +96,11 @@
   "HomePage.Title": "Strona główna",
   "HomePage.ListView": "Lista stacji",
   "HomePage.MapView": "Widok mapy",
-  "HomePage.CookiePolicy": "Używając aplikacji Weather Monitor, wyrażasz zgodę na stosowanie niezbędnych plików cookies, które są wymagane do poprawnego działania strony. Pliki te służą m.in. do zapewnienia bezpieczeństwa oraz funkcjonalności. Jeżeli nie wyrażasz zgody, prosimy o zaprzestanie korzystania z aplikacji.",
   "StationsList.Lsit.Error": "Wystąpił błąd podczas pobierania listy stacji",
   "StationsList.Lsit.NoWeatherStations": "Brak stacji pogodowych do wyświetlenia",
+  "StationsList.Lsit.NoWeatherStations.AskPermission.Start": "Witaj! Wygląda na to, że nie masz dostępu do żadnej stacji pogodowej. Aby go uzyskać, przejdź do ",
+  "StationsList.Lsit.NoWeatherStations.AskPermission.Reflink": "panelu dostępu",
+  "StationsList.Lsit.NoWeatherStations.AskPermission.End": " i wyślij prośbę o dostęp do administratora.",
   "StationsList.ViewData": "Dane historyczne",
   "StationsList.StationName": "Nazwa stacji",
   "StationsList.StationDescription": "Opis stacji",
@@ -205,5 +207,9 @@
   "UserManagement.Users.Permissions.GrantAdmin.Title": "Przyznaj uprawnienia administratora użytkownikowi",
   "UserManagement.Users.Permissions.GrantAdmin.Success": "Przyznano uprawnienia administratora",
   "UserManagement.Users.Permissions.GrantAdmin.Error": "Wystąpił błąd podczas przyznawania uprawnień administratora",
-  "UserManagement.Users.Permissions.AdminInfo": "UWAGA: Użytkownik posiada uprawnienia administratora. Posiada dostęp do wszystkich funkcji systemu, niezależnie od uprawnień."
+  "UserManagement.Users.Permissions.AdminInfo": "UWAGA: Użytkownik posiada uprawnienia administratora. Posiada dostęp do wszystkich funkcji systemu, niezależnie od uprawnień.",
+  "CookiePolicy.Title": "Polityka plików cookies",
+  "CookiePolicy.Welcone": "Witaj w aplikacji Weather Monitor!",
+  "CookiePolicy.Description": "Używając aplikacji Weather Monitor, wyrażasz zgodę na stosowanie niezbędnych plików cookies, które są wymagane do poprawnego działania strony. Jeżeli nie wyrażasz zgody, prosimy o zaprzestanie korzystania z aplikacji.",
+  "CookiePolicy.Accept": "Akceptuję"
 }
