@@ -11,8 +11,8 @@ namespace WeatherMonitorCore.DeviceManagement.Tests.UpdateDeviceStatus;
 [TestFixture]
 public class UpdateDeviceStatusServiceTests
 {
-    private IDeviceManagementRepository _deviceManagementRepository;
-    private UpdateDeviceStatusService _service;
+    private IDeviceManagementRepository _deviceManagementRepository = null!;
+    private UpdateDeviceStatusService _service = null!;
 
     [SetUp]
     public void SetUp()
@@ -37,7 +37,7 @@ public class UpdateDeviceStatusServiceTests
         result.Should().BeOfType<Result>();
         result.IsSuccess.Should().BeTrue();
         await _deviceManagementRepository.DidNotReceiveWithAnyArgs()
-            .BulkUpdateDevicesStatusAsync(default, default);
+            .BulkUpdateDevicesStatusAsync(default!, default);
     }
 
     [Test]
@@ -79,7 +79,7 @@ public class UpdateDeviceStatusServiceTests
         var result = await _service.Handle(request);
 
         // Assert
-        await _deviceManagementRepository.DidNotReceiveWithAnyArgs().BulkUpdateDevicesStatusAsync(default, default);
+        await _deviceManagementRepository.DidNotReceiveWithAnyArgs().BulkUpdateDevicesStatusAsync(default!, default);
         result.Should().BeOfType<Result>();
         result.IsSuccess.Should().BeTrue();
     }

@@ -12,9 +12,9 @@ namespace WeatherMonitorCore.DeviceManagement.Tests.GetDeviceMqttCredentials;
 [TestFixture]
 public class GetMqttCredentialsServiceTests
 {
-    private IDeviceManagementRepository _deviceManagementRepository;
-    private IAesEncryptionHelper _aesEncryptionHelper;
-    private GetMqttCredentialsService _service;
+    private IDeviceManagementRepository _deviceManagementRepository = null!;
+    private IAesEncryptionHelper _aesEncryptionHelper = null!;
+    private GetMqttCredentialsService _service = null!;
 
     [SetUp]
     public void SetUp()
@@ -32,7 +32,7 @@ public class GetMqttCredentialsServiceTests
         var device = new MqttCredentialsDto
         {
             Id = deviceId,
-            ClientId = null, // Missing required field
+            ClientId = null!, // Missing required field
             Username = "test-user",
             Password = "encrypted-password",
             Topic = "test/topic"
@@ -137,7 +137,7 @@ public class GetMqttCredentialsServiceTests
             Id = deviceId,
             ClientId = "client-id",
             Username = "test-user",
-            Password = null, // Password is null
+            Password = null!, // Password is null
             Topic = "test/topic"
         };
 

@@ -10,8 +10,8 @@ namespace WeatherMonitorCore.MqttAuth.Tests.SuperUserCheck;
 [TestFixture]
 public class SuperUserCheckServiceTests
 {
-    private IMqttClientAuthenticationRepository _mqttClientAuthenticationRepository;
-    private ISuperUserCheckService _service;
+    private IMqttClientAuthenticationRepository _mqttClientAuthenticationRepository = null!;
+    private ISuperUserCheckService _service = null!;
 
     [SetUp]
     public void SetUp()

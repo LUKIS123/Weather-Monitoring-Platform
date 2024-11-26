@@ -11,9 +11,9 @@ namespace WeatherMonitorCore.MqttAuth.Tests.BrokerClientAuthentication;
 [TestFixture]
 public class BrokerClientAuthenticationServiceTests
 {
-    private IMqttClientAuthenticationRepository _mqttClientAuthenticationRepository;
-    private IAesEncryptionHelper _aesEncryptionHelper;
-    private IBrokerClientAuthenticationService _service;
+    private IMqttClientAuthenticationRepository _mqttClientAuthenticationRepository = null!;
+    private IAesEncryptionHelper _aesEncryptionHelper = null!;
+    private IBrokerClientAuthenticationService _service = null!;
 
     [SetUp]
     public void SetUp()

@@ -13,9 +13,9 @@ namespace WeatherMonitorCore.DeviceManagement.Tests.RemoveDevice;
 [TestFixture]
 public class RemoveDeviceServiceTests
 {
-    private IDeviceManagementRepository _deviceManagementRepository;
-    private ISubscriptionsManagingService _subscriptionsManagingService;
-    private RemoveDeviceService _service;
+    private IDeviceManagementRepository _deviceManagementRepository = null!;
+    private ISubscriptionsManagingService _subscriptionsManagingService = null!;
+    private RemoveDeviceService _service = null!;
 
     [SetUp]
     public void SetUp()

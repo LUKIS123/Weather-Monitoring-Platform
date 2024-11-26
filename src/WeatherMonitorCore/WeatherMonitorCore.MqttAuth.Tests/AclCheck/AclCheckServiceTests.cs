@@ -11,8 +11,8 @@ namespace WeatherMonitorCore.MqttAuth.Tests.AclCheck;
 [TestFixture]
 public class AclCheckServiceTests
 {
-    private IAclCheckService _service;
-    private IMqttClientAuthenticationRepository _mqttClientAuthenticationRepository;
+    private IAclCheckService _service = null!;
+    private IMqttClientAuthenticationRepository _mqttClientAuthenticationRepository = null!;
 
     [SetUp]
     public void SetUp()
