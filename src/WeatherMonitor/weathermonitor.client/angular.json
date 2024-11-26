@@ -43,6 +43,11 @@
                 "glob": "**/*",
                 "input": "src/assets/i18n",
                 "output": "assets/i18n"
+              },
+              {
+                "glob": "**/*",
+                "input": "public/icons",
+                "output": "assets/icons"
               }
             ],
             "styles": [
@@ -119,6 +124,11 @@
                 "glob": "**/*",
                 "input": "src/assets/i18n",
                 "output": "assets/i18n"
+              },
+              {
+                "glob": "**/*",
+                "input": "public/icons",
+                "output": "assets/icons"
               }
             ],
             "styles": [

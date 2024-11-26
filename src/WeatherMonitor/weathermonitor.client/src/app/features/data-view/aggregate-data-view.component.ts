@@ -1,5 +1,5 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { debounceTime, finalize, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, finalize, Subject } from 'rxjs';
 import { GetWeatherDataLastDayResponse } from './models/get-weather-last-day-response';
 import { GetWeatherDataLastWeekResponse } from './models/get-weather-last-week-response';
 import { GetWeatherDataLastMonthResponse } from './models/get-weather-last-month-response';
@@ -130,15 +130,13 @@ export class AggregateDataViewComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    const googleMapsPlusCode =
-      this.formGroup.get('plusCodeSearchPhrase')?.value ?? 'Wrocław';
-    this.loadStationsDataLast24h(googleMapsPlusCode);
-
-    this.inputSubject.pipe(debounceTime(500)).subscribe(() => {
-      if (this.isFormValid) {
-        this.submit();
-      }
-    });
+    this.inputSubject
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe(() => {
+        if (this.isFormValid) {
+          this.submit();
+        }
+      });
   }
 
   public onTimeFrameChange(timeFrame: '24h' | '7d' | '30d'): void {
@@ -186,16 +184,16 @@ export class AggregateDataViewComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.#isLoading.set(false);
-          this.toastService.openSuccess(
-            `${this.translateService.instant(
-              'DataVisualisation.PlusCodeSearchDispplay'
-            )} "${searchPhrase}"`
-          );
         })
       )
       .subscribe({
         next: (data) => {
           this.#last24hData.set(data);
+          this.toastService.openSuccess(
+            `${this.translateService.instant(
+              'DataVisualisation.PlusCodeSearchDispplay'
+            )} "${searchPhrase}"`
+          );
         },
         error: () =>
           this.toastService.openError(
@@ -210,16 +208,16 @@ export class AggregateDataViewComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.#isLoading.set(false);
-          this.toastService.openSuccess(
-            `${this.translateService.instant(
-              'DataVisualisation.PlusCodeSearchDispplay'
-            )} "${searchPhrase}"`
-          );
         })
       )
       .subscribe({
         next: (data) => {
           this.#last7dData.set(data);
+          this.toastService.openSuccess(
+            `${this.translateService.instant(
+              'DataVisualisation.PlusCodeSearchDispplay'
+            )} "${searchPhrase}"`
+          );
         },
         error: () =>
           this.toastService.openError(
@@ -234,16 +232,16 @@ export class AggregateDataViewComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.#isLoading.set(false);
-          this.toastService.openSuccess(
-            `${this.translateService.instant(
-              'DataVisualisation.PlusCodeSearchDispplay'
-            )} "${searchPhrase}"`
-          );
         })
       )
       .subscribe({
         next: (data) => {
           this.#last30dData.set(data);
+          this.toastService.openSuccess(
+            `${this.translateService.instant(
+              'DataVisualisation.PlusCodeSearchDispplay'
+            )} "${searchPhrase}"`
+          );
         },
         error: () =>
           this.toastService.openError(

@@ -23,6 +23,18 @@
             ></asl-google-signin-button>
           </span>
           }
+          <div class="md:w-4/5 ml-4 pt-8">
+            <span>
+              {{ "LandingPage.StationAccess.Start" | translate }}
+            </span>
+            <a
+              class="text-blue-100 underline hover:text-blue-300"
+              routerLink="/AvailableStations"
+            >
+              {{ "LandingPage.StationAccess.Link" | translate }}
+            </a>
+            <span> {{ "LandingPage.StationAccess.End" | translate }}</span>
+          </div>
         </div>
         <div
           class="relative hidden md:flex md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6"
