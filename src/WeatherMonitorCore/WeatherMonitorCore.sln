@@ -29,6 +29,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitorCore.MqttData
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherMonitorCore.MqttDataSubscriberService.Interfaces", "WeatherMonitorCore.MqttDataSubscriberService.Interfaces\WeatherMonitorCore.MqttDataSubscriberService.Interfaces.csproj", "{17582C56-3C64-4FA6-A38C-84A56147126E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{4826B8D9-9F94-4DB0-8FDD-63ABD9577966}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitorCore.Shared.MqttClient.Tests", "WeatherMonitorCore.Shared.MqttClient.Tests\WeatherMonitorCore.Shared.MqttClient.Tests.csproj", "{4815F800-B3D7-42B8-9C13-2FF0EEA9B5DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitorCore.MqttAuth.Tests", "WeatherMonitorCore.MqttAuth.Tests\WeatherMonitorCore.MqttAuth.Tests.csproj", "{B83F1654-7888-43EE-96C7-28B5B6F1F271}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +89,14 @@ Global
 		{17582C56-3C64-4FA6-A38C-84A56147126E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17582C56-3C64-4FA6-A38C-84A56147126E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17582C56-3C64-4FA6-A38C-84A56147126E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4815F800-B3D7-42B8-9C13-2FF0EEA9B5DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4815F800-B3D7-42B8-9C13-2FF0EEA9B5DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4815F800-B3D7-42B8-9C13-2FF0EEA9B5DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4815F800-B3D7-42B8-9C13-2FF0EEA9B5DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B83F1654-7888-43EE-96C7-28B5B6F1F271}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B83F1654-7888-43EE-96C7-28B5B6F1F271}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B83F1654-7888-43EE-96C7-28B5B6F1F271}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B83F1654-7888-43EE-96C7-28B5B6F1F271}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +104,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B821B79C-AC84-4ACB-8067-3A621107FA64} = {9657A7F1-538B-463F-996F-101612C6CD91}
 		{17582C56-3C64-4FA6-A38C-84A56147126E} = {9657A7F1-538B-463F-996F-101612C6CD91}
+		{4815F800-B3D7-42B8-9C13-2FF0EEA9B5DC} = {4826B8D9-9F94-4DB0-8FDD-63ABD9577966}
+		{B83F1654-7888-43EE-96C7-28B5B6F1F271} = {4826B8D9-9F94-4DB0-8FDD-63ABD9577966}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FC54F9A4-DCCB-43B6-BECB-625068151DF2}
