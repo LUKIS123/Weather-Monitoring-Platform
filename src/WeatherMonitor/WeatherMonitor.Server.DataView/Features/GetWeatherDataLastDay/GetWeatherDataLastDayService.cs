@@ -51,19 +51,20 @@ internal class GetWeatherDataLastDayService : IGetWeatherDataLastDayService
         var zoneAdjustedTime =
             TimeZoneInfo.ConvertTimeFromUtc(_timeProvider.GetUtcNow().DateTime, _timeZoneProvider.GetTimeZoneInfo());
 
-        var result = user.Role == Role.Admin
-            ? await _dataViewRepository.GetLastDayWeatherDataAsync(
+        var resultTask = user.Role == Role.Admin
+            ? _dataViewRepository.GetLastDayWeatherDataAsync(
                 new DateTime(zoneAdjustedTime.Year, zoneAdjustedTime.Month, zoneAdjustedTime.Day, zoneAdjustedTime.Hour,
                     0, 0),
                 deviceId,
                 plusCodeSearch)
-            : await _dataViewRepository.GetLastDayWeatherDataAsync(
+            : _dataViewRepository.GetLastDayWeatherDataAsync(
                 new DateTime(zoneAdjustedTime.Year, zoneAdjustedTime.Month, zoneAdjustedTime.Day, zoneAdjustedTime.Hour,
                     0, 0),
                 userId,
                 deviceId,
                 plusCodeSearch);
 
+        var result = await resultTask;
         return new GetWeatherDataLastDayResponse(zoneAdjustedTime, result.HourlyData);
     }
 }
