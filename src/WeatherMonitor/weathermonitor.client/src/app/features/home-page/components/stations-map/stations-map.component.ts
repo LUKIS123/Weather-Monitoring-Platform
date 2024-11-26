@@ -24,7 +24,7 @@ import { StationMapMarkerContentServiceService } from '../../../../shared/servic
 })
 export class StationsMapComponent implements OnInit {
   center: google.maps.LatLngLiteral = { lat: 51.110883, lng: 17.048538 };
-  zoom = 14;
+  zoom = 15;
   advancedMarkerOptions: google.maps.marker.AdvancedMarkerElementOptions = {
     gmpDraggable: false,
     gmpClickable: true,

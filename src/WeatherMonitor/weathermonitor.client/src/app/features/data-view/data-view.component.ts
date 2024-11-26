@@ -1,10 +1,23 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ToastService } from '../../shared/services/toast.service';
 import { CommonModule } from '@angular/common';
 import { GetLastDayDataService } from './services/get-last-day-data.service';
-import { finalize } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  finalize,
+  Subject,
+  takeUntil,
+} from 'rxjs';
 import { GetWeatherDataLastDayResponse } from './models/get-weather-last-day-response';
 import { MaterialModule } from '../../shared/material.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -30,7 +43,7 @@ import { GetWeatherDataLastMonthResponse } from './models/get-weather-last-month
   ],
   templateUrl: './data-view.component.html',
 })
-export class DataViewComponent implements OnInit {
+export class DataViewComponent implements OnInit, OnDestroy {
   private readonly translateService = inject(TranslateService);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly toastService = inject(ToastService);
@@ -40,6 +53,8 @@ export class DataViewComponent implements OnInit {
 
   timeFrame = signal<'24h' | '7d' | '30d'>('24h');
   dataType = signal<'weather' | 'pollution'>('weather');
+  private timeFrameSubject = new Subject<'24h' | '7d' | '30d'>();
+  private destroy$ = new Subject<void>();
 
   #isLoading = signal<boolean>(true);
   public readonly isLoading = this.#isLoading.asReadonly();
@@ -87,10 +102,16 @@ export class DataViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadStationsDataLast24h(this.deviceId());
+    this.timeFrameSubject
+      .pipe(debounceTime(50), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((timeFrame) => this.handleTimeFrameChange(timeFrame));
   }
 
   public onTimeFrameChange(timeFrame: '24h' | '7d' | '30d'): void {
+    this.timeFrameSubject.next(timeFrame);
+  }
+
+  private handleTimeFrameChange(timeFrame: '24h' | '7d' | '30d'): void {
     this.timeFrame.set(timeFrame);
     this.#isLoading.set(true);
     switch (timeFrame) {
@@ -149,5 +170,11 @@ export class DataViewComponent implements OnInit {
             this.translateService.instant('DataVisualisation.Error')
           ),
       });
+  }
+
+  ngOnDestroy(): void {
+    this.timeFrameSubject.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
