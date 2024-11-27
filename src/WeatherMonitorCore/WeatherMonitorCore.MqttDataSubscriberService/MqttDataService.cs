@@ -80,7 +80,7 @@ internal class MqttDataService : IMqttDataService
 
         await _subscriptionsManagingService.GetMqttClient.ConnectAsync(_mqttClientOptions, stoppingToken);
 
-        _logger.LogInformation("Mqtt client connected at:{time}", DateTimeOffset.Now);
+        _logger.LogWarning("Mqtt client connected at:{time}", DateTimeOffset.Now);
 
         var devicesTopics = await _mqttClientsRepository.GetDevicesTopicsAsync();
 
@@ -88,7 +88,7 @@ internal class MqttDataService : IMqttDataService
             devicesTopics.Select(i => i.Topic),
             stoppingToken);
 
-        _logger.LogInformation("Mqtt client subscribed to topics at:{time}", DateTimeOffset.Now);
+        _logger.LogWarning("Mqtt client subscribed to topics at:{time}", DateTimeOffset.Now);
     }
 
     public async Task ReSubscribeTopics(CancellationToken stoppingToken)

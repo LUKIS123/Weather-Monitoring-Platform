@@ -31,7 +31,7 @@ public class MqttSubscriptionsHandlingWorker : BackgroundService
         try
         {
             await Task.Delay(1000, stoppingToken);
-            _logger.LogInformation("Worker started at:{time}", DateTimeOffset.Now);
+            _logger.LogWarning("Worker started at:{time}", DateTimeOffset.Now);
 
             await _mqttDataService.HandleMqttSubscriptions(stoppingToken);
 
@@ -43,27 +43,27 @@ public class MqttSubscriptionsHandlingWorker : BackgroundService
                 try
                 {
                     await _subscriptionsManagingService.GetMqttClient.ReconnectAsync(stoppingToken);
-                    _logger.LogInformation("Mqtt client reconnected at:{time}", DateTimeOffset.Now);
+                    _logger.LogWarning("Mqtt client reconnected at:{time}", DateTimeOffset.Now);
 
                     await _mqttDataService.ReSubscribeTopics(stoppingToken);
-                    _logger.LogInformation("Mqtt client resubscribed to topics at:{time}", DateTimeOffset.Now);
+                    _logger.LogWarning("Mqtt client resubscribed to topics at:{time}", DateTimeOffset.Now);
                 }
                 catch (Exception)
                 {
-                    _logger.LogWarning("{time}: Cannot reconnect to MQTT", DateTimeOffset.Now);
+                    _logger.LogError("{time}: Cannot reconnect to MQTT", DateTimeOffset.Now);
                 }
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "{time}: Error occurred in the worker", DateTimeOffset.Now);
+            _logger.LogCritical(ex, "{time}: Error occurred in the worker", DateTimeOffset.Now);
             _hostApplicationLifetime.StopApplication();
         }
         finally
         {
             await _mqttDataService.CleanUp(WorkerMqttClientConfig.MqttDataServiceGuid, stoppingToken);
 
-            _logger.LogInformation("Worker stopped at:{time}", DateTimeOffset.Now);
+            _logger.LogWarning("Worker stopped at:{time}", DateTimeOffset.Now);
         }
     }
 

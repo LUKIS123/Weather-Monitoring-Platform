@@ -66,13 +66,15 @@ internal class SubscriptionsManagingService : ISubscriptionsManagingService
         }
 
         await SubscribeToTopics(stoppingToken);
+
+        _logger.LogWarning("Unsubscribed from:{topicToRemove}", topicToRemove);
     }
 
     public async Task SubscribeToTopics(CancellationToken stoppingToken)
     {
         if (!_mqttClient.IsConnected)
         {
-            _logger.LogError("Failed to subscribe to topics");
+            _logger.LogError("Failed to subscribe to topics at:{time}", DateTimeOffset.Now);
             return;
         }
 
@@ -88,13 +90,15 @@ internal class SubscriptionsManagingService : ISubscriptionsManagingService
         }
 
         await _mqttClient.SubscribeAsync(subscribeOptionsBuilder.Build(), stoppingToken);
+
+        _logger.LogWarning("Subscribed to topics at:{time}", DateTimeOffset.Now);
     }
 
     public async Task SubscribeToTopics(IEnumerable<string> topics, CancellationToken stoppingToken)
     {
         if (!_mqttClient.IsConnected)
         {
-            _logger.LogError("Failed to subscribe to topics");
+            _logger.LogError("Failed to subscribe to topics at:{time}", DateTimeOffset.Now);
             return;
         }
 
@@ -111,6 +115,8 @@ internal class SubscriptionsManagingService : ISubscriptionsManagingService
         }
 
         await _mqttClient.SubscribeAsync(subscribeOptionsBuilder.Build(), stoppingToken);
+
+        _logger.LogWarning("Subscribed to topics at:{time}", DateTimeOffset.Now);
     }
 
     public void Dispose()
