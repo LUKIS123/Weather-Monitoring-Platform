@@ -43,6 +43,10 @@ public class MqttSubscriptionsHandlingWorker : BackgroundService
                 try
                 {
                     await _subscriptionsManagingService.GetMqttClient.ReconnectAsync(stoppingToken);
+                    _logger.LogInformation("Mqtt client reconnected at:{time}", DateTimeOffset.Now);
+
+                    await _mqttDataService.ReSubscribeTopics(stoppingToken);
+                    _logger.LogInformation("Mqtt client resubscribed to topics at:{time}", DateTimeOffset.Now);
                 }
                 catch (Exception)
                 {
