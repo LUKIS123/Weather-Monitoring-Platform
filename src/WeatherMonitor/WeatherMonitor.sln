@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitor.Server.DataV
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitor.Server.StationsPermissions.Tests", "WeatherMonitor.Server.StationsPermissions.Tests\WeatherMonitor.Server.StationsPermissions.Tests.csproj", "{4B421847-8C9C-42BB-AFB8-56337D95D203}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitor.Server.UserPermissionManagement.Tests", "WeatherMonitor.Server.UserPermissionManagement.Tests\WeatherMonitor.Server.UserPermissionManagement.Tests.csproj", "{000A7E43-A49B-4557-8E64-5742247CC834}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,10 @@ Global
 		{4B421847-8C9C-42BB-AFB8-56337D95D203}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B421847-8C9C-42BB-AFB8-56337D95D203}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B421847-8C9C-42BB-AFB8-56337D95D203}.Release|Any CPU.Build.0 = Release|Any CPU
+		{000A7E43-A49B-4557-8E64-5742247CC834}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{000A7E43-A49B-4557-8E64-5742247CC834}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{000A7E43-A49B-4557-8E64-5742247CC834}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{000A7E43-A49B-4557-8E64-5742247CC834}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +110,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E0655CC1-2DE7-4063-B8B7-B1E18323EDB7} = {672217E0-A6C7-4A60-B36E-7C3123E5F259}
 		{4B421847-8C9C-42BB-AFB8-56337D95D203} = {672217E0-A6C7-4A60-B36E-7C3123E5F259}
+		{000A7E43-A49B-4557-8E64-5742247CC834} = {672217E0-A6C7-4A60-B36E-7C3123E5F259}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3B3B5C73-84BA-4E91-A500-F9C9AF3511C5}

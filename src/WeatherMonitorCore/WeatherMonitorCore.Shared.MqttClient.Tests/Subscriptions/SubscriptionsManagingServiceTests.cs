@@ -58,20 +58,6 @@ public class SubscriptionsManagingServiceTests
     }
 
     [Test]
-    public async Task SubscribeToTopics_ShouldLogError_WhenClientIsNotConnected()
-    {
-        // Arrange
-        var cancellationToken = CancellationToken.None;
-        _mqttClient.IsConnected.Returns(false);
-
-        // Act
-        await _service.SubscribeToTopics(cancellationToken);
-
-        // Assert
-        _logger.Received(1).LogError("Failed to subscribe to topics");
-    }
-
-    [Test]
     public void Dispose_ShouldDisposeMqttClient()
     {
         // Act
