@@ -6,7 +6,4 @@ public enum ActionType
     Write = 2,
     ReadWrite = 3,
     Subscribe = 4,
-    ReadAndSubscribe = 5,
-    WriteAndSubscribe = 6,
-    ReadWriteAndSubscribe = 7
 }
