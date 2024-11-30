@@ -83,8 +83,8 @@ internal class GetWeatherDataLastMonthService : IGetWeatherDataLastMonthService
 
         await Task.WhenAll(dayTimeResultsTask, nightTimeResultsTask);
 
-        var dayTimeData = dayTimeResultsTask.Result.DailyData.ToArray();
-        var nightTimeData = nightTimeResultsTask.Result.DailyData.ToArray();
+        var dayTimeData = (await dayTimeResultsTask).DailyData.ToArray();
+        var nightTimeData = (await nightTimeResultsTask).DailyData.ToArray();
 
         var startDateTime = GetStartDateTime(zoneAdjustedTime, dayTimeData, nightTimeData);
 

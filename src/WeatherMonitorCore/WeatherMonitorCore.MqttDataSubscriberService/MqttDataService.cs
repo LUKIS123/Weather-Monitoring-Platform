@@ -1,4 +1,5 @@
-﻿using MQTTnet.Client;
+﻿using Microsoft.Extensions.Logging;
+using MQTTnet.Client;
 using System.Text;
 using WeatherMonitorCore.Interfaces;
 using WeatherMonitorCore.MqttDataSubscriberService.Configuration;
@@ -12,13 +13,15 @@ namespace WeatherMonitorCore.MqttDataSubscriberService;
 
 public interface IMqttDataService : IDisposable
 {
+    MqttClientOptions GetMqttClientOptions();
     Task HandleMqttSubscriptions(CancellationToken stoppingToken);
     Task CleanUp(Guid clientId, CancellationToken stoppingToken);
-    MqttClientOptions GetMqttClientOptions();
+    Task ReSubscribeTopics(CancellationToken stoppingToken);
 }
 
 internal class MqttDataService : IMqttDataService
 {
+    private readonly ILogger<MqttDataService> _logger;
     private readonly IAppMqttClientsRepository _mqttClientsRepository;
     private readonly IEnumerable<IMqttEventHandler> _mqttEventHandlers;
     private readonly ISubscriptionsManagingService _subscriptionsManagingService;
@@ -33,7 +36,8 @@ internal class MqttDataService : IMqttDataService
         ISubscriptionsManagingService subscriptionsManagingService,
         IServiceWorkerMqttClientGenerator serviceWorkerMqttClientGenerator,
         IAesEncryptionHelper aesEncryptionHelper,
-        MqttBrokerConnection brokerConnection)
+        MqttBrokerConnection brokerConnection,
+        ILogger<MqttDataService> logger)
     {
         _mqttEventHandlers = mqttEventHandlers;
         _mqttClientsRepository = mqttClientsRepository;
@@ -41,6 +45,7 @@ internal class MqttDataService : IMqttDataService
         _serviceWorkerMqttClientGenerator = serviceWorkerMqttClientGenerator;
         _aesEncryptionHelper = aesEncryptionHelper;
         _brokerConnection = brokerConnection;
+        _logger = logger;
     }
 
     public MqttClientOptions GetMqttClientOptions() => _mqttClientOptions;
@@ -75,6 +80,19 @@ internal class MqttDataService : IMqttDataService
 
         await _subscriptionsManagingService.GetMqttClient.ConnectAsync(_mqttClientOptions, stoppingToken);
 
+        _logger.LogWarning("Mqtt client connected at:{time}", DateTimeOffset.Now);
+
+        var devicesTopics = await _mqttClientsRepository.GetDevicesTopicsAsync();
+
+        await _subscriptionsManagingService.SubscribeToTopics(
+            devicesTopics.Select(i => i.Topic),
+            stoppingToken);
+
+        _logger.LogWarning("Mqtt client subscribed to topics at:{time}", DateTimeOffset.Now);
+    }
+
+    public async Task ReSubscribeTopics(CancellationToken stoppingToken)
+    {
         var devicesTopics = await _mqttClientsRepository.GetDevicesTopicsAsync();
 
         await _subscriptionsManagingService.SubscribeToTopics(

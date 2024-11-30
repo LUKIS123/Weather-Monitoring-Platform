@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { User } from '../../models/user';
 import {
   MatPaginatorIntl,
@@ -6,7 +6,13 @@ import {
   PageEvent,
 } from '@angular/material/paginator';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { debounceTime, finalize, Subject } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  finalize,
+  Subject,
+  takeUntil,
+} from 'rxjs';
 import { PageResult } from '../../../../shared/models/page-result';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { GetUsersService } from '../../services/get-users.service';
@@ -62,7 +68,7 @@ export interface NicknameSeachFormControl {
   providers: [{ provide: MatPaginatorIntl, useClass: MatPaginatorIntlPl }],
   templateUrl: './user-list.component.html',
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent implements OnInit, OnDestroy {
   private readonly translateService = inject(TranslateService);
   private readonly toastService = inject(ToastService);
   private readonly getUsersService = inject(GetUsersService);
@@ -76,6 +82,7 @@ export class UserListComponent implements OnInit {
   });
 
   private inputSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
 
   #usersPageResult = signal<PageResult<User>>({
     items: [],
@@ -96,11 +103,13 @@ export class UserListComponent implements OnInit {
     this.#isLoading.set(true);
     const nickname = this.formGroup.get('nicknameSearchPhrase')?.value ?? null;
     this.loadUsers(this.#currentPage(), nickname);
-    this.inputSubject.pipe(debounceTime(300)).subscribe(() => {
-      if (this.isFormValid) {
-        this.submit();
-      }
-    });
+    this.inputSubject
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => {
+        if (this.isFormValid) {
+          this.submit();
+        }
+      });
   }
 
   public get isFormValid() {
@@ -160,5 +169,11 @@ export class UserListComponent implements OnInit {
     if (change) {
       this.refresh();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.inputSubject.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

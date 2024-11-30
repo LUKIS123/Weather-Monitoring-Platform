@@ -12,4 +12,9 @@
     <ProjectReference Include="..\WeatherMonitorCore.SharedKernel\WeatherMonitorCore.SharedKernel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+	<InternalsVisibleTo Include="WeatherMonitorCore.MqttAuth.Tests" />
+	<InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+  </ItemGroup>
+
 </Project>

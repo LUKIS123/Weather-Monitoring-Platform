@@ -58,22 +58,24 @@ internal class GetWeatherDataLastWeekService : IGetWeatherDataLastWeekService
             0,
             0);
 
-        var result = user.Role == Role.Admin
-            ? await _dataViewRepository.GetLastWeekWeatherDataAsync(
+        var resultTask = user.Role == Role.Admin
+            ? _dataViewRepository.GetLastWeekWeatherDataAsync(
                 zoneAdjustedTime,
                 deviceId,
                 plusCodeSearch)
-            : await _dataViewRepository.GetLastWeekWeatherDataAsync(
+            : _dataViewRepository.GetLastWeekWeatherDataAsync(
                 zoneAdjustedTime,
                 userId,
                 deviceId,
                 plusCodeSearch);
 
-        var startDateTime = result.LastWeekHourlyData.FirstOrDefault().HourDateTime;
+        var result = (await resultTask).LastWeekHourlyData.ToArray();
+
+        var startDateTime = result.FirstOrDefault().HourDateTime;
         startDateTime = startDateTime == default
             ? zoneAdjustedTime.AddDays(-7)
             : startDateTime;
 
-        return new GetWeatherDataLastWeekResponse(startDateTime, zoneAdjustedTime, result.LastWeekHourlyData);
+        return new GetWeatherDataLastWeekResponse(startDateTime, zoneAdjustedTime, result);
     }
 }

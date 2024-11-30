@@ -11,4 +11,9 @@
 		<ProjectReference Include="..\WeatherMonitor.Server.SharedKernel\WeatherMonitor.Server.SharedKernel.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="WeatherMonitor.Server.StationsPermissions.Tests" />
+		<InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+	</ItemGroup>
+
 </Project>

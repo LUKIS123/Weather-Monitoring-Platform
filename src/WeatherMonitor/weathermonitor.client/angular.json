@@ -43,6 +43,11 @@
                 "glob": "**/*",
                 "input": "src/assets/i18n",
                 "output": "assets/i18n"
+              },
+              {
+                "glob": "**/*",
+                "input": "public/icons",
+                "output": "assets/icons"
               }
             ],
             "styles": [
@@ -71,7 +76,8 @@
                   "maximumError": "4kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "serviceWorker": "ngsw-config.json"
             },
             "development": {
               "optimization": false,
@@ -118,6 +124,11 @@
                 "glob": "**/*",
                 "input": "src/assets/i18n",
                 "output": "assets/i18n"
+              },
+              {
+                "glob": "**/*",
+                "input": "public/icons",
+                "output": "assets/icons"
               }
             ],
             "styles": [

@@ -1,5 +1,18 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { debounceTime, finalize, Subject } from 'rxjs';
+import {
+  Component,
+  computed,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  finalize,
+  Subject,
+  takeUntil,
+} from 'rxjs';
 import { GetWeatherDataLastDayResponse } from './models/get-weather-last-day-response';
 import { GetWeatherDataLastWeekResponse } from './models/get-weather-last-week-response';
 import { GetWeatherDataLastMonthResponse } from './models/get-weather-last-month-response';
@@ -63,13 +76,15 @@ export interface PlusCodeSeachFormControl {
   ],
   templateUrl: './aggregate-data-view.component.html',
 })
-export class AggregateDataViewComponent implements OnInit {
+export class AggregateDataViewComponent implements OnInit, OnDestroy {
   private readonly translateService = inject(TranslateService);
   private readonly toastService = inject(ToastService);
   private readonly aggregateDataService = inject(AggregateDataViewService);
 
   timeFrame = signal<'24h' | '7d' | '30d'>('24h');
   dataType = signal<'weather' | 'pollution'>('weather');
+  private timeFrameSubject = new Subject<'24h' | '7d' | '30d'>();
+  private destroy$ = new Subject<void>();
 
   private inputSubject = new Subject<string>();
   matcher = new SearchInputErrorStateMatcher();
@@ -130,18 +145,24 @@ export class AggregateDataViewComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    const googleMapsPlusCode =
-      this.formGroup.get('plusCodeSearchPhrase')?.value ?? 'Wrocław';
-    this.loadStationsDataLast24h(googleMapsPlusCode);
+    this.timeFrameSubject
+      .pipe(debounceTime(50), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((timeFrame) => this.handleTimeFrameChange(timeFrame));
 
-    this.inputSubject.pipe(debounceTime(500)).subscribe(() => {
-      if (this.isFormValid) {
-        this.submit();
-      }
-    });
+    this.inputSubject
+      .pipe(debounceTime(500), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => {
+        if (this.isFormValid) {
+          this.submit();
+        }
+      });
   }
 
   public onTimeFrameChange(timeFrame: '24h' | '7d' | '30d'): void {
+    this.timeFrameSubject.next(timeFrame);
+  }
+
+  public handleTimeFrameChange(timeFrame: '24h' | '7d' | '30d'): void {
     this.timeFrame.set(timeFrame);
     this.#isLoading.set(true);
     const googleMapsPlusCode =
@@ -186,16 +207,16 @@ export class AggregateDataViewComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.#isLoading.set(false);
-          this.toastService.openSuccess(
-            `${this.translateService.instant(
-              'DataVisualisation.PlusCodeSearchDispplay'
-            )} "${searchPhrase}"`
-          );
         })
       )
       .subscribe({
         next: (data) => {
           this.#last24hData.set(data);
+          this.toastService.openSuccess(
+            `${this.translateService.instant(
+              'DataVisualisation.PlusCodeSearchDispplay'
+            )} "${searchPhrase}"`
+          );
         },
         error: () =>
           this.toastService.openError(
@@ -210,16 +231,16 @@ export class AggregateDataViewComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.#isLoading.set(false);
-          this.toastService.openSuccess(
-            `${this.translateService.instant(
-              'DataVisualisation.PlusCodeSearchDispplay'
-            )} "${searchPhrase}"`
-          );
         })
       )
       .subscribe({
         next: (data) => {
           this.#last7dData.set(data);
+          this.toastService.openSuccess(
+            `${this.translateService.instant(
+              'DataVisualisation.PlusCodeSearchDispplay'
+            )} "${searchPhrase}"`
+          );
         },
         error: () =>
           this.toastService.openError(
@@ -234,16 +255,16 @@ export class AggregateDataViewComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.#isLoading.set(false);
-          this.toastService.openSuccess(
-            `${this.translateService.instant(
-              'DataVisualisation.PlusCodeSearchDispplay'
-            )} "${searchPhrase}"`
-          );
         })
       )
       .subscribe({
         next: (data) => {
           this.#last30dData.set(data);
+          this.toastService.openSuccess(
+            `${this.translateService.instant(
+              'DataVisualisation.PlusCodeSearchDispplay'
+            )} "${searchPhrase}"`
+          );
         },
         error: () =>
           this.toastService.openError(
@@ -255,5 +276,12 @@ export class AggregateDataViewComponent implements OnInit {
   onInputChange($event: Event) {
     const input = ($event.target as HTMLInputElement).value;
     this.inputSubject.next(input);
+  }
+
+  ngOnDestroy(): void {
+    this.timeFrameSubject.complete();
+    this.inputSubject.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
