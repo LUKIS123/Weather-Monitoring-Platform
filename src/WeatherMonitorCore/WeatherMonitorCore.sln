@@ -37,6 +37,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitorCore.MqttAuth
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitorCore.DeviceManagement.Tests", "WeatherMonitorCore.DeviceManagement.Tests\WeatherMonitorCore.DeviceManagement.Tests.csproj", "{A81F698B-CF65-4AF5-BD39-C969CAC668CD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AzureFunctions", "AzureFunctions", "{0E0F1595-A170-4047-BCA8-312BD3885C8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherMonitorCore.DataCleanUp", "WeatherMonitorCore.DataCleanUp\WeatherMonitorCore.DataCleanUp.csproj", "{D10FDB0B-28A7-4098-85C3-3DA69FCED413}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +107,10 @@ Global
 		{A81F698B-CF65-4AF5-BD39-C969CAC668CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A81F698B-CF65-4AF5-BD39-C969CAC668CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A81F698B-CF65-4AF5-BD39-C969CAC668CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D10FDB0B-28A7-4098-85C3-3DA69FCED413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D10FDB0B-28A7-4098-85C3-3DA69FCED413}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D10FDB0B-28A7-4098-85C3-3DA69FCED413}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D10FDB0B-28A7-4098-85C3-3DA69FCED413}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,6 +121,7 @@ Global
 		{4815F800-B3D7-42B8-9C13-2FF0EEA9B5DC} = {4826B8D9-9F94-4DB0-8FDD-63ABD9577966}
 		{B83F1654-7888-43EE-96C7-28B5B6F1F271} = {4826B8D9-9F94-4DB0-8FDD-63ABD9577966}
 		{A81F698B-CF65-4AF5-BD39-C969CAC668CD} = {4826B8D9-9F94-4DB0-8FDD-63ABD9577966}
+		{D10FDB0B-28A7-4098-85C3-3DA69FCED413} = {0E0F1595-A170-4047-BCA8-312BD3885C8D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FC54F9A4-DCCB-43B6-BECB-625068151DF2}
