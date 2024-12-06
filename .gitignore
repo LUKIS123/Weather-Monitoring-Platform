@@ -402,3 +402,4 @@ terraform/terraform.tfstate
 terraform/terraform.tfstate.backup
 src/WeatherMonitorCore/WeatherMonitorCore/Properties/ServiceDependencies/weather-monitor-core - Zip Deploy1/profile.arm.json
 src/WeatherMonitor/WeatherMonitor.Server/Properties/ServiceDependencies/weather-monitor - Zip Deploy/profile.arm.json
+src/WeatherMonitorCore/WeatherMonitorCore.DataCleanUp/Properties/ServiceDependencies/WeatherMonitorCoreDataCleanUp20241207002900 - Zip Deploy
