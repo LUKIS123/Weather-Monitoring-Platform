@@ -7,12 +7,12 @@ namespace WeatherMonitorCore.DataCleanUp;
 public class CleanupFunction
 {
     private readonly ILogger _logger;
-    private readonly DataCleanupRepository _repository;
+    private readonly IDataCleanupRepository _repository;
     private readonly TimeZoneProvider _timeZoneProvider;
 
     public CleanupFunction(
         ILoggerFactory loggerFactory,
-        DataCleanupRepository repository,
+        IDataCleanupRepository repository,
         TimeZoneProvider timeZoneProvider)
     {
         _repository = repository;
