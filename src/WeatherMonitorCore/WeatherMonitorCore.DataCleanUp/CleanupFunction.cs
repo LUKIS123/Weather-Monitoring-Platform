@@ -8,15 +8,18 @@ public class CleanupFunction
 {
     private readonly ILogger _logger;
     private readonly IDataCleanupRepository _repository;
-    private readonly TimeZoneProvider _timeZoneProvider;
+    private readonly ITimeZoneProvider _timeZoneProvider;
+    private readonly TimeProvider _timeProvider;
 
     public CleanupFunction(
         ILoggerFactory loggerFactory,
         IDataCleanupRepository repository,
-        TimeZoneProvider timeZoneProvider)
+        ITimeZoneProvider timeZoneProvider,
+        TimeProvider timeProvider)
     {
         _repository = repository;
         _timeZoneProvider = timeZoneProvider;
+        _timeProvider = timeProvider;
         _logger = loggerFactory.CreateLogger<CleanupFunction>();
     }
 
@@ -25,12 +28,19 @@ public class CleanupFunction
     {
         _logger.LogInformation($"Cleanup job started at: {DateTime.Now}");
 
-        var zoneAdjustedTimeStamp = TimeZoneInfo.ConvertTimeFromUtc(
-            TimeProvider.System.GetUtcNow().DateTime,
-            _timeZoneProvider.GetTimeZoneInfo());
+        try
+        {
+            var zoneAdjustedTimeStamp = TimeZoneInfo.ConvertTimeFromUtc(
+                _timeProvider.GetUtcNow().DateTime,
+                _timeZoneProvider.GetTimeZoneInfo());
 
-        var rowsAffected = await _repository.RemoveOldDataAsync(zoneAdjustedTimeStamp);
+            var rowsAffected = await _repository.RemoveOldDataAsync(zoneAdjustedTimeStamp);
 
-        _logger.LogInformation($"Deleted {rowsAffected} old records from database.");
+            _logger.LogInformation($"Deleted {rowsAffected} old records from database.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred during data cleanup.");
+        }
     }
 }

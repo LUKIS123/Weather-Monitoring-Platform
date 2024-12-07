@@ -3,7 +3,13 @@ using TimeZoneConverter;
 using WeatherMonitorCore.DataCleanUp.Settings;
 
 namespace WeatherMonitorCore.DataCleanUp.Utils;
-public class TimeZoneProvider
+
+public interface ITimeZoneProvider
+{
+    TimeZoneInfo GetTimeZoneInfo();
+}
+
+public class TimeZoneProvider : ITimeZoneProvider
 {
     private readonly TimeZoneInfo _timeZoneInfo;
 
