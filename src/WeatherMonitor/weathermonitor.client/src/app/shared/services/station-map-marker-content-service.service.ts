@@ -1,12 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { StationLocation } from '../../features/home-page/models/station-location';
+import { Router } from '@angular/router';
+import { Renderer2 } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StationMapMarkerContentServiceService {
   private readonly translateService = inject(TranslateService);
+  private readonly router = inject(Router);
   private readonly imgPath = '/assets/images/weather-station-icon.png';
   private readonly dataViewBasePath = '/DataVisualization/Station';
 
@@ -34,14 +37,13 @@ export class StationMapMarkerContentServiceService {
         </i>
       </div>
       <div class="details">
-        <a
-          href='${this.dataViewBasePath}/${stationlocation.station.deviceId}'"
-          target="_self"
+        <button
+          id="dataViewButton${stationlocation.station.deviceId}"
           style="position: absolute; top: 0; left: 0; margin: 4px; padding: 2px 2px; background-color: #007bff; color: white; 
             border: none; border-radius: 5px; cursor: pointer; font-size: 12px;"
         >
           ${this.translateService.instant('Shared.DataVisualization.Short')}
-        </a>
+        </button>
         <div style="display: flex; justify-content: space-between; padding-left: 1rem; padding-right: 0.75rem;">
             <span>${this.translateService.instant(
               'Shared.Temperature'
@@ -81,6 +83,17 @@ export class StationMapMarkerContentServiceService {
           </div>
       </div>
     `;
+
+    const button = content.querySelector(
+      `#dataViewButton${stationlocation.station.deviceId}`
+    ) as HTMLElement;
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      this.router.navigate([
+        `${this.dataViewBasePath}/${stationlocation.station.deviceId}`,
+      ]);
+    });
+
     return content;
   }
 
