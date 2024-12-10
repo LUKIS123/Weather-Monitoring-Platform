@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, Renderer2, signal } from '@angular/core';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { MaterialModule } from '../../../../shared/material.module';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -8,7 +8,7 @@ import { GoogleMap, MapAdvancedMarker } from '@angular/google-maps';
 import { finalize, map, switchMap, zip } from 'rxjs';
 import { PlusCodeConverterService } from '../../../../shared/services/plus-code-converter.service';
 import { StationLocation } from '../../models/station-location';
-import { StationMapMarkerContentServiceService } from '../../../../shared/services/station-map-marker-content-service.service';
+import { StationMapMarkerContentService } from '../../../../shared/services/station-map-marker-content.service';
 
 @Component({
   selector: 'app-stations-map',
@@ -40,8 +40,9 @@ export class StationsMapComponent implements OnInit {
   private readonly getAllStationsService = inject(GetAllStationsService);
   private readonly plusCodeConverterService = inject(PlusCodeConverterService);
   private readonly stationMapMarkerContentService = inject(
-    StationMapMarkerContentServiceService
+    StationMapMarkerContentService
   );
+  private readonly renderer = inject(Renderer2);
 
   #isLoading = signal<boolean>(true);
   public readonly isLoading = this.#isLoading.asReadonly();
@@ -96,6 +97,7 @@ export class StationsMapComponent implements OnInit {
 
   buildContent(stationlocation: StationLocation): HTMLElement {
     return this.stationMapMarkerContentService.buildMarkerContent(
+      this.renderer,
       stationlocation
     );
   }
