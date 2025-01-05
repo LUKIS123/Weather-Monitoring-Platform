@@ -43,7 +43,7 @@ These stations communicate with the system via the MQTT protocol, utilizing a Mo
 7. The WeatherMonitor application allows users to manage stations, access weather data, and handle authentication. It works in tandem with the WeatherMonitorCore microservice and the database.
 
 # Feature overview
-- Landing page
+- Landing page.
 
 ![Architecture](./resources/0-landing-page.png)
 
@@ -57,7 +57,7 @@ These stations communicate with the system via the MQTT protocol, utilizing a Mo
 
 <br/>
 
-- Wistorical weather and air quality data on charts.
+- Historical weather and air quality data on charts.
 
 ![Weather devices map](./resources/6-chart-24h.png)
 
