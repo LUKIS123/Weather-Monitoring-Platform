@@ -51,17 +51,19 @@ These stations communicate with the system via the MQTT protocol, utilizing a Mo
 
 - Current weather and air quality data presentation.
 
-![Weather devices list](./resources/5-weather-data-list.png)
-
-![Weather devices map](./resources/5-weather-data-map.png)
+<div style="display: flex; justify-content: space-between;">
+  <img src="./resources/5-weather-data-list.png" alt="Weather devices list" style="width: 48%;"/>
+  <img src="./resources/5-weather-data-map.png" alt="Weather devices map" style="width: 48%;"/>
+</div>
 
 <br/>
 
 - Historical weather and air quality data on charts.
 
-![Weather devices map](./resources/6-chart-24h.png)
-
-![Weather devices map](./resources/6-chart-30dats-pollution.png)
+<div style="display: flex; justify-content: space-between;">
+  <img src="./resources/6-chart-24h.png" alt="24-hour chart" style="width: 48%;"/>
+  <img src="./resources/6-chart-30dats-pollution.png" alt="30-days pollution chart" style="width: 48%;"/>
+</div>
 
 <br/>
 
